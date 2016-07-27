@@ -9,24 +9,16 @@
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 
-		<activity android:name=".MainActivity">
+		<activity
+			android:name=".MainActivity"
+			android:label="HAHAHA">
 			<intent-filter>
-				<action android:name="com.sogilis.sogimailer.AUTO" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:mimeType="text/*"/>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 
-		<service android:name=".SogiMailerService"
-				 android:icon="@android:drawable/ic_dialog_email"
-				 android:label="@string/sogi_mailer_service_title">
-
-			<intent-filter>
-				<action android:name="com.sogilis.sogimailer.AUTO2" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-
-		</service>
+		<service android:name=".SogiMailerService"/>
 
 	</application>
 

@@ -8,5 +8,5 @@ interface IHelloService {
      * Demonstrates some basic types that you can use as parameters
      * and return values in AIDL.
      */
-    void basicTypes(String holy);
+    void hello(String holy);
 }
