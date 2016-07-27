@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SogiMailer</string>
+    <string name="sogi_mailer_service_title">Coucou !</string>
 </resources>
