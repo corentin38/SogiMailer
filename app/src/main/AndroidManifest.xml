@@ -18,7 +18,10 @@
 			</intent-filter>
 		</activity>
 
-		<service android:name=".SogiMailerService"/>
+		<service
+			android:name=".SogiMailerService"
+			android:exported="true"
+			/>
 
 	</application>
 
