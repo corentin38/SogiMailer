@@ -1,21 +1,18 @@
 package com.sogilis.sogimailer;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.ResultReceiver;
-import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class SogiMailerService extends IntentService {
 
 	private static final String TAG = "MAILER";
+	static final String ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
     public SogiMailerService() {
-        // Used to name the worker thread, important only for debugging.
         super("test-service");
     }
 
@@ -33,12 +30,12 @@ public class SogiMailerService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "hello in IHelloService impl");
 		String holy = intent.getStringExtra("TOTO");
-		ResultReceiver rr = intent.getParcelableExtra("TUTU");
-		if (rr != null) {
-			Bundle b = new Bundle();
-			b.putString("TITI", "oula oula ! " + holy);
-			rr.send(-1, b);
-		}
+
+		Intent itt = new Intent(ACTION);
+		itt.putExtra("TITI", "OULA OULA ! <" + holy + ">");
+		itt.putExtra("resultCode", -1);
+
+		sendBroadcast(itt);
 	}
 
 	@Override
