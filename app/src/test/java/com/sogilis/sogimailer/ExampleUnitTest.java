@@ -1,4 +1,4 @@
-package sogilis.com.sogimailer;
+package com.sogilis.sogimailer;
 
 import org.junit.Test;
 
