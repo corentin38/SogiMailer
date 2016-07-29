@@ -21,7 +21,13 @@
 		<service
 			android:name=".SogiMailerService"
 			android:exported="true"
-			/>
+			>
+
+			<intent-filter>
+				<action android:name="com.sogilis.sogimailer.ACTION_SEND" />
+			</intent-filter>
+
+		</service>
 
 	</application>
 
