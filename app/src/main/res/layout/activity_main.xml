@@ -5,14 +5,38 @@
 			  android:layout_height="match_parent">
 
 	<EditText
-		android:id="@+id/edit"
+		android:id="@+id/recipients"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"/>
+		android:layout_height="wrap_content"
+		android:hint="recipients"
+		/>
+
+	<EditText
+		android:id="@+id/subject"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="subject"
+		/>
+
+	<EditText
+		android:id="@+id/body"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="body"
+		/>
+
+	<EditText
+		android:id="@+id/password"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="password"
+		/>
 
 	<Button
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="GOGOGO"
-		android:onClick="click"/>
+		android:onClick="click"
+		/>
 
 </LinearLayout>

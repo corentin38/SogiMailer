@@ -13,25 +13,32 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-	private static final String TAG = "SOGI---MAILER";
+	private static final String TAG = "SOGIMAILER_ACTIVITY";
 
-	private static final String RESULT_KEY = "MAILER_RESULT";
-	private static final String MESSAGE_KEY = "MAILER_MESSAGE";
-	private static final String RETCODE_KEY = "MAILER_RETCODE";
 	private static final String SOGIMAILER_ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
-	private String res;
+	private static final String RESULTMSG_KEY = "MAILER_RESULTMSG";
+	private static final String RETCODE_KEY = "MAILER_RETCODE";
+
+	private static final String OPT_RECIPIENTS = "MAILER_OPT_RECIPIENTS";
+	private static final String OPT_SUBJECT = "MAILER_OPT_SUBJECT";
+	private static final String OPT_BODY = "MAILER_OPT_BODY";
+	private static final String OPT_PASSWORD = "MAILER_OPT_PASSWORD";
 
     private BroadcastReceiver testReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int resultCode = intent.getIntExtra(RETCODE_KEY, RESULT_CANCELED);
 	        Log.d(TAG, "onReceive " + resultCode + " is it eq to ? " + RESULT_OK);
+	        String resultValue = intent.getStringExtra(RESULTMSG_KEY);
+
             if (resultCode == RESULT_OK) {
-                String resultValue = intent.getStringExtra(RESULT_KEY);
-	            res = resultValue;
+	            Log.d(TAG, "onReceive  SUCCESS in BCR, result message : " + resultValue);
+	            Toast.makeText(MainActivity.this, "Response!!!! <" + resultValue + ">", Toast.LENGTH_SHORT).show();
+            } else {
 	            Log.d(TAG, "onReceive in BCR");
-	            Toast.makeText(MainActivity.this, "Response!!!! <" + res + ">", Toast.LENGTH_SHORT).show();
+	            Log.d(TAG, "onReceive FAILURE in BCR, result message : " + resultValue);
+	            Toast.makeText(MainActivity.this, "FAIL!!!! <" + resultValue + ">", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -59,10 +66,23 @@ public class MainActivity extends AppCompatActivity {
 	public void click(View v)
 	{
 		Log.d(TAG, "Launching intent for service SogiMailer");
-		EditText value2  = (EditText) findViewById(R.id.edit);
+		EditText recipientsET  = (EditText) findViewById(R.id.recipients);
+		EditText subjectET  = (EditText) findViewById(R.id.subject);
+		EditText bodyET  = (EditText) findViewById(R.id.body);
+		EditText passwordET  = (EditText) findViewById(R.id.password);
+
+		String recipients = recipientsET.getText().toString();
+		String subject = subjectET.getText().toString();
+		String body = bodyET.getText().toString();
+		String password = passwordET.getText().toString();
+
 		Intent itt = new Intent(SOGIMAILER_ACTION);
 		itt.setPackage("com.sogilis.sogimailer");
-		itt.putExtra(MESSAGE_KEY, value2.getText().toString());
+
+		itt.putExtra(OPT_RECIPIENTS, recipients);
+		itt.putExtra(OPT_SUBJECT, subject);
+		itt.putExtra(OPT_BODY, body);
+		itt.putExtra(OPT_PASSWORD, password);
 
 		startService(itt);
 
