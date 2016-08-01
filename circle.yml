@@ -3,7 +3,3 @@ machine:
 
   timezone:
     Europe/Paris
-
-dependencies:
-  pre:
-    - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.3"
