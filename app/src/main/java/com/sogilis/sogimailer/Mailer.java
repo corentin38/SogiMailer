@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -58,10 +59,10 @@ public class Mailer extends Authenticator {
 		getPropertiesFromProfile(profile);
 	}
 
-/*	@Override
+	@Override
 	protected PasswordAuthentication getPasswordAuthentication() {
-		return new PasswordAuthentication(user, password);
-	}*/
+		return new PasswordAuthentication(profile.sender(), profile.senderPassword());
+	}
 
 /*
 

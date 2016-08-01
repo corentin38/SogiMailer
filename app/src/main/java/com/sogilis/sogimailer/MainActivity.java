@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -48,6 +49,27 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Log.d(TAG, "onCreate");
+
+		SharedPreferences settings = getSharedPreferences(
+			"sogimailerPrefs",
+			Context.MODE_PRIVATE);
+
+		String recip = settings.getString("recipients", "");
+		String subject = settings.getString("subject", "");
+		String body = settings.getString("body", "");
+		String password = settings.getString("password", "");
+
+		EditText recipientsET  = (EditText) findViewById(R.id.recipients);
+		recipientsET.setText(recip);
+
+		EditText subjectET  = (EditText) findViewById(R.id.subject);
+		subjectET.setText(subject);
+
+		EditText bodyET  = (EditText) findViewById(R.id.body);
+		bodyET.setText(body);
+
+		EditText passwordET  = (EditText) findViewById(R.id.password);
+		passwordET.setText(password);
 	}
 
 	@Override
@@ -86,6 +108,18 @@ public class MainActivity extends AppCompatActivity {
 
 		startService(itt);
 
+		SharedPreferences settings = getSharedPreferences(
+				"sogimailerPrefs",
+				Context.MODE_PRIVATE);
+
+		SharedPreferences.Editor ed = settings.edit();
+
+		ed.putString("recipients", recipients);
+		ed.putString("subject", subject);
+		ed.putString("body", body);
+		ed.putString("password", password);
+
+		ed.commit();
 	}
 
 }

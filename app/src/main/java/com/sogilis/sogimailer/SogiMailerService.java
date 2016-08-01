@@ -35,7 +35,6 @@ public class SogiMailerService extends IntentService implements Mailer.Listener 
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-		this.mailer = new Mailer(new Default());
 	}
 
 	/**
@@ -57,6 +56,7 @@ public class SogiMailerService extends IntentService implements Mailer.Listener 
 			return;
 		}
 
+		mailer = new Mailer(new Default());
 		mailer.updateProfile(new Default(password));
 		Log.d(TAG, "Sending mail to mailer !");
 		mailer.sendSimpleMail(this, recipients, subject, body);
