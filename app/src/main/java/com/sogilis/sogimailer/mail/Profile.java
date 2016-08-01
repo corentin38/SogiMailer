@@ -1,4 +1,4 @@
-package com.sogilis.sogimailer.profile;
+package com.sogilis.sogimailer.mail;
 
 public interface Profile {
 

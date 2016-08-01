@@ -1,4 +1,4 @@
-package com.sogilis.sogimailer;
+package com.sogilis.sogimailer.mail;
 
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one or more

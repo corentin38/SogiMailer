@@ -1,8 +1,6 @@
-package com.sogilis.sogimailer;
+package com.sogilis.sogimailer.mail;
 
 import android.util.Log;
-
-import com.sogilis.sogimailer.profile.Profile;
 
 import java.security.Security;
 import java.util.Date;

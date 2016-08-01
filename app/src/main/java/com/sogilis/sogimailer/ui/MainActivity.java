@@ -1,4 +1,4 @@
-package com.sogilis.sogimailer;
+package com.sogilis.sogimailer.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,7 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.sogilis.sogimailer.R;
+import com.sogilis.sogimailer.SogiMailerApplication;
+
+import javax.inject.Inject;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,37 +23,21 @@ public class MainActivity extends AppCompatActivity {
 
 	private static final String SOGIMAILER_ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
-	private static final String RESULTMSG_KEY = "MAILER_RESULTMSG";
-	private static final String RETCODE_KEY = "MAILER_RETCODE";
-
 	private static final String OPT_RECIPIENTS = "MAILER_OPT_RECIPIENTS";
 	private static final String OPT_SUBJECT = "MAILER_OPT_SUBJECT";
 	private static final String OPT_BODY = "MAILER_OPT_BODY";
 	private static final String OPT_PASSWORD = "MAILER_OPT_PASSWORD";
 
-    private BroadcastReceiver testReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int resultCode = intent.getIntExtra(RETCODE_KEY, RESULT_CANCELED);
-	        Log.d(TAG, "onReceive " + resultCode + " is it eq to ? " + RESULT_OK);
-	        String resultValue = intent.getStringExtra(RESULTMSG_KEY);
-
-            if (resultCode == RESULT_OK) {
-	            Log.d(TAG, "onReceive  SUCCESS in BCR, result message : " + resultValue);
-	            Toast.makeText(MainActivity.this, "Response!!!! <" + resultValue + ">", Toast.LENGTH_LONG).show();
-            } else {
-	            Log.d(TAG, "onReceive in BCR");
-	            Log.d(TAG, "onReceive FAILURE in BCR, result message : " + resultValue);
-	            Toast.makeText(MainActivity.this, "FAIL!!!! <" + resultValue + ">", Toast.LENGTH_LONG).show();
-            }
-        }
-    };
+	@Inject
+    public BroadcastReceiver testReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Log.d(TAG, "onCreate");
+
+		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
 
 		SharedPreferences settings = getSharedPreferences(
 			"sogimailerPrefs",

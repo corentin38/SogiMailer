@@ -1,13 +1,17 @@
-package com.sogilis.sogimailer;
+package com.sogilis.sogimailer.svc;
 
 import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.sogilis.sogimailer.profile.Default;
+import com.sogilis.sogimailer.SogiMailerApplication;
+import com.sogilis.sogimailer.mail.Default;
+import com.sogilis.sogimailer.mail.Mailer;
 
-public class SogiMailerService extends IntentService implements Mailer.Listener {
+import javax.inject.Inject;
+
+public class MailerService extends IntentService implements Mailer.Listener {
 	private static final String TAG = "SOGIMAILER_SERVICE";
 
 	static final String ACTION = "com.sogilis.sogimailer.ACTION_SEND";
@@ -20,9 +24,10 @@ public class SogiMailerService extends IntentService implements Mailer.Listener 
 	private static final String RESULTMSG_KEY = "MAILER_RESULTMSG";
 	private static final String RETCODE_KEY = "MAILER_RETCODE";
 
-	private Mailer mailer;
+	@Inject
+	public Mailer mailer;
 
-    public SogiMailerService() {
+    public MailerService() {
         super("test-service");
     }
 
@@ -30,12 +35,9 @@ public class SogiMailerService extends IntentService implements Mailer.Listener 
     public void onCreate() {
         super.onCreate();
 	    Log.d(TAG, "onCreate");
-    }
 
-	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
-	}
+	    ((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
+    }
 
 	/**
 	 * When binding to the service, we return an interface to our messenger
@@ -56,7 +58,6 @@ public class SogiMailerService extends IntentService implements Mailer.Listener 
 			return;
 		}
 
-		mailer = new Mailer(new Default());
 		mailer.updateProfile(new Default(password));
 		Log.d(TAG, "Sending mail to mailer !");
 		mailer.sendSimpleMail(this, recipients, subject, body);
