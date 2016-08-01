@@ -28,5 +28,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.+'
 
+    compile 'com.squareup.dagger:dagger-compiler:1.2.5'
     compile 'com.sun.mail:android-mail:1.5.5'
 }
