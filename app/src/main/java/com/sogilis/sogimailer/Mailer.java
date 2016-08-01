@@ -64,45 +64,6 @@ public class Mailer extends Authenticator {
 		return new PasswordAuthentication(profile.sender(), profile.senderPassword());
 	}
 
-/*
-
-	public void addAttachment(String filename, String content) throws IOException {
-		this.attachmentFilename = filename;
-		this.attachmentPath = createTmpFile(filename, content);
-	}
-*/
-
-/*	private String createTmpFile(String filename, String content) throws IOException {
-		if (context == null) {
-			throw new IOException("Null context provided, unable to call getExternalCacheDir()");
-		}
-
-		File tmpDir = context.getExternalCacheDir();
-		if (tmpDir == null) {
-			throw new IOException("getExternalCacheDir() returned null. External storage seems unavailable");
-		}
-
-		File tmpFile = new File(tmpDir, filename);
-		FileWriter fw = new FileWriter(tmpFile, false);
-		fw.append(content);
-		fw.close();
-
-		Log.d(TAG, "HL7 tmp file written at: " + tmpFile.getAbsolutePath());
-
-		return tmpFile.getAbsolutePath();
-	}*/
-
-/*	private void deleteTmpFile() {
-		if (attachmentPath == null) {
-			return;
-		}
-
-		File tmpFile = new File(attachmentPath);
-		if (tmpFile.exists()) {
-			tmpFile.delete();
-		}
-	}*/
-
 	public boolean sendSimpleMail(Listener listener, String recipients, String subject, String body) {
 		MimeMessage message;
 		Log.d(TAG, "Sending simple mail to " + recipients);
@@ -121,7 +82,6 @@ public class Mailer extends Authenticator {
 
 			message.setSubject(subject);
 			message.setSentDate(new Date());
-
 			message.setContent(body, "text/plain");
 
 		} catch (Exception e) {
@@ -154,8 +114,10 @@ public class Mailer extends Authenticator {
 		}
 
 		if (ret) {
+			Log.d(TAG, "calling onMailSuccess");
 			listener.onMailSuccess();
 		} else {
+			Log.d(TAG, "calling onMailFailurer with " + message);
 			listener.onMailFailure(message);
 		}
 	}
