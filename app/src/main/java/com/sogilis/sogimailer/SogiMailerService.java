@@ -80,17 +80,15 @@ public class SogiMailerService extends IntentService implements Mailer.Listener 
 		sendBroadcast(itt);
 	}
 
-	private boolean checkKeys(String subject, String body, String recipients, String password) {
+	public static boolean checkKeys(String subject, String body, String recipients, String password) {
 		if (subject == null) return false;
 		if (body == null) return false;
 		if (recipients == null) return false;
 		if (password == null) return false;
-		Log.d(TAG, "checkKeys : no null param");
 
 		if (subject.isEmpty()) return false;
 		if (recipients.isEmpty()) return false;
 		if (password.isEmpty()) return false;
-		Log.d(TAG, "checkKeys : no empty param");
 
 		return true;
 	}
