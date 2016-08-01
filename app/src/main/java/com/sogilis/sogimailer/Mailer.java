@@ -144,6 +144,7 @@ public class Mailer extends Authenticator {
 			return false;
 		}
 
+		notifyListeners(listener, true, null);
 		return true;
 	}
 

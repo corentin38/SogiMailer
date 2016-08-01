@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
 	            Log.d(TAG, "onReceive  SUCCESS in BCR, result message : " + resultValue);
-	            Toast.makeText(MainActivity.this, "Response!!!! <" + resultValue + ">", Toast.LENGTH_SHORT).show();
+	            Toast.makeText(MainActivity.this, "Response!!!! <" + resultValue + ">", Toast.LENGTH_LONG).show();
             } else {
 	            Log.d(TAG, "onReceive in BCR");
 	            Log.d(TAG, "onReceive FAILURE in BCR, result message : " + resultValue);
-	            Toast.makeText(MainActivity.this, "FAIL!!!! <" + resultValue + ">", Toast.LENGTH_SHORT).show();
+	            Toast.makeText(MainActivity.this, "FAIL!!!! <" + resultValue + ">", Toast.LENGTH_LONG).show();
             }
         }
     };
