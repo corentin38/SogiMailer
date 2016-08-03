@@ -4,39 +4,48 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent">
 
-	<EditText
-		android:id="@+id/recipients"
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="recipients"
-		/>
+		android:layout_height="140dp"
+		>
 
-	<EditText
-		android:id="@+id/subject"
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1"
+				android:theme="@style/AppTitle"
+				android:background="@color/colorPrimary"
+				android:text="SogiMailer"
+				/>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="35dp"
+				/>
+
+		</LinearLayout>
+
+		<ImageView
+			android:layout_width="@dimen/logo_size"
+			android:layout_height="@dimen/logo_size"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:background="@drawable/circle"
+			android:padding="10dp"
+			android:layout_gravity="center_horizontal"
+			android:src="@drawable/sogilis"
+			/>
+
+	</RelativeLayout>
+
+	<FrameLayout
+		android:id="@+id/main_fragment_holder"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="subject"
-		/>
-
-	<EditText
-		android:id="@+id/body"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="body"
-		/>
-
-	<EditText
-		android:id="@+id/password"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="password"
-		/>
-
-	<Button
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="GOGOGO"
-		android:onClick="click"
-		/>
+		android:layout_height="match_parent" />
 
 </LinearLayout>
