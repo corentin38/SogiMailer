@@ -28,15 +28,15 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:theme="@style/BoxLabel"
-			android:text="host :"
-			android:layout_columnWeight="1"
+			android:text="@string/home_host_label"
 			android:layout_gravity="end"
+			android:layout_columnWeight="1"
 			/>
 
 		<TextView
 			android:id="@+id/home_default_host"
 			android:theme="@style/BoxValue"
-			android:text="smtp.gmail.com"
+			android:text="@string/undefined"
 			android:layout_columnWeight="3"
 			/>
 
@@ -45,15 +45,15 @@
 			android:layout_height="wrap_content"
 			android:layout_column="0"
 			android:theme="@style/BoxLabel"
-			android:text="user :"
-			android:layout_columnWeight="1"
+			android:text="@string/home_user_label"
 			android:layout_gravity="end"
+			android:layout_columnWeight="1"
 			/>
 
 		<TextView
 			android:id="@+id/home_default_user"
 			android:theme="@style/BoxValue"
-			android:text="auguste.bidon@gmail.com"
+			android:text="@string/undefined"
 			android:layout_columnWeight="3"
 			/>
 
@@ -62,15 +62,15 @@
 			android:layout_height="wrap_content"
 			android:layout_column="0"
 			android:theme="@style/BoxLabel"
-			android:text="password :"
-			android:layout_columnWeight="1"
+			android:text="@string/home_password_label"
 			android:layout_gravity="end"
+			android:layout_columnWeight="1"
 			/>
 
 		<TextView
 			android:id="@+id/home_default_mdp"
 			android:theme="@style/BoxValue"
-			android:text="lorem ipsum"
+			android:text="@string/undefined"
 			android:inputType="textPassword"
 			android:layout_columnWeight="3"
 			/>

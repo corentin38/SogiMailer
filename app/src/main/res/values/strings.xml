@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">SogiMailer</string>
     <string name="sogi_mailer_service_title">Coucou !</string>
+    <string name="undefined">Undefined</string>
+	<string name="home_user_label">user :</string>
+	<string name="home_host_label">host :</string>
+	<string name="home_password_label">password :</string>
 </resources>

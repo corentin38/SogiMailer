@@ -1,22 +1,21 @@
 package com.sogilis.sogimailer.ui;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
 import com.sogilis.sogimailer.SogiMailerApplication;
+import com.sogilis.sogimailer.dude.ProfileDude;
+import com.sogilis.sogimailer.mail.Default;
+import com.sogilis.sogimailer.mail.Profile;
 
 import javax.inject.Inject;
 
@@ -26,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
 	private static final String TAG = "SOGIMAILER_ACTIVITY";
 
 	private static final String SOGIMAILER_ACTION = "com.sogilis.sogimailer.ACTION_SEND";
-/*
 
+/*
 	private static final String OPT_RECIPIENTS = "MAILER_OPT_RECIPIENTS";
 	private static final String OPT_SUBJECT = "MAILER_OPT_SUBJECT";
 	private static final String OPT_BODY = "MAILER_OPT_BODY";
@@ -36,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
 	@Inject
     public BroadcastReceiver testReceiver;
+
+	@Inject
+	public ProfileDude profileDude;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,15 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initFragments() {
-		Fragment homeFragment = HomeFragment.newInstance();
+		Profile saved;
+		try {
+			saved = profileDude.getBasic();
+		} catch (Exception e) {
+			Log.d(TAG, "No saved profile, defaulting to shitty one !");
+			saved = new Default();
+		}
+
+		Fragment homeFragment = HomeFragment.newInstance(saved);
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 		transaction.replace(R.id.main_fragment_holder, homeFragment, HomeFragment.FRAGMENT_KEY);
@@ -87,44 +97,7 @@ public class MainActivity extends AppCompatActivity {
 		transaction.commit();
 	}
 
-/*	public void getProps() {
 
-		SharedPreferences settings = getSharedPreferences(
-				"sogimailerPrefs",
-				Context.MODE_PRIVATE);
-
-		String recip = settings.getString("recipients", "");
-		String subject = settings.getString("subject", "");
-		String body = settings.getString("body", "");
-		String password = settings.getString("password", "");
-
-		EditText recipientsET  = (EditText) findViewById(R.id.recipients);
-		recipientsET.setText(recip);
-
-		EditText subjectET  = (EditText) findViewById(R.id.subject);
-		subjectET.setText(subject);
-
-		EditText bodyET  = (EditText) findViewById(R.id.body);
-		bodyET.setText(body);
-
-		EditText passwordET  = (EditText) findViewById(R.id.password);
-		passwordET.setText(password);
-	}*/
-
-/*	public void save() {
-		SharedPreferences settings = getSharedPreferences(
-				"sogimailerPrefs",
-				Context.MODE_PRIVATE);
-
-		SharedPreferences.Editor ed = settings.edit();
-
-		ed.putString("recipients", recipients);
-		ed.putString("subject", subject);
-		ed.putString("body", body);
-		ed.putString("password", password);
-
-		ed.commit();
-	}*/
 
 /*	public void send() {
 		Log.d(TAG, "Launching intent for service SogiMailer");

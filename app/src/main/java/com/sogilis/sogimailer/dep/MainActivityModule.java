@@ -7,7 +7,11 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
+import com.sogilis.sogimailer.dude.ProfileDude;
+import com.sogilis.sogimailer.mail.Profile;
 import com.sogilis.sogimailer.ui.MainActivity;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -35,6 +39,12 @@ public class MainActivityModule {
 				}
 			}
 		};
+	}
+
+	@Provides
+	@Singleton
+	public ProfileDude providesProfileDude() {
+		return new ProfileDude();
 	}
 
 }
