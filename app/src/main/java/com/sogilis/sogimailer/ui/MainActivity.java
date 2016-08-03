@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
@@ -48,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
 		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
 
-		initFragments();
+		if (savedInstanceState == null) {
+			initFragments();
+		}
 	}
 
 	@Override
@@ -98,6 +101,19 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 
+	public void testEmail(View view) {
+		Log.d(TAG, "testEmail");
+		TestMailDialog dlg = TestMailDialog.newInstance();
+		dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
+	}
+
+	public void doc(View view) {
+		Log.d(TAG, "doc");
+	}
+
+	public void edit(View view) {
+		Log.d(TAG, "edit");
+	}
 
 /*	public void send() {
 		Log.d(TAG, "Launching intent for service SogiMailer");

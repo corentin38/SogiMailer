@@ -56,4 +56,5 @@ public class HomeFragment extends Fragment {
 		hostTV.setText(host);
 		passwordTV.setText(password);
 	}
+
 }

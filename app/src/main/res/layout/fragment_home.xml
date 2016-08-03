@@ -82,6 +82,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="Edit profile"
+		android:onClick="edit"
 		/>
 
 	<Button
@@ -89,6 +90,15 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="Documentation"
+		android:onClick="doc"
+		/>
+
+	<Button
+		android:id="@+id/home_test_button"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Test e-mail"
+		android:onClick="testEmail"
 		/>
 
 </LinearLayout>
