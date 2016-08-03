@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:orientation="vertical"
+			  android:layout_width="match_parent"
+			  android:padding="15dp"
+			  android:layout_height="match_parent">
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="60dp"
+		android:theme="@style/BoxTitle"
+		android:text="Default"
+		/>
+
+	<GridLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:columnCount="2"
+		android:background="@color/colorPassion"
+		android:layout_marginBottom="15dp"
+		>
+
+		<TextView
+			android:layout_column="0"
+			android:theme="@style/BoxLabel"
+			android:text="host"
+			android:layout_columnWeight="1"
+			/>
+
+		<TextView
+			android:id="@+id/home_default_host"
+			android:theme="@style/BoxValue"
+			android:layout_column="1"
+			android:text="smtp.gmail.com"
+			android:layout_columnWeight="3"
+			/>
+
+		<TextView
+			android:layout_column="0"
+			android:theme="@style/BoxLabel"
+			android:text="user"
+			android:layout_columnWeight="1"
+			/>
+
+		<TextView
+			android:id="@+id/home_default_user"
+			android:theme="@style/BoxValue"
+			android:layout_column="1"
+			android:text="auguste.bidon@gmail.com"
+			android:layout_columnWeight="3"
+			/>
+
+		<TextView
+			android:layout_column="0"
+			android:theme="@style/BoxLabel"
+			android:text="password"
+			android:layout_columnWeight="1"
+			/>
+
+		<TextView
+			android:id="@+id/home_default_mdp"
+			android:theme="@style/BoxValue"
+			android:layout_column="1"
+			android:text="lorem ipsum"
+			android:inputType="textPassword"
+			android:layout_columnWeight="3"
+			/>
+
+	</GridLayout>
+
+	<Button
+		android:id="@+id/home_edit_button"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Edit profile"
+		/>
+
+	<Button
+		android:id="@+id/home_doc_button"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Documentation"
+		/>
+
+</LinearLayout>
