@@ -1,11 +1,11 @@
 package com.sogilis.sogimailer.ui;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,13 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private static final String SOGIMAILER_ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
-/*
-	private static final String OPT_RECIPIENTS = "MAILER_OPT_RECIPIENTS";
-	private static final String OPT_SUBJECT = "MAILER_OPT_SUBJECT";
-	private static final String OPT_BODY = "MAILER_OPT_BODY";
-	private static final String OPT_PASSWORD = "MAILER_OPT_PASSWORD";
-*/
-
 	@Inject
     public BroadcastReceiver testReceiver;
 
@@ -56,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
 
 		if (savedInstanceState == null) {
-			initFragments();
+			goHome();
 		}
 	}
 
@@ -88,25 +81,6 @@ public class MainActivity extends AppCompatActivity {
 		mTitle.setText(getString(titleId));
 	}
 
-	private void initFragments() {
-		Profile saved;
-		try {
-			saved = profileDude.getBasic();
-		} catch (NoSuchProfileException e) {
-			Log.d(TAG, "No saved profile, defaulting to shitty one !");
-			saved = new Default();
-		}
-
-		Fragment homeFragment = HomeFragment.newInstance(saved);
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-		transaction.replace(R.id.main_fragment_holder, homeFragment, HomeFragment.FRAGMENT_KEY);
-		transaction.addToBackStack(null);
-
-		transaction.commit();
-	}
-
-
 	public void testEmail(View view) {
 		Log.d(TAG, "testEmail");
 		TestMailDialog dlg = TestMailDialog.newInstance();
@@ -119,28 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
 	public void edit(View view) {
 		Log.d(TAG, "edit");
-		Profile profile = null;
-		try {
-			profile = profileDude.getBasic();
-		} catch(NoSuchProfileException e) {
-			Log.d(TAG, "No current basic fragment");
-
-			Fragment disclaimer = new DisclaimerFragment();
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-			transaction.replace(R.id.disclaimer_fragment_holder, disclaimer, DisclaimerFragment.FRAGMENT_KEY);
-			transaction.addToBackStack(null);
-
-			transaction.commit();
-		}
-
-		Fragment editFragment = EditFragment.newInstance(0, profile);
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-		transaction.replace(R.id.main_fragment_holder, editFragment, EditFragment.FRAGMENT_KEY);
-		transaction.addToBackStack(null);
-
-		transaction.commit();
+		goEdit();
 	}
 
 	public void saveEdit(View view) {
@@ -161,16 +114,9 @@ public class MainActivity extends AppCompatActivity {
 	private void goHome() {
 		Log.d(TAG, "goHome");
 		FragmentManager fm = getFragmentManager();
-		FragmentTransaction tx = fm.beginTransaction();
 
 		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
 		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
-
-		if (edit != null) {
-			tx.remove(edit);
-		}
-
-		removeDisclaimer();
 
 		if (home == null) {
 			try {
@@ -178,24 +124,27 @@ public class MainActivity extends AppCompatActivity {
 				home = HomeFragment.newInstance(profile);
 			} catch (NoSuchProfileException e) {
 				Log.d(TAG, "No profile defined while getting back home");
+				home = HomeFragment.newInstance(new Default());
 			}
 		}
 
-		tx.replace(R.id.main_fragment_holder, home);
+		removeDisclaimer();
+
+		FragmentTransaction tx = fm.beginTransaction();
+		if (edit != null) {
+			tx.remove(edit);
+		}
+		tx.replace(R.id.main_fragment_holder, home, HomeFragment.FRAGMENT_KEY);
+		tx.addToBackStack(null);
 		tx.commit();
 	}
 
 	private void goEdit() {
 		Log.d(TAG, "goEdit");
 		FragmentManager fm = getFragmentManager();
-		FragmentTransaction tx = fm.beginTransaction();
 
 		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
 		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
-
-		if (home != null) {
-			tx.remove(home);
-		}
 
 		if (edit == null) {
 			Profile profile = null;
@@ -208,60 +157,44 @@ public class MainActivity extends AppCompatActivity {
 			edit = EditFragment.newInstance(0, profile);
 		}
 
-		tx.replace(R.id.main_fragment_holder, edit);
+		FragmentTransaction tx = fm.beginTransaction();
+		if (home != null) {
+			tx.remove(home);
+		}
+		tx.replace(R.id.main_fragment_holder, edit, EditFragment.FRAGMENT_KEY);
+		tx.addToBackStack(null);
 		tx.commit();
 	}
 
 	private void showDisclaimer() {
 		Log.d(TAG, "showDisclaimer");
 		FragmentManager fm = getFragmentManager();
-		FragmentTransaction tx = fm.beginTransaction();
-
 		Fragment disc = fm.findFragmentByTag(DisclaimerFragment.FRAGMENT_KEY);
-
 		if (disc == null) {
+			Log.d(TAG, "disclaimer is null");
 			disc = new DisclaimerFragment();
 		}
 
-		tx.replace(R.id.disclaimer_fragment_holder, disc);
+		FragmentTransaction tx = fm.beginTransaction();
+		tx.replace(R.id.disclaimer_fragment_holder, disc, DisclaimerFragment.FRAGMENT_KEY);
+		tx.addToBackStack(null);
 		tx.commit();
 	}
 
 	private void removeDisclaimer() {
 		Log.d(TAG, "removeDisclaimer");
 		FragmentManager fm = getFragmentManager();
-		FragmentTransaction tx = fm.beginTransaction();
-
 		Fragment disc = fm.findFragmentByTag(DisclaimerFragment.FRAGMENT_KEY);
-
-		if (disc != null) {
-			tx.remove(disc);
-			tx.commit();
+		if (disc == null) {
+			Log.d(TAG, "disclaimer is null !!");
+			return;
 		}
+
+		Log.d(TAG, "disclaimer is not null");
+		FragmentTransaction tx = fm.beginTransaction();
+		tx.remove(disc);
+		tx.addToBackStack(null);
+		tx.commit();
 	}
-
-
-/*	public void send() {
-		Log.d(TAG, "Launching intent for service SogiMailer");
-		EditText recipientsET  = (EditText) findViewById(R.id.recipients);
-		EditText subjectET  = (EditText) findViewById(R.id.subject);
-		EditText bodyET  = (EditText) findViewById(R.id.body);
-		EditText passwordET  = (EditText) findViewById(R.id.password);
-
-		String recipients = recipientsET.getText().toString();
-		String subject = subjectET.getText().toString();
-		String body = bodyET.getText().toString();
-		String password = passwordET.getText().toString();
-
-		Intent itt = new Intent(SOGIMAILER_ACTION);
-		itt.setPackage("com.sogilis.sogimailer");
-
-		itt.putExtra(OPT_RECIPIENTS, recipients);
-		itt.putExtra(OPT_SUBJECT, subject);
-		itt.putExtra(OPT_BODY, body);
-		itt.putExtra(OPT_PASSWORD, password);
-
-		startService(itt);
-	}*/
 
 }
