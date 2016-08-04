@@ -16,6 +16,7 @@ import com.sogilis.sogimailer.R;
 import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Default;
+import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.mail.Profile;
 
 import javax.inject.Inject;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
 	@Inject
 	public ProfileDude profileDude;
+
+	@Inject
+	public Mailer mailer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

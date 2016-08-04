@@ -2,10 +2,12 @@ package com.sogilis.sogimailer.svc;
 
 import android.app.Activity;
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.util.Log;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
+import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
 
@@ -26,6 +28,12 @@ public class MailerService extends IntentService implements Mailer.Listener {
 
 	@Inject
 	public Mailer mailer;
+
+	@Inject
+	public ProfileDude profileDude;
+
+	@Inject
+	public BroadcastReceiver br;
 
     public MailerService() {
         super("test-service");
@@ -53,12 +61,12 @@ public class MailerService extends IntentService implements Mailer.Listener {
 		String password = intent.getStringExtra(OPT_PASSWORD);
 		Log.d(TAG, "sub, body, reci, pawd : " + subject + " " + body + " " + recipients + " " + password);
 
-		if (!checkKeys(subject, body, recipients, password)) {
+		if (!checkKeys(subject, body, recipients)) {
 			onMailFailure("Bad argument");
 			return;
 		}
 
-		mailer.updateProfile(new Default(password));
+		mailer.updateProfile(profileDude.getBasic());
 		Log.d(TAG, "Sending mail to mailer !");
 		mailer.sendSimpleMail(this, recipients, subject, body);
 	}
@@ -81,16 +89,13 @@ public class MailerService extends IntentService implements Mailer.Listener {
 		sendBroadcast(itt);
 	}
 
-	public static boolean checkKeys(String subject, String body, String recipients, String password) {
+	public static boolean checkKeys(String subject, String body, String recipients) {
 		if (subject == null) return false;
 		if (body == null) return false;
 		if (recipients == null) return false;
-		if (password == null) return false;
 
 		if (subject.isEmpty()) return false;
 		if (recipients.isEmpty()) return false;
-		if (password.isEmpty()) return false;
-
 		return true;
 	}
 }

@@ -3,8 +3,6 @@ package com.sogilis.sogimailer;
 import android.app.Application;
 import android.content.Context;
 
-import com.sogilis.sogimailer.dep.SogiMailerModule;
-
 import dagger.ObjectGraph;
 
 public class SogiMailerApplication extends Application {

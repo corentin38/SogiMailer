@@ -1,4 +1,4 @@
-package com.sogilis.sogimailer.dep;
+package com.sogilis.sogimailer;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -8,7 +8,9 @@ import android.widget.Toast;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
-import com.sogilis.sogimailer.mail.Profile;
+import com.sogilis.sogimailer.mail.Default;
+import com.sogilis.sogimailer.mail.Mailer;
+import com.sogilis.sogimailer.svc.MailerService;
 import com.sogilis.sogimailer.ui.MainActivity;
 
 import javax.inject.Singleton;
@@ -17,9 +19,12 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module (
-		injects = MainActivity.class
+		injects = {
+				MainActivity.class,
+				MailerService.class
+		}
 )
-public class MainActivityModule {
+public class SogiMailerModule {
 
 	private static final String RESULTMSG_KEY = "MAILER_RESULTMSG";
 	private static final String RETCODE_KEY = "MAILER_RETCODE";
@@ -47,4 +52,9 @@ public class MainActivityModule {
 		return new ProfileDude();
 	}
 
+	@Provides
+	@Singleton
+	public Mailer providesMailer() {
+		return new Mailer(new Default());
+	}
 }
