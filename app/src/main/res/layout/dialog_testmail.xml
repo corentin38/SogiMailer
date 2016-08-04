@@ -2,21 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:orientation="vertical"
 			  android:layout_width="match_parent"
-			  android:layout_height="match_parent">
+			  android:layout_height="match_parent"
+			  android:padding="20dp"
+	>
 
 	<EditText
+		android:id="@+id/testmail_recipient"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="recipient"
 		/>
 
 	<EditText
+		android:id="@+id/testmail_subject"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="subject"
 		/>
 
 	<EditText
+		android:id="@+id/testmail_body"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="body"
