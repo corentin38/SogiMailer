@@ -5,4 +5,7 @@
 	<string name="home_user_label">user :</string>
 	<string name="home_host_label">host :</string>
 	<string name="home_password_label">password :</string>
+	<string name="default_email_suggestion">dev@null.com</string>
+	<string name="default_subject_suggestion">Email de test</string>
+	<string name="default_body_suggestion">Ceci est un message de test. Inutile de répondre !</string>
 </resources>

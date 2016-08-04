@@ -1,8 +1,10 @@
 package com.sogilis.sogimailer.ui;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 
 import com.sogilis.sogimailer.R;
 import com.sogilis.sogimailer.SogiMailerApplication;
+import com.sogilis.sogimailer.dude.Constants;
 
 public class TestMailDialog extends DialogFragment {
 
@@ -26,7 +29,6 @@ public class TestMailDialog extends DialogFragment {
 	private static final String OPT_RECIPIENTS = "MAILER_OPT_RECIPIENTS";
 	private static final String OPT_SUBJECT = "MAILER_OPT_SUBJECT";
 	private static final String OPT_BODY = "MAILER_OPT_BODY";
-	private static final String OPT_PASSWORD = "MAILER_OPT_PASSWORD";
 
 	private EditText recipientET;
 	private EditText subjectET;
@@ -65,10 +67,15 @@ public class TestMailDialog extends DialogFragment {
 
 		AlertDialog dlg = builder.create();
 		dlg.setCanceledOnTouchOutside(true);
+
+		if (savedInstanceState == null) suggestPreviousEntries();
+
 		return dlg;
 	}
 
 	private void sendTestMail() {
+		remindEntries();
+
 		Intent itt = new Intent(SOGIMAILER_ACTION);
 		itt.setPackage("com.sogilis.sogimailer");
 
@@ -77,6 +84,34 @@ public class TestMailDialog extends DialogFragment {
 		itt.putExtra(OPT_BODY, bodyET.getText().toString());
 
 		SogiMailerApplication.ctx.startService(itt);
+	}
+
+	private void suggestPreviousEntries() {
+		SharedPreferences settings = SogiMailerApplication.ctx.getSharedPreferences(
+			Constants.SHARED_PREFS_NAME,
+			Context.MODE_PRIVATE);
+
+		String recipient = settings.getString(Constants.TESTMAIL_RECIPIENT_PREVIOUS, SogiMailerApplication.ctx.getString(R.string.default_email_suggestion));
+		String subject = settings.getString(Constants.TESTMAIL_SUBJECT_PREVIOUS, SogiMailerApplication.ctx.getString(R.string.default_subject_suggestion));
+		String body = settings.getString(Constants.TESTMAIL_BODY_PREVIOUS, SogiMailerApplication.ctx.getString(R.string.default_body_suggestion));
+
+		recipientET.setText(recipient);
+		subjectET.setText(subject);
+		bodyET.setText(body);
+	}
+
+	private void remindEntries() {
+		SharedPreferences settings = SogiMailerApplication.ctx.getSharedPreferences(
+				Constants.SHARED_PREFS_NAME,
+				Context.MODE_PRIVATE);
+
+		SharedPreferences.Editor ed = settings.edit();
+
+		ed.putString(Constants.TESTMAIL_RECIPIENT_PREVIOUS, recipientET.getText().toString());
+		ed.putString(Constants.TESTMAIL_SUBJECT_PREVIOUS, subjectET.getText().toString());
+		ed.putString(Constants.TESTMAIL_BODY_PREVIOUS, bodyET.getText().toString());
+
+		ed.commit();
 	}
 
 }

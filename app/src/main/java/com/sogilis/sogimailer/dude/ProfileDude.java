@@ -12,20 +12,15 @@ import com.sogilis.sogimailer.mail.Profile;
 public class ProfileDude {
 	private static final String TAG = "SOGIMAILER_PROFILEDUDE";
 
-	private static String SHARED_PREFS_NAME = "sogimailerPrefs";
-
-	private static final String SENDER_KEY = "sender";
-	private static final String HOST_KEY = "host";
-	private static final String PASSWORD_KEY = "password";
 
 	public Profile getBasic() throws NoSuchProfileException {
 		SharedPreferences settings = SogiMailerApplication.ctx.getSharedPreferences(
-			SHARED_PREFS_NAME,
+			Constants.SHARED_PREFS_NAME,
 			Context.MODE_PRIVATE);
 
-		String sender = settings.getString(SENDER_KEY, "");
-		String host = settings.getString(HOST_KEY, "");
-		String password = settings.getString(PASSWORD_KEY, "");
+		String sender = settings.getString(Constants.SENDER_KEY, "");
+		String host = settings.getString(Constants.HOST_KEY, "");
+		String password = settings.getString(Constants.PASSWORD_KEY, "");
 
 		if (sender.isEmpty() || host.isEmpty() || password.isEmpty()) {
 			Log.d(TAG, "Unable to recover sender or host or password from shared prefs");
@@ -38,14 +33,14 @@ public class ProfileDude {
 
 	public void saveBasic(String sender, String host, String password) {
 		SharedPreferences settings = SogiMailerApplication.ctx.getSharedPreferences(
-				SHARED_PREFS_NAME,
+				Constants.SHARED_PREFS_NAME,
 				Context.MODE_PRIVATE);
 
 		SharedPreferences.Editor ed = settings.edit();
 
-		ed.putString(SENDER_KEY, sender);
-		ed.putString(HOST_KEY, host);
-		ed.putString(PASSWORD_KEY, password);
+		ed.putString(Constants.SENDER_KEY, sender);
+		ed.putString(Constants.HOST_KEY, host);
+		ed.putString(Constants.PASSWORD_KEY, password);
 
 		ed.commit();
 	}
