@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.mail.Basic;
+import com.sogilis.sogimailer.mail.NoSuchProfileException;
 import com.sogilis.sogimailer.mail.Profile;
 
 public class ProfileDude {
@@ -17,7 +18,7 @@ public class ProfileDude {
 	private static final String HOST_KEY = "host";
 	private static final String PASSWORD_KEY = "password";
 
-	public Profile getBasic() {
+	public Profile getBasic() throws NoSuchProfileException {
 		SharedPreferences settings = SogiMailerApplication.ctx.getSharedPreferences(
 			SHARED_PREFS_NAME,
 			Context.MODE_PRIVATE);
@@ -28,7 +29,7 @@ public class ProfileDude {
 
 		if (sender.isEmpty() || host.isEmpty() || password.isEmpty()) {
 			Log.d(TAG, "Unable to recover sender or host or password from shared prefs");
-			throw new RuntimeException("No basic profile information, please configure one");
+			throw new NoSuchProfileException("No basic profile information, please configure one");
 		}
 
 		Profile basic = new Basic(host, sender, password);

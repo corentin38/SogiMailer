@@ -17,6 +17,7 @@ import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
+import com.sogilis.sogimailer.mail.NoSuchProfileException;
 import com.sogilis.sogimailer.mail.Profile;
 
 import javax.inject.Inject;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 		Profile saved;
 		try {
 			saved = profileDude.getBasic();
-		} catch (Exception e) {
+		} catch (NoSuchProfileException e) {
 			Log.d(TAG, "No saved profile, defaulting to shitty one !");
 			saved = new Default();
 		}

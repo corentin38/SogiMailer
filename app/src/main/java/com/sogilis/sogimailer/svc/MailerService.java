@@ -10,6 +10,7 @@ import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
+import com.sogilis.sogimailer.mail.NoSuchProfileException;
 
 import javax.inject.Inject;
 
@@ -66,9 +67,13 @@ public class MailerService extends IntentService implements Mailer.Listener {
 			return;
 		}
 
-		mailer.updateProfile(profileDude.getBasic());
-		Log.d(TAG, "Sending mail to mailer !");
-		mailer.sendSimpleMail(this, recipients, subject, body);
+		try {
+			mailer.updateProfile(profileDude.getBasic());
+			Log.d(TAG, "Sending mail to mailer !");
+			mailer.sendSimpleMail(this, recipients, subject, body);
+		} catch(NoSuchProfileException e) {
+			onMailFailure(e.getMessage());
+		}
 	}
 
 	@Override
