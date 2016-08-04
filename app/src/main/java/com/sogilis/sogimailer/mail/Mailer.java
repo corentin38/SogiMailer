@@ -83,7 +83,7 @@ public class Mailer extends Authenticator {
 
 			message.setSubject(subject);
 			message.setSentDate(new Date());
-			message.setContent(body, "text/plain");
+			message.setText(body, "UTF-8", "plain");
 
 		} catch (Exception e) {
 			String err = "Unable to form the mail content from given parameters. Cause: " + e.getMessage();
