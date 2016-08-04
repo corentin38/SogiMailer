@@ -1,6 +1,7 @@
 package com.sogilis.sogimailer.ui;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
@@ -118,14 +119,125 @@ public class MainActivity extends AppCompatActivity {
 
 	public void edit(View view) {
 		Log.d(TAG, "edit");
+		Profile profile = null;
+		try {
+			profile = profileDude.getBasic();
+		} catch(NoSuchProfileException e) {
+			Log.d(TAG, "No current basic fragment");
+
+			Fragment disclaimer = new DisclaimerFragment();
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+			transaction.replace(R.id.disclaimer_fragment_holder, disclaimer, DisclaimerFragment.FRAGMENT_KEY);
+			transaction.addToBackStack(null);
+
+			transaction.commit();
+		}
+
+		Fragment editFragment = EditFragment.newInstance(0, profile);
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+		transaction.replace(R.id.main_fragment_holder, editFragment, EditFragment.FRAGMENT_KEY);
+		transaction.addToBackStack(null);
+
+		transaction.commit();
 	}
 
 	public void saveEdit(View view) {
 		Log.d(TAG, "saveEdit");
+		goHome();
 	}
 
 	public void cancelEdit(View view) {
 		Log.d(TAG, "saveEdit");
+		goHome();
+	}
+
+	public void discardDisclaimer(View view) {
+		Log.d(TAG, "discardDisclaimer");
+		removeDisclaimer();
+	}
+
+	private void goHome() {
+		Log.d(TAG, "goHome");
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction tx = fm.beginTransaction();
+
+		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
+		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
+
+		if (edit != null) {
+			tx.remove(edit);
+		}
+
+		removeDisclaimer();
+
+		if (home == null) {
+			try {
+				Profile profile = profileDude.getBasic();
+				home = HomeFragment.newInstance(profile);
+			} catch (NoSuchProfileException e) {
+				Log.d(TAG, "No profile defined while getting back home");
+			}
+		}
+
+		tx.replace(R.id.main_fragment_holder, home);
+		tx.commit();
+	}
+
+	private void goEdit() {
+		Log.d(TAG, "goEdit");
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction tx = fm.beginTransaction();
+
+		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
+		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
+
+		if (home != null) {
+			tx.remove(home);
+		}
+
+		if (edit == null) {
+			Profile profile = null;
+			try {
+				profile = profileDude.getBasic();
+			} catch (NoSuchProfileException e) {
+				Log.d(TAG, "No profile defined while getting back home");
+				showDisclaimer();
+			}
+			edit = EditFragment.newInstance(0, profile);
+		}
+
+		tx.replace(R.id.main_fragment_holder, edit);
+		tx.commit();
+	}
+
+	private void showDisclaimer() {
+		Log.d(TAG, "showDisclaimer");
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction tx = fm.beginTransaction();
+
+		Fragment disc = fm.findFragmentByTag(DisclaimerFragment.FRAGMENT_KEY);
+
+		if (disc == null) {
+			disc = new DisclaimerFragment();
+		}
+
+		tx.replace(R.id.disclaimer_fragment_holder, disc);
+		tx.commit();
+	}
+
+	private void removeDisclaimer() {
+		Log.d(TAG, "removeDisclaimer");
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction tx = fm.beginTransaction();
+
+		Fragment disc = fm.findFragmentByTag(DisclaimerFragment.FRAGMENT_KEY);
+
+		if (disc != null) {
+			tx.remove(disc);
+			tx.commit();
+		}
 	}
 
 

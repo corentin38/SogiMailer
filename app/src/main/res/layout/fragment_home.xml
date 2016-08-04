@@ -21,7 +21,7 @@
 		android:background="@drawable/box_bot"
 		android:paddingTop="5dp"
 		android:paddingBottom="10dp"
-		android:layout_marginBottom="15dp"
+		android:layout_marginBottom="10dp"
 		>
 
 		<TextView
@@ -100,5 +100,9 @@
 		android:text="Test e-mail"
 		android:onClick="testEmail"
 		/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="400dp"/>
 
 </LinearLayout>

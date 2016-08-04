@@ -8,4 +8,6 @@
 	<string name="default_email_suggestion">dev@null.com</string>
 	<string name="default_subject_suggestion">Email de test</string>
 	<string name="default_body_suggestion">Ceci est un message de test. Inutile de répondre !</string>
+	<string name="welcome_title">Welcome !</string>
+	<string name="welcome_message">Please configure a basic profile in order for SogiMailer to be able to handle your future intents</string>
 </resources>
