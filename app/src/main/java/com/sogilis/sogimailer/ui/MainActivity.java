@@ -120,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
 		Log.d(TAG, "edit");
 	}
 
+	public void saveEdit(View view) {
+		Log.d(TAG, "saveEdit");
+	}
+
+	public void cancelEdit(View view) {
+		Log.d(TAG, "saveEdit");
+	}
+
+
 /*	public void send() {
 		Log.d(TAG, "Launching intent for service SogiMailer");
 		EditText recipientsET  = (EditText) findViewById(R.id.recipients);

@@ -1,6 +1,8 @@
 package com.sogilis.sogimailer.mail;
 
-public interface Profile {
+import android.os.Parcelable;
+
+public interface Profile extends Parcelable {
 
 	String sender();
 	String senderPassword();

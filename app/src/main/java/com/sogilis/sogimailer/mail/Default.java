@@ -1,11 +1,30 @@
 package com.sogilis.sogimailer.mail;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class Default implements Profile {
 
 	private String password;
 
 	public Default(String password) {
 		this.password = password;
+	}
+
+	public static final Parcelable.Creator<Default> CREATOR = new Parcelable.Creator<Default>() {
+		@Override
+		public Default createFromParcel(Parcel source) {
+			return new Default(source);
+		}
+
+		@Override
+		public Default[] newArray(int size) {
+			return new Default[size];
+		}
+	};
+
+	public Default(Parcel in) {
+		this.password = in.readString();
 	}
 
 	public Default() {
@@ -60,5 +79,15 @@ public class Default implements Profile {
 	@Override
 	public String smtpSocketFactoryFallback() {
 		return "false";
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.password);
 	}
 }
