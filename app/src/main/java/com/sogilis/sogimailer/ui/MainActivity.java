@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
 	public void saveEdit(View view) {
 		Log.d(TAG, "saveEdit");
+
+		FragmentManager fm = getFragmentManager();
+		EditFragment frag = (EditFragment) fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
+		profileDude.saveBasic(frag.getSenderEntry(), frag.getHostEntry(), frag.getPasswordEntry());
+
 		goHome();
 	}
 

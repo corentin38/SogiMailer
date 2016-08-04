@@ -76,7 +76,7 @@
 				android:id="@+id/edit_user"
 				android:theme="@style/BoxValue"
 				android:layout_marginRight="10dp"
-				android:text="@string/undefined"
+				android:hint="@string/undefined"
 				android:layout_columnWeight="3"
 				/>
 

@@ -2,6 +2,8 @@ package com.sogilis.sogimailer.mail;
 
 import android.util.Log;
 
+import com.sogilis.sogimailer.ui.TestMailDialog;
+
 import java.security.Security;
 import java.util.Date;
 import java.util.Properties;
@@ -59,6 +61,7 @@ public class Mailer extends Authenticator {
 
 	@Override
 	protected PasswordAuthentication getPasswordAuthentication() {
+		Log.d(TAG, "sender: " + profile.sender() + " pwd: " + profile.senderPassword());
 		return new PasswordAuthentication(profile.sender(), profile.senderPassword());
 	}
 

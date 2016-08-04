@@ -27,11 +27,13 @@ public class ProfileDude {
 			throw new NoSuchProfileException("No basic profile information, please configure one");
 		}
 
-		Profile basic = new Basic(host, sender, password);
+		Profile basic = new Basic(host, password, sender);
 		return basic;
 	}
 
 	public void saveBasic(String sender, String host, String password) {
+		Log.d(TAG, "saving sender: " + sender + " host: " + host + " pwd: " + password);
+
 		SharedPreferences settings = SogiMailerApplication.ctx.getSharedPreferences(
 				Constants.SHARED_PREFS_NAME,
 				Context.MODE_PRIVATE);
