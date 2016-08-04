@@ -4,7 +4,7 @@ import com.sogilis.sogimailer.svc.MailerService;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MiscTest {
 
@@ -13,10 +13,9 @@ public class MiscTest {
 		String nulv = null;
 		String okay = "ok";
 		
-		assertEquals(false, MailerService.checkKeys(nulv, okay, okay, okay));
-		assertEquals(false, MailerService.checkKeys(okay, nulv, okay, okay));
-		assertEquals(false, MailerService.checkKeys(okay, okay, nulv, okay));
-		assertEquals(false, MailerService.checkKeys(okay, okay, okay, nulv));
+		assertEquals(false, MailerService.checkKeys(nulv, okay, okay));
+		assertEquals(false, MailerService.checkKeys(okay, nulv, okay));
+		assertEquals(false, MailerService.checkKeys(okay, okay, nulv));
 	}
 
 	@Test
@@ -24,10 +23,9 @@ public class MiscTest {
 		String empt = "";
 		String okay = "ok";
 
-		assertEquals(false, MailerService.checkKeys(empt, okay, okay, okay));
+		assertEquals(false, MailerService.checkKeys(empt, okay, okay));
 		// Empy body is allowed
-		assertEquals(false, MailerService.checkKeys(okay, okay, empt, okay));
-		assertEquals(false, MailerService.checkKeys(okay, okay, okay, empt));
+		assertEquals(false, MailerService.checkKeys(okay, okay, empt));
 	}
 
 
