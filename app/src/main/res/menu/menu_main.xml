@@ -14,9 +14,4 @@
 		android:title="Documentation"
 		app:showAsAction="never" />
 
-	<item
-		android:id="@+id/main_home"
-		android:title="Home"
-		app:showAsAction="never" />
-
 </menu>

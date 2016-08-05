@@ -24,6 +24,8 @@ import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.mail.NoSuchProfileException;
 import com.sogilis.sogimailer.mail.Profile;
 
+import java.io.PrintWriter;
+
 import javax.inject.Inject;
 
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 	private static final String SOGIMAILER_ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
 	@Inject
-    public BroadcastReceiver testReceiver;
+	public BroadcastReceiver testReceiver;
 
 	@Inject
 	public ProfileDude profileDude;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		setUpToolbar(R.string.app_name, false);
+		setUpToolbar(R.string.app_name, true);
 		Log.d(TAG, "onCreate");
 
 		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
@@ -58,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onResume() {
-        IntentFilter filter = new IntentFilter(SOGIMAILER_ACTION);
-        registerReceiver(testReceiver, filter);
+		IntentFilter filter = new IntentFilter(SOGIMAILER_ACTION);
+		registerReceiver(testReceiver, filter);
 		super.onResume();
 	}
 
@@ -94,19 +96,59 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case android.R.id.home:
+				Log.d(TAG, "home pressed");
+				handleBackPressed();
+				return true;
 			case R.id.main_testmail:
+				Log.d(TAG, "starting test");
 				TestMailDialog dlg = TestMailDialog.newInstance();
 				dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
 				return true;
 			case R.id.main_documentation:
+				Log.d(TAG, "starting doc");
 				goDocumentation();
-				return true;
-			case R.id.main_home:
-				goHome();
 				return true;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void addFragment(Fragment frag, String tag) {
+		Log.d(TAG, "addFragment");
+
+
+
+
+		FragmentManager fm = getFragmentManager();
+
+		fm.dump(TAG + " BEFORE !!! ", null, new PrintWriter(System.out, true), null);
+
+
+		FragmentTransaction tx = fm.beginTransaction();
+		tx.replace(R.id.main_fragment_holder, frag, tag);
+		tx.addToBackStack(tag);
+		tx.commit();
+		fm.dump(TAG + " AFTER !!! ", null, new PrintWriter(System.out, true), null);
+	}
+
+	private void handleBackPressed() {
+		Log.d(TAG, "handleBackPressed");
+
+		FragmentManager fm = getFragmentManager();
+		String tag = fm.getBackStackEntryAt(fm.getBackStackEntryCount() -1).getName();
+		Log.d(TAG, "last tag :" + tag);
+		Fragment current = fm.findFragmentByTag(tag);
+
+		Log.d(TAG, "current frag :" + current.getTag());
+
+		if (current instanceof HomeFragment) {
+			Log.d(TAG, "We are at home already, do nothing");
+			return;
+		}
+
+		Log.d(TAG, "let's pop !");
+		fm.popBackStack();
 	}
 
 	public void edit(View view) {
@@ -136,57 +178,32 @@ public class MainActivity extends AppCompatActivity {
 
 	private void goHome() {
 		Log.d(TAG, "goHome");
-		FragmentManager fm = getFragmentManager();
 
-		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
-		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
-
-		if (home == null) {
-			try {
-				Profile profile = profileDude.getBasic();
-				home = HomeFragment.newInstance(profile);
-			} catch (NoSuchProfileException e) {
-				Log.d(TAG, "No profile defined while getting back home");
-				home = HomeFragment.newInstance(new Default());
-			}
+		Profile profile = new Default();
+		try {
+			profile = profileDude.getBasic();
+		} catch (NoSuchProfileException e) {
+			Log.d(TAG, "No profile defined while getting back home");
 		}
+
+		Fragment home = HomeFragment.newInstance(profile);
 
 		removeDisclaimer();
-
-		FragmentTransaction tx = fm.beginTransaction();
-		if (edit != null) {
-			tx.remove(edit);
-		}
-		tx.replace(R.id.main_fragment_holder, home, HomeFragment.FRAGMENT_KEY);
-		tx.addToBackStack(null);
-		tx.commit();
+		addFragment(home, HomeFragment.FRAGMENT_KEY);
 	}
 
 	private void goEdit() {
 		Log.d(TAG, "goEdit");
-		FragmentManager fm = getFragmentManager();
 
-		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
-		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
-
-		if (edit == null) {
-			Profile profile = null;
-			try {
-				profile = profileDude.getBasic();
-			} catch (NoSuchProfileException e) {
-				Log.d(TAG, "No profile defined while getting back home");
-				showDisclaimer();
-			}
-			edit = EditFragment.newInstance(0, profile);
+		Profile profile = null;
+		try {
+			profile = profileDude.getBasic();
+		} catch (NoSuchProfileException e) {
+			Log.d(TAG, "No profile defined while getting back home");
+			showDisclaimer();
 		}
-
-		FragmentTransaction tx = fm.beginTransaction();
-		if (home != null) {
-			tx.remove(home);
-		}
-		tx.replace(R.id.main_fragment_holder, edit, EditFragment.FRAGMENT_KEY);
-		tx.addToBackStack(null);
-		tx.commit();
+		Fragment edit = EditFragment.newInstance(0, profile);
+		addFragment(edit, EditFragment.FRAGMENT_KEY);
 	}
 
 	private void showDisclaimer() {
@@ -200,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
 		FragmentTransaction tx = fm.beginTransaction();
 		tx.replace(R.id.disclaimer_fragment_holder, disc, DisclaimerFragment.FRAGMENT_KEY);
-		tx.addToBackStack(null);
+		tx.addToBackStack(DisclaimerFragment.FRAGMENT_KEY);
 		tx.commit();
 	}
 
@@ -216,32 +233,14 @@ public class MainActivity extends AppCompatActivity {
 		Log.d(TAG, "disclaimer is not null");
 		FragmentTransaction tx = fm.beginTransaction();
 		tx.remove(disc);
-		tx.addToBackStack(null);
+		tx.addToBackStack(DisclaimerFragment.FRAGMENT_KEY);
 		tx.commit();
 	}
 
 	private void goDocumentation() {
 		Log.d(TAG, "goDocumentation");
-		FragmentManager fm = getFragmentManager();
-
-		Fragment docu = fm.findFragmentByTag(DocumentationFragment.FRAGMENT_KEY);
-		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
-		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
-
-		if (docu == null) {
-			docu = new DocumentationFragment();
-		}
-
-		FragmentTransaction tx = fm.beginTransaction();
-		if (home != null) {
-			tx.remove(home);
-		}
-		if (edit != null) {
-			tx.remove(edit);
-		}
-		tx.replace(R.id.main_fragment_holder, docu, DocumentationFragment.FRAGMENT_KEY);
-		tx.addToBackStack(null);
-		tx.commit();
+		Fragment docu = new DocumentationFragment();
+		addFragment(docu, DocumentationFragment.FRAGMENT_KEY);
 	}
 
 }
