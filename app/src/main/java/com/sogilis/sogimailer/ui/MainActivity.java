@@ -10,6 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		setUpToolbar(R.string.app_name, true);
+		setUpToolbar(R.string.app_name, false);
 		Log.d(TAG, "onCreate");
 
 		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
@@ -81,15 +84,29 @@ public class MainActivity extends AppCompatActivity {
 		mTitle.setText(getString(titleId));
 	}
 
-	public void testEmail(View view) {
-		Log.d(TAG, "testEmail");
-		TestMailDialog dlg = TestMailDialog.newInstance();
-		dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_main, menu);
+		return true;
 	}
 
-	public void doc(View view) {
-		Log.d(TAG, "doc");
-		goDocumentation();
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.main_testmail:
+				TestMailDialog dlg = TestMailDialog.newInstance();
+				dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
+				return true;
+			case R.id.main_documentation:
+				goDocumentation();
+				return true;
+			case R.id.main_home:
+				goHome();
+				return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void edit(View view) {

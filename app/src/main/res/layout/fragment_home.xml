@@ -5,101 +5,74 @@
 			  android:padding="15dp"
 			  android:layout_height="match_parent">
 
-
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="50dp"
-		android:theme="@style/BoxTitle"
-		android:text="Default"
-		android:background="@drawable/box_top"
-		/>
-
-	<GridLayout
+	<android.support.v7.widget.CardView
+		xmlns:card_view="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/card_view"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:columnCount="2"
-		android:background="@drawable/box_bot"
-		android:paddingTop="5dp"
-		android:paddingBottom="10dp"
-		android:layout_marginBottom="10dp"
+		card_view:cardCornerRadius="4dp"
+		android:layout_gravity="center"
 		>
 
-		<TextView
-			android:layout_width="wrap_content"
+		<LinearLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:theme="@style/BoxLabel"
-			android:text="@string/home_host_label"
-			android:layout_gravity="end"
-			android:layout_columnWeight="1"
-			/>
+			android:orientation="vertical"
+			>
 
-		<TextView
-			android:id="@+id/home_default_host"
-			android:theme="@style/BoxValue"
-			android:text="@string/undefined"
-			android:layout_columnWeight="3"
-			/>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				>
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_column="0"
-			android:theme="@style/BoxLabel"
-			android:text="@string/home_user_label"
-			android:layout_gravity="end"
-			android:layout_columnWeight="1"
-			/>
+				<TextView
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"
+					android:theme="@style/CardTitle"
+					android:text="Basic profile"
+					/>
 
-		<TextView
-			android:id="@+id/home_default_user"
-			android:theme="@style/BoxValue"
-			android:text="@string/undefined"
-			android:layout_columnWeight="3"
-			/>
+				<ImageView
+					android:layout_width="35dp"
+					android:layout_height="35dp"
+					android:padding="5dp"
+					android:src="@android:drawable/ic_menu_edit"
+					android:layout_gravity="center_vertical"
+					android:onClick="edit"
+					/>
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_column="0"
-			android:theme="@style/BoxLabel"
-			android:text="@string/home_password_label"
-			android:layout_gravity="end"
-			android:layout_columnWeight="1"
-			/>
+			</LinearLayout>
 
-		<TextView
-			android:id="@+id/home_default_mdp"
-			android:theme="@style/BoxValue"
-			android:text="@string/undefined"
-			android:inputType="textPassword"
-			android:layout_columnWeight="3"
-			/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:theme="@style/CardLine"
+				android:id="@+id/home_default_host"
+				android:text="@string/undefined"
+				/>
 
-	</GridLayout>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:theme="@style/CardLine"
+				android:id="@+id/home_default_user"
+				android:text="@string/undefined"
+				/>
 
-	<Button
-		android:id="@+id/home_edit_button"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Edit profile"
-		android:onClick="edit"
-		/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:theme="@style/CardLine"
+				android:id="@+id/home_default_mdp"
+				android:text="@string/undefined"
+				android:inputType="textPassword"
+				/>
 
-	<Button
-		android:id="@+id/home_doc_button"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Documentation"
-		android:onClick="doc"
-		/>
+		</LinearLayout>
 
-	<Button
-		android:id="@+id/home_test_button"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Test e-mail"
-		android:onClick="testEmail"
-		/>
+	</android.support.v7.widget.CardView>
 
 	<View
 		android:layout_width="match_parent"

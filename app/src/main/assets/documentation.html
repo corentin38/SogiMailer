@@ -8,13 +8,18 @@ body {
   max-width: 50em;
   font-family: "Helvetica", "Arial", sans-serif;
   line-height: 1.5;
-  padding: 4em 1em;
+  padding: 0em 1em 1em 1em;
   color: #555;
 }
 
 h2 {
-  margin-top: 1em;
   padding-top: 1em;
+  margin-top: 1em;
+}
+
+.first {
+  padding-top: 0em;
+  margin-top: 0.5em;
 }
 
 h1,
@@ -32,9 +37,7 @@ strong {
     </style>
   </head>
   <body>
-    <h1>SogiMailer quick documentation</h1>
-
-    <h2>What is SogiMailer ?</h2>
+    <h2 class="first">What is SogiMailer ?</h2>
     <p>SogiMailer allows you to send e-mails from your application without
       having to import the javax.mail library. You can either launch an
       intent with all the necessary parameters to have your email sent, or
@@ -83,33 +86,33 @@ startService(itt);
     </p>
     <pre><code>
 public BroadcastReceiver providesBroadcastReceiver() {
-	return new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			int resultCode = intent.getIntExtra("MAILER_RETCODE", Activity.RESULT_CANCELED);
-			String resultMessage = intent.getStringExtra("MAILER_RESULTMSG");
+  return new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      int resultCode = intent.getIntExtra("MAILER_RETCODE", Activity.RESULT_CANCELED);
+      String resultMessage = intent.getStringExtra("MAILER_RESULTMSG");
 
-			if (resultCode == Activity.RESULT_OK) {
-				Toast.makeText(context, resultMessage, Toast.LENGTH_LONG).show();
-			} else {
-				Toast.makeText(context, "Something went wrong: " +
-				resultMessage, Toast.LENGTH_LONG).show();
-			}
-		}
-	};
+      if (resultCode == Activity.RESULT_OK) {
+        Toast.makeText(context, resultMessage, Toast.LENGTH_LONG).show();
+      } else {
+        Toast.makeText(context, "Something went wrong: " +
+          resultMessage, Toast.LENGTH_LONG).show();
+      }
+    }
+  };
 }
 
 @Override
 protected void onResume() {
-    IntentFilter filter = new IntentFilter("com.sogilis.sogimailer.ACTION_SEND");
-    registerReceiver(testReceiver, filter);
-	super.onResume();
+  IntentFilter filter = new IntentFilter("com.sogilis.sogimailer.ACTION_SEND");
+  registerReceiver(testReceiver, filter);
+  super.onResume();
 }
 
 @Override
 protected void onPause() {
-	unregisterReceiver(testReceiver);
-	super.onPause();
+  unregisterReceiver(testReceiver);
+  super.onPause();
 }
     </code></pre>
 
