@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
+  <head>
+    <title>SogiMailer documentation page</title>
+    <style media="screen" type="text/css">
+body {
+  margin: 0 auto;
+  max-width: 50em;
+  font-family: "Helvetica", "Arial", sans-serif;
+  line-height: 1.5;
+  padding: 4em 1em;
+  color: #555;
+}
+
+h2 {
+  margin-top: 1em;
+  padding-top: 1em;
+}
+
+h1,
+h2,
+strong {
+  color: #333;
+}
+
+.hljs{color:#a9b7c6;background:#282b2e;display:block;overflow-x:auto;padding:0.5em}.hljs-number,
+.hljs-literal,.hljs-symbol,.hljs-bullet{color:#6897BB}.hljs-keyword,.hljs-selector-tag,
+.hljs-deletion{color:#cc7832}.hljs-variable,.hljs-template-variable,.hljs-link{color:#629755}.hljs-comment,
+.hljs-quote{color:#808080}.hljs-meta{color:#bbb529}.hljs-string,.hljs-attribute,.hljs-addition{color:#6A8759}
+.hljs-section,.hljs-title,.hljs-type{color:#ffc66d}.hljs-name,.hljs-selector-id,.hljs-selector-class{color:#e8bf6a}
+.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:bold}
+    </style>
+  </head>
+  <body>
+    <h1>SogiMailer quick documentation</h1>
+
+    <h2>What is SogiMailer ?</h2>
+    <p>SogiMailer allows you to send e-mails from your application without
+      having to import the javax.mail library. You can either launch an
+      intent with all the necessary parameters to have your email sent, or
+      configure a profile in SogiMailer and launch simplyfied intents.</p>
+
+    <h2>How to use it ?</h2>
+    <p>
+      SogiMailer can be called from your code by launching an intent
+      with specific parameters. When a profile is defined, the minimum
+      code required is the following.
+    </p>
+    <pre><code class="java">
+Intent itt = new Intent("com.sogilis.sogimailer.ACTION_SEND");
+itt.setPackage("com.sogilis.sogimailer");
+
+itt.putExtra("MAILER_OPT_RECIPIENTS", "my.friend@aol.com");
+itt.putExtra("MAILER_OPT_SUBJECT",    "Hey buddy !");
+itt.putExtra("MAILER_OPT_BODY",       "Up for some pumkin peach ale ?");
+
+startService(itt);
+    </code></pre>
+
+    <h2>Don't wanna config some more profile ?</h2>
+    <p>
+      Then use the fully qualified intent call !
+    </p>
+    <pre><code>
+Intent itt = new Intent("com.sogilis.sogimailer.ACTION_SEND");
+itt.setPackage("com.sogilis.sogimailer");
+
+itt.putExtra("MAILER_OPT_HOST",       "smtp.gmail.com");
+itt.putExtra("MAILER_OPT_SENDER",     "my.address@caramail.com");
+itt.putExtra("MAILER_OPT_PASSWORD",   "passw0rd");
+itt.putExtra("MAILER_OPT_RECIPIENTS", "my.friend@aol.com");
+itt.putExtra("MAILER_OPT_SUBJECT",    "Hey buddy !");
+itt.putExtra("MAILER_OPT_BODY",       "Up for some pumkin peach ale ?");
+
+startService(itt);
+    </code></pre>
+
+    <h2>How can I know if shit happened ?</h2>
+    <p>
+      SogiMailer broadcast specific events indicating wether or not
+      the e-mail was sent successfuly. In order to have feedback on
+      the operation, you can register a broadcast receiver.
+    </p>
+    <pre><code>
+public BroadcastReceiver providesBroadcastReceiver() {
+	return new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			int resultCode = intent.getIntExtra("MAILER_RETCODE", Activity.RESULT_CANCELED);
+			String resultMessage = intent.getStringExtra("MAILER_RESULTMSG");
+
+			if (resultCode == Activity.RESULT_OK) {
+				Toast.makeText(context, resultMessage, Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(context, "Something went wrong: " +
+				resultMessage, Toast.LENGTH_LONG).show();
+			}
+		}
+	};
+}
+
+@Override
+protected void onResume() {
+    IntentFilter filter = new IntentFilter("com.sogilis.sogimailer.ACTION_SEND");
+    registerReceiver(testReceiver, filter);
+	super.onResume();
+}
+
+@Override
+protected void onPause() {
+	unregisterReceiver(testReceiver);
+	super.onPause();
+}
+    </code></pre>
+
+    <script src="highlight.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+
+</html>

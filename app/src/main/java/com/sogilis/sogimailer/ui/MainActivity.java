@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
 	public void doc(View view) {
 		Log.d(TAG, "doc");
+		goDocumentation();
 	}
 
 	public void edit(View view) {
@@ -198,6 +199,30 @@ public class MainActivity extends AppCompatActivity {
 		Log.d(TAG, "disclaimer is not null");
 		FragmentTransaction tx = fm.beginTransaction();
 		tx.remove(disc);
+		tx.addToBackStack(null);
+		tx.commit();
+	}
+
+	private void goDocumentation() {
+		Log.d(TAG, "goDocumentation");
+		FragmentManager fm = getFragmentManager();
+
+		Fragment docu = fm.findFragmentByTag(DocumentationFragment.FRAGMENT_KEY);
+		Fragment edit = fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
+		Fragment home = fm.findFragmentByTag(HomeFragment.FRAGMENT_KEY);
+
+		if (docu == null) {
+			docu = new DocumentationFragment();
+		}
+
+		FragmentTransaction tx = fm.beginTransaction();
+		if (home != null) {
+			tx.remove(home);
+		}
+		if (edit != null) {
+			tx.remove(edit);
+		}
+		tx.replace(R.id.main_fragment_holder, docu, DocumentationFragment.FRAGMENT_KEY);
 		tx.addToBackStack(null);
 		tx.commit();
 	}
