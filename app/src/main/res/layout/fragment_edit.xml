@@ -5,112 +5,54 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent">
 
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="50dp"
-		android:theme="@style/BoxTitle"
-		android:text="Basic profile"
-		android:background="@drawable/box_top"
-		/>
-
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:background="@drawable/box_bot"
-		android:paddingTop="5dp"
-		android:paddingBottom="10dp"
-		android:layout_marginBottom="10dp"
+		android:paddingTop="20dp"
 		>
 
-		<LinearLayout
+		<android.support.design.widget.TextInputLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
-
-			<TextView
-				android:layout_width="0dp"
-				android:layout_weight="7"
-				android:layout_height="wrap_content"
-				android:theme="@style/BoxLabel"
-				android:text="@string/home_host_label"
-				android:gravity="end"
-				android:layout_columnWeight="1"
-				/>
+			android:layout_height="wrap_content">
 
 			<EditText
-				android:layout_width="0dp"
-				android:layout_weight="17"
-				android:layout_height="wrap_content"
 				android:id="@+id/edit_host"
-				android:theme="@style/BoxValue"
-				android:layout_marginRight="10dp"
-				android:hint="@string/undefined"
-				android:layout_columnWeight="3"
-				/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
-
-			<TextView
-				android:layout_width="0dp"
-				android:layout_weight="7"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_column="0"
-				android:theme="@style/BoxLabel"
-				android:text="@string/home_user_label"
-				android:gravity="end"
-				android:layout_columnWeight="1"
+				android:hint="SMTP host"
 				/>
+
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.design.widget.TextInputLayout
+			android:paddingTop="10dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 
 			<EditText
-				android:layout_width="0dp"
-				android:layout_weight="17"
-				android:layout_height="wrap_content"
 				android:id="@+id/edit_user"
-				android:theme="@style/BoxValue"
-				android:layout_marginRight="10dp"
-				android:hint="@string/undefined"
-				android:layout_columnWeight="3"
-				/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
-
-			<TextView
-				android:layout_width="0dp"
-				android:layout_weight="7"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_column="0"
-				android:theme="@style/BoxLabel"
-				android:text="@string/home_password_label"
-				android:gravity="end"
-				android:layout_columnWeight="1"
+				android:hint="Sender id"
 				/>
+
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.design.widget.TextInputLayout
+			android:paddingTop="10dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
 
 			<EditText
-				android:layout_width="0dp"
-				android:layout_weight="17"
-				android:layout_height="wrap_content"
 				android:id="@+id/edit_password"
-				android:theme="@style/BoxValue"
-				android:layout_marginRight="10dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="Sender password"
 				android:inputType="textPassword"
-				android:layout_columnWeight="3"
 				/>
 
-		</LinearLayout>
+		</android.support.design.widget.TextInputLayout>
 
 	</LinearLayout>
 
@@ -126,6 +68,10 @@
 			android:layout_height="wrap_content"
 			android:text="Cancel"
 			android:onClick="cancelEdit"
+			android:background="@color/colorPrimary"
+			android:layout_marginRight="5dp"
+			android:layout_marginTop="40dp"
+			android:textColor="@android:color/white"
 			/>
 
 		<Button
@@ -134,6 +80,10 @@
 			android:layout_height="wrap_content"
 			android:text="Save"
 			android:onClick="saveEdit"
+			android:background="@color/colorPrimary"
+			android:layout_marginLeft="5dp"
+            android:layout_marginTop="40dp"
+            android:textColor="@android:color/white"
 			/>
 
 	</LinearLayout>
