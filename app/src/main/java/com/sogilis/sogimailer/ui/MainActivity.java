@@ -3,9 +3,12 @@ package com.sogilis.sogimailer.ui;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +28,8 @@ import com.sogilis.sogimailer.mail.NoSuchProfileException;
 import com.sogilis.sogimailer.mail.Profile;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -53,10 +58,23 @@ public class MainActivity extends AppCompatActivity {
 
 		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
 
-		if (savedInstanceState == null) {
-			goHome();
-		}
+        // Setting ViewPager for each Tabs
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        // Set Tabs inside Toolbar
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+
 	}
+
+    // Add Fragments to Tabs
+    private void setupViewPager(ViewPager viewPager) {
+        Adapter adapter = new Adapter(getSupportFragmentManager());
+        adapter.addFragment(new HomeFragment(), "Profiles");
+        adapter.addFragment(new DocumentationFragment(), "Documentation");
+        viewPager.setAdapter(adapter);
+    }
 
 	@Override
 	protected void onResume() {
@@ -96,23 +114,17 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				Log.d(TAG, "home pressed");
-				handleBackPressed();
-				return true;
 			case R.id.main_testmail:
 				Log.d(TAG, "starting test");
 				TestMailDialog dlg = TestMailDialog.newInstance();
 				dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
 				return true;
-			case R.id.main_documentation:
-				Log.d(TAG, "starting doc");
-				goDocumentation();
-				return true;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
+
+/*
 
 	private void addFragment(Fragment frag, String tag) {
 		Log.d(TAG, "addFragment");
@@ -120,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 
 		fm.dump(TAG + " BEFORE !!! ", null, new PrintWriter(System.out, true), null);
 
@@ -131,11 +143,12 @@ public class MainActivity extends AppCompatActivity {
 		tx.commit();
 		fm.dump(TAG + " AFTER !!! ", null, new PrintWriter(System.out, true), null);
 	}
-
+*/
+/*
 	private void handleBackPressed() {
 		Log.d(TAG, "handleBackPressed");
 
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		String tag = fm.getBackStackEntryAt(fm.getBackStackEntryCount() -1).getName();
 		Log.d(TAG, "last tag :" + tag);
 		Fragment current = fm.findFragmentByTag(tag);
@@ -149,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
 
 		Log.d(TAG, "let's pop !");
 		fm.popBackStack();
-	}
+	}*/
+/*
 
 	public void edit(View view) {
 		Log.d(TAG, "edit");
@@ -159,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 	public void saveEdit(View view) {
 		Log.d(TAG, "saveEdit");
 
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		EditFragment frag = (EditFragment) fm.findFragmentByTag(EditFragment.FRAGMENT_KEY);
 		profileDude.saveBasic(frag.getSenderEntry(), frag.getHostEntry(), frag.getPasswordEntry());
 
@@ -208,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private void showDisclaimer() {
 		Log.d(TAG, "showDisclaimer");
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		Fragment disc = fm.findFragmentByTag(DisclaimerFragment.FRAGMENT_KEY);
 		if (disc == null) {
 			Log.d(TAG, "disclaimer is null");
@@ -223,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private void removeDisclaimer() {
 		Log.d(TAG, "removeDisclaimer");
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getSupportFragmentManager();
 		Fragment disc = fm.findFragmentByTag(DisclaimerFragment.FRAGMENT_KEY);
 		if (disc == null) {
 			Log.d(TAG, "disclaimer is null !!");
@@ -242,5 +256,37 @@ public class MainActivity extends AppCompatActivity {
 		Fragment docu = new DocumentationFragment();
 		addFragment(docu, DocumentationFragment.FRAGMENT_KEY);
 	}
+*/
+
+
+
+    static class Adapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public Adapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
 
 }

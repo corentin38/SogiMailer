@@ -1,8 +1,8 @@
 package com.sogilis.sogimailer.ui;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +44,12 @@ public class HomeFragment extends Fragment {
 
 	private void initProfileBox(View view) {
 		Bundle bun = getArguments();
-		String sender = bun.getString(SENDER_BUNDLE_KEY, "");
+/*		String sender = bun.getString(SENDER_BUNDLE_KEY, "");
 		String host = bun.getString(HOST_BUNDLE_KEY, "");
-		String password = bun.getString(PASSWORD_BUNDLE_KEY, "");
+		String password = bun.getString(PASSWORD_BUNDLE_KEY, "");*/
+		String sender = "C'est moi !";
+		String host = "Le sacré host !";
+		String password = "tototototototo";
 
 		TextView senderTV = (TextView) view.findViewById(R.id.home_default_user);
 		TextView hostTV = (TextView) view.findViewById(R.id.home_default_host);
