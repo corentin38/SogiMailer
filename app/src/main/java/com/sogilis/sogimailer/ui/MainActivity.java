@@ -58,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
 		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
 
+		List<Profile> profileList = profileDude.all();
+		Profile[] profiles = profileList.toArray(new Profile[profileList.size()]);
+
         // Setting ViewPager for each Tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        setupViewPager(viewPager, profiles);
 
         // Set Tabs inside Toolbar
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
@@ -69,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
     // Add Fragments to Tabs
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager, Profile[] profiles) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Profiles");
+        adapter.addFragment(HomeFragment.newInstance(profiles), "Profiles");
         adapter.addFragment(new DocumentationFragment(), "Documentation");
         viewPager.setAdapter(adapter);
     }

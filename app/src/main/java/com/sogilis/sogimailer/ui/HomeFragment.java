@@ -3,6 +3,8 @@ package com.sogilis.sogimailer.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +17,13 @@ import com.sogilis.sogimailer.mail.Profile;
 public class HomeFragment extends Fragment {
 
 	private static final String TAG = "SOGIMAILER_HOMEFRAG";
-	public static final String FRAGMENT_KEY = "com.sogilis.sogimailer.ui.HomeFragment";
+	private static final String PROFILE_ARRAY_BUNDLE_KEY = "profile_array_bundle_key";
 
-	private static final String SENDER_BUNDLE_KEY = "sender_bundle_key";
-	private static final String HOST_BUNDLE_KEY = "host_bundle_key";
-	private static final String PASSWORD_BUNDLE_KEY = "password_bundle_key";
-
-	public static HomeFragment newInstance(Profile profile) {
+	public static HomeFragment newInstance(Profile[] profiles) {
 		HomeFragment frag = new HomeFragment();
 
 		Bundle bun = new Bundle();
-		bun.putString(SENDER_BUNDLE_KEY, profile.sender());
-		bun.putString(HOST_BUNDLE_KEY, profile.host());
-		bun.putString(PASSWORD_BUNDLE_KEY, profile.senderPassword());
+		bun.putParcelableArray(PROFILE_ARRAY_BUNDLE_KEY, profiles);
 
 		frag.setArguments(bun);
 		return frag;
@@ -37,27 +33,56 @@ public class HomeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
-		View view = inflater.inflate(R.layout.fragment_home, container, false);
-		initProfileBox(view);
-		return view;
+		Bundle bun = getArguments();
+		Profile[] profiles = (Profile[]) bun.getParcelableArray(PROFILE_ARRAY_BUNDLE_KEY);
+
+		RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+		ContentAdapter adapter = new ContentAdapter(profiles);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+		return recyclerView;
 	}
 
-	private void initProfileBox(View view) {
-		Bundle bun = getArguments();
-/*		String sender = bun.getString(SENDER_BUNDLE_KEY, "");
-		String host = bun.getString(HOST_BUNDLE_KEY, "");
-		String password = bun.getString(PASSWORD_BUNDLE_KEY, "");*/
-		String sender = "C'est moi !";
-		String host = "Le sacré host !";
-		String password = "tototototototo";
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		public TextView senderTV;
+		public TextView hostTV;
+		public TextView passwordTV;
 
-		TextView senderTV = (TextView) view.findViewById(R.id.home_default_user);
-		TextView hostTV = (TextView) view.findViewById(R.id.home_default_host);
-		TextView passwordTV = (TextView) view.findViewById(R.id.home_default_mdp);
+		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
+			super(inflater.inflate(R.layout.fragment_home, parent, false));
+			senderTV = (TextView) itemView.findViewById(R.id.home_default_user);
+			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
+			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
+		}
+	}
 
-		senderTV.setText(sender);
-		hostTV.setText(host);
-		passwordTV.setText(password);
+	public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
+		private static final int LENGTH = 18;
+		private Profile[] mProfiles;
+
+		public ContentAdapter(Profile[] profiles) {
+			this.mProfiles = profiles;
+		}
+
+		@Override
+		public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			return new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
+		}
+
+		@Override
+		public void onBindViewHolder(ViewHolder holder, int position) {
+			Profile profile = mProfiles[position];
+			holder.senderTV.setText(profile.sender());
+			holder.hostTV.setText(profile.host());
+			holder.passwordTV.setText(profile.senderPassword());
+		}
+
+		@Override
+		public int getItemCount() {
+			return LENGTH;
+		}
 	}
 
 }

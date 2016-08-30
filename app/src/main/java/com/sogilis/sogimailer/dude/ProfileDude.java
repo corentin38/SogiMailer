@@ -6,8 +6,12 @@ import android.util.Log;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.mail.Basic;
+import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.NoSuchProfileException;
 import com.sogilis.sogimailer.mail.Profile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileDude {
 	private static final String TAG = "SOGIMAILER_PROFILEDUDE";
@@ -45,6 +49,21 @@ public class ProfileDude {
 		ed.putString(Constants.PASSWORD_KEY, password);
 
 		ed.commit();
+	}
+
+	public List<Profile> all() {
+		Log.d(TAG, "Retrieving all profiles");
+
+		List<Profile> all = new ArrayList<>();
+
+		try {
+			all.add(getBasic());
+		} catch (NoSuchProfileException e) {
+			Log.d(TAG, "No basic profile defined ! Getting some default");
+			all.add(new Default());
+		}
+
+		return all;
 	}
 
 }

@@ -11,6 +11,7 @@ import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.svc.MailerService;
+import com.sogilis.sogimailer.ui.HomeFragment;
 import com.sogilis.sogimailer.ui.MainActivity;
 
 import javax.inject.Singleton;
@@ -21,7 +22,8 @@ import dagger.Provides;
 @Module (
 		injects = {
 				MainActivity.class,
-				MailerService.class
+				MailerService.class,
+				HomeFragment.class
 		}
 )
 public class SogiMailerModule {
