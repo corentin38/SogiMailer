@@ -59,7 +59,6 @@ public class HomeFragment extends Fragment {
 	}
 
 	public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
-		private static final int LENGTH = 18;
 		private Profile[] mProfiles;
 
 		public ContentAdapter(Profile[] profiles) {
@@ -81,7 +80,7 @@ public class HomeFragment extends Fragment {
 
 		@Override
 		public int getItemCount() {
-			return LENGTH;
+			return mProfiles.length;
 		}
 	}
 
