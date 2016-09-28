@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="150dp"
+    android:background="@drawable/color_gradient"
+	>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/sogilis"
-        />
+	<ImageView
+		android:id="@+id/header_icon"
+		android:layout_width="80dp"
+		android:layout_height="80dp"
+		android:layout_margin="16dp"
+		android:src="@drawable/sogilis"
+		/>
 
-</LinearLayout>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:padding="19dp"
+		android:textSize="23sp"
+		android:textColor="@android:color/white"
+	    android:text="SogiMailer"
+		/>
+
+</RelativeLayout>
