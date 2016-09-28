@@ -24,7 +24,7 @@
 			android:paddingTop="16dp"
 			android:paddingBottom="16dp"
 			android:theme="@style/CardTitle"
-			android:text="Basic profile"
+			android:text="Gmail profile"
 			/>
 
 		<TextView
