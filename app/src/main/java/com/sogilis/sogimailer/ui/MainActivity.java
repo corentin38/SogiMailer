@@ -3,11 +3,14 @@ package com.sogilis.sogimailer.ui;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
 	@Inject
 	public Mailer mailer;
 
+	private DrawerLayout mDrawer;
+	private NavigationView mNavigationView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
 		List<Profile> profileList = profileDude.all();
 		Profile[] profiles = profileList.toArray(new Profile[profileList.size()]);
+
+		mDrawer = (DrawerLayout) findViewById(R.id.drawer);
+		mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+		initDrawer();
 
         // Setting ViewPager for each Tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -97,30 +107,53 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		actionBar.setDisplayHomeAsUpEnabled(displayHomeAsUp);
+		actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 		actionBar.setDisplayShowTitleEnabled(false);
 		TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 		mTitle.setText(getString(titleId));
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_main, menu);
-		return true;
-	}
+    private void initDrawer() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                mDrawer.closeDrawers();
+
+                switch (menuItem.getItemId()) {
+                    case R.id.main_testmail:
+	                    Log.d(TAG, "starting test");
+	                    TestMailDialog dlg = TestMailDialog.newInstance();
+	                    dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
+	                    return true;
+                    default:
+                        Log.v(TAG, "Unknown menu item");
+                }
+
+                return true;
+            }
+        });
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.main_testmail:
-				Log.d(TAG, "starting test");
-				TestMailDialog dlg = TestMailDialog.newInstance();
-				dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
+			case android.R.id.home:
+				mDrawer.openDrawer(GravityCompat.START);
 				return true;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+	        mDrawer.closeDrawers();
+            return;
+        }
+
+        super.onBackPressed();
+    }
 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
