@@ -1,6 +1,7 @@
 package com.sogilis.sogimailer.ui;
 
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,19 +12,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
-import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
-import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.mail.Profile;
 
 import java.util.ArrayList;
@@ -32,20 +25,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements HomeFragment.Listener {
 
 	private static final String TAG = "SOGIMAILER_ACTIVITY";
 
 	private static final String SOGIMAILER_ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
-	@Inject
-	public BroadcastReceiver testReceiver;
-
-	@Inject
-	public ProfileDude profileDude;
-
-	@Inject
-	public Mailer mailer;
+	@Inject BroadcastReceiver testReceiver;
+	@Inject ProfileDude profileDude;
 
 	private DrawerLayout mDrawer;
 	private NavigationView mNavigationView;
@@ -56,8 +43,6 @@ public class MainActivity extends BaseActivity {
 		setContentView(R.layout.activity_main);
 		setUpToolbar(R.string.app_name, true, true);
 		Log.d(TAG, "onCreate");
-
-		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
 
 		List<Profile> profileList = profileDude.all();
 		Profile[] profiles = profileList.toArray(new Profile[profileList.size()]);
@@ -168,7 +153,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-	public void editFragment(Profile profile) {
-
+	public void onEditButtonClicked(Profile profile) {
+		Intent itt = new Intent(this, EditActivity.class);
+		itt.putExtra(EditActivity.PROFILE_KEY, profile);
+		startActivity(itt);
 	}
 }

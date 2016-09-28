@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
@@ -18,6 +19,10 @@ public class HomeFragment extends Fragment {
 
 	private static final String TAG = "SOGIMAILER_HOMEFRAG";
 	private static final String PROFILE_ARRAY_BUNDLE_KEY = "profile_array_bundle_key";
+
+	public interface Listener {
+		void onEditButtonClicked(Profile profile);
+	}
 
 	public static HomeFragment newInstance(Profile[] profiles) {
 		HomeFragment frag = new HomeFragment();
@@ -33,11 +38,14 @@ public class HomeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
+
+		Listener listener = (Listener) getContext();
+
 		Bundle bun = getArguments();
 		Profile[] profiles = (Profile[]) bun.getParcelableArray(PROFILE_ARRAY_BUNDLE_KEY);
 
 		RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
-		ContentAdapter adapter = new ContentAdapter(profiles);
+		ContentAdapter adapter = new ContentAdapter(profiles, listener);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -49,20 +57,24 @@ public class HomeFragment extends Fragment {
 		public TextView senderTV;
 		public TextView hostTV;
 		public TextView passwordTV;
+		public Button editButton;
 
 		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
 			super(inflater.inflate(R.layout.fragment_home, parent, false));
 			senderTV = (TextView) itemView.findViewById(R.id.home_default_user);
 			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
 			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
+			editButton = (Button) itemView.findViewById(R.id.edit_button);
 		}
 	}
 
 	public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
 		private Profile[] mProfiles;
+		private Listener mListener;
 
-		public ContentAdapter(Profile[] profiles) {
+		public ContentAdapter(Profile[] profiles, Listener listener) {
 			this.mProfiles = profiles;
+			this.mListener = listener;
 		}
 
 		@Override
@@ -72,10 +84,16 @@ public class HomeFragment extends Fragment {
 
 		@Override
 		public void onBindViewHolder(ViewHolder holder, int position) {
-			Profile profile = mProfiles[position];
+			final Profile profile = mProfiles[position];
 			holder.senderTV.setText(profile.sender());
 			holder.hostTV.setText(profile.host());
 			holder.passwordTV.setText(profile.senderPassword());
+			holder.editButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mListener.onEditButtonClicked(profile);
+				}
+			});
 		}
 
 		@Override

@@ -27,14 +27,8 @@ public class MailerService extends IntentService implements Mailer.Listener {
 	private static final String RESULTMSG_KEY = "MAILER_RESULTMSG";
 	private static final String RETCODE_KEY = "MAILER_RETCODE";
 
-	@Inject
-	public Mailer mailer;
-
-	@Inject
-	public ProfileDude profileDude;
-
-	@Inject
-	public BroadcastReceiver br;
+	@Inject Mailer mailer;
+	@Inject ProfileDude profileDude;
 
     public MailerService() {
         super("test-service");

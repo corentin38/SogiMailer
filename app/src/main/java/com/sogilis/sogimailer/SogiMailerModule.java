@@ -6,12 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.svc.MailerService;
-import com.sogilis.sogimailer.ui.HomeFragment;
+import com.sogilis.sogimailer.ui.EditActivity;
 import com.sogilis.sogimailer.ui.MainActivity;
 
 import javax.inject.Singleton;
@@ -23,7 +22,7 @@ import dagger.Provides;
 		injects = {
 				MainActivity.class,
 				MailerService.class,
-				HomeFragment.class
+				EditActivity.class
 		}
 )
 public class SogiMailerModule {
@@ -31,8 +30,7 @@ public class SogiMailerModule {
 	private static final String RESULTMSG_KEY = "MAILER_RESULTMSG";
 	private static final String RETCODE_KEY = "MAILER_RETCODE";
 
-	@Provides
-	public BroadcastReceiver providesBroadcastReceiver() {
+	@Provides BroadcastReceiver providesBroadcastReceiver() {
 		return new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
@@ -48,15 +46,11 @@ public class SogiMailerModule {
 		};
 	}
 
-	@Provides
-	@Singleton
-	public ProfileDude providesProfileDude() {
+	@Provides @Singleton ProfileDude providesProfileDude() {
 		return new ProfileDude();
 	}
 
-	@Provides
-	@Singleton
-	public Mailer providesMailer() {
+	@Provides @Singleton Mailer providesMailer() {
 		return new Mailer(new Default());
 	}
 }
