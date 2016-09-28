@@ -1,6 +1,6 @@
 APP=./app/build/outputs/apk/app-debug.apk
 APP_NAME=com.sogilis.sogimailer
-MAIN_CLASS=MainActivity
+MAIN_CLASS=ui.MainActivity
 
 .PHONY: all clean install uninstall build
 all: build
