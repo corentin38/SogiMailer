@@ -32,7 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 	private static final String TAG = "SOGIMAILER_ACTIVITY";
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		setUpToolbar(R.string.app_name, true);
+		setUpToolbar(R.string.app_name, true, true);
 		Log.d(TAG, "onCreate");
 
 		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
@@ -95,22 +95,6 @@ public class MainActivity extends AppCompatActivity {
 	protected void onPause() {
 		unregisterReceiver(testReceiver);
 		super.onPause();
-	}
-
-	public void setUpToolbar(int titleId, boolean displayHomeAsUp) {
-		Toolbar toolbar = (Toolbar) findViewById(R.id.global_toolbar);
-		setSupportActionBar(toolbar);
-
-		ActionBar actionBar = getSupportActionBar();
-		if (actionBar == null) {
-			return;
-		}
-
-		actionBar.setDisplayHomeAsUpEnabled(displayHomeAsUp);
-		actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-		actionBar.setDisplayShowTitleEnabled(false);
-		TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-		mTitle.setText(getString(titleId));
 	}
 
     private void initDrawer() {
@@ -184,4 +168,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+	public void editFragment(Profile profile) {
+
+	}
 }
