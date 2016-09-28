@@ -9,9 +9,4 @@
 		android:title="Send test mail"
 		app:showAsAction="never" />
 
-	<item
-		android:id="@+id/main_documentation"
-		android:title="Documentation"
-		app:showAsAction="never" />
-
 </menu>
