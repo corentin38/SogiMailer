@@ -5,9 +5,9 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:layout_gravity="center"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
+	android:layout_marginBottom="8dp"
+	android:layout_marginEnd="8dp"
+	android:layout_marginStart="8dp"
 	>
 
 	<RelativeLayout
@@ -81,8 +81,9 @@
 			android:layout_toRightOf="@+id/edit_button"
 			android:layout_below="@+id/home_default_mdp"
 			style="?android:attr/borderlessButtonStyle"
-			android:textColor="?attr/colorPrimary"
+			android:textColor="@android:color/darker_gray"
 			android:text="Delete"
+			android:enabled="false"
 			/>
 
 	</RelativeLayout>
