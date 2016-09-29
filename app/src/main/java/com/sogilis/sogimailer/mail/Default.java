@@ -32,6 +32,11 @@ public class Default implements Profile {
 	}
 
 	@Override
+	public long id() {
+		return 0;
+	}
+
+	@Override
 	public String host() {
 		return "smtp.gmail.com";
 	}

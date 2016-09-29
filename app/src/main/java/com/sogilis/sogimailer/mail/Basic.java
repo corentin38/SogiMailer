@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class Basic implements Profile {
 
+	private long mId;
 	private String mSender;
 	private String mHost;
 	private String mPassword;
@@ -21,16 +22,23 @@ public class Basic implements Profile {
 		}
 	};
 
-	public Basic(String mHost, String mPassword, String mSender) {
+	public Basic(long mId, String mHost, String mPassword, String mSender) {
+		this.mId = mId;
 		this.mHost = mHost;
 		this.mPassword = mPassword;
 		this.mSender = mSender;
 	}
 
 	public Basic(Parcel in) {
+		this.mId = in.readLong();
 		this.mSender = in.readString();
 		this.mHost = in.readString();
 		this.mPassword = in.readString();
+	}
+
+	@Override
+	public long id() {
+		return mId;
 	}
 
 	@Override
@@ -90,6 +98,7 @@ public class Basic implements Profile {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(this.mId);
 		dest.writeString(this.mSender);
 		dest.writeString(this.mHost);
 		dest.writeString(this.mPassword);
