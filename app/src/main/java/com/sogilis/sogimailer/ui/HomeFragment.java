@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
+import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Profile;
 
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
 		Listener listener = (Listener) getContext();
+		((SogiMailerApplication) getActivity().getApplication()).getObjectGraph().inject(this);
 
 		RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
 		ContentAdapter adapter = new ContentAdapter(new Profile[0], listener);
