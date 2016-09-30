@@ -10,18 +10,19 @@ public class DbHelper extends SQLiteOpenHelper {
 	private static final String COMMA_SEP = ",";
 
 	private static final String SQL_CREATE_PROFILES =
-		"CREATE TABLE " + Contract.Profile.TABLE_NAME + " (" +
-		Contract.Profile._ID                                      + " INTEGER PRIMARY KEY," +
-		Contract.Profile.COLUMN_NAME_SENDER                       + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_SENDER_PASSWORD              + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL           + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_HOST                         + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_SMTP_QUIT_WAIT               + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_SMTP_AUTH                    + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_SMTP_PORT                    + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT     + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS    + TEXT_TYPE + COMMA_SEP +
-		Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE + COMMA_SEP + " )";
+			"CREATE TABLE " + Contract.Profile.TABLE_NAME + " (" +
+					Contract.Profile._ID                                      + " INTEGER PRIMARY KEY," +
+					Contract.Profile.COLUMN_NAME_NAME                         + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SENDER                       + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SENDER_PASSWORD              + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL           + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_HOST                         + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SMTP_QUIT_WAIT               + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SMTP_AUTH                    + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SMTP_PORT                    + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT     + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS    + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE + COMMA_SEP + " )";
 
 	private static final String SQL_DELETE_PROFILES =
 			"DROP TABLE IF EXISTS " + Contract.Profile.TABLE_NAME;

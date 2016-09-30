@@ -8,6 +8,7 @@ public class Contract {
 
 	public static abstract class Profile implements BaseColumns {
 		public static final String TABLE_NAME                               = "profiles";
+		public static final String COLUMN_NAME_NAME                         = "name";
 		public static final String COLUMN_NAME_SENDER                       = "sender";
 		public static final String COLUMN_NAME_SENDER_PASSWORD              = "sender_password";
 		public static final String COLUMN_NAME_TRANSPORT_PROTOCOL           = "transport_protocol";

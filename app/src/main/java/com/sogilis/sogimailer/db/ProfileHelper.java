@@ -39,6 +39,7 @@ public class ProfileHelper {
 	private static List<Profile> all() {
 		String[] projection = {
 				Contract.Profile._ID,
+				Contract.Profile.COLUMN_NAME_NAME,
 				Contract.Profile.COLUMN_NAME_SENDER,
 				Contract.Profile.COLUMN_NAME_SENDER_PASSWORD,
 				Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL,
@@ -67,6 +68,7 @@ public class ProfileHelper {
 		do {
 
 			long sqlId                       = c.getLong(c.getColumnIndex(Contract.Profile._ID));
+			String name                      = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_NAME));
 			String sender                    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER));
 			String senderPassword            = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER_PASSWORD));
 			String transportProtocol         = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL));
@@ -77,11 +79,10 @@ public class ProfileHelper {
 			String smtpSocketFactoryPort     = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT));
 			String smtpSocketFactoryClass    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS));
 			String smtpSocketFactoryFallback = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK));
-			//String name                      = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_NAME));
 
 			profiles.add(new ExtendedProfile(host, sqlId, sender, senderPassword, smtpAuth,
 					smtpPort, smtpQuitWait, smtpSocketFactoryClass, smtpSocketFactoryFallback,
-					smtpSocketFactoryPort, transportProtocol, "profileName"));
+					smtpSocketFactoryPort, transportProtocol, name));
 
 		} while (c.moveToNext());
 
@@ -90,6 +91,7 @@ public class ProfileHelper {
 
 	public static void update(Profile profile) {
 		ContentValues values = new ContentValues();
+		values.put(Contract.Profile.COLUMN_NAME_NAME, profile.name());
 		values.put(Contract.Profile.COLUMN_NAME_SENDER, profile.sender());
 		values.put(Contract.Profile.COLUMN_NAME_SENDER_PASSWORD, profile.senderPassword());
 		values.put(Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL, profile.transportProtocol());
