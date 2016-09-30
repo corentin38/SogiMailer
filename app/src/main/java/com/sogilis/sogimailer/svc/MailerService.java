@@ -32,6 +32,7 @@ public class MailerService extends IntentService
 	@Inject
 	ProfileDude profileDude;
 
+	// XXX: Params are stored as attribute : WE SHOULD USE LOCK TO PREVENT ANOTHER REQUEST TO ...
 	private String subject;
 	private String body;
 	private String recipients;
