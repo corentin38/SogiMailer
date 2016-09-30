@@ -2,19 +2,20 @@ package com.sogilis.sogimailer.svc;
 
 import android.app.Activity;
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.util.Log;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
-import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
-import com.sogilis.sogimailer.mail.NoSuchProfileException;
+import com.sogilis.sogimailer.mail.Profile;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
-public class MailerService extends IntentService implements Mailer.Listener {
+public class MailerService extends IntentService
+		implements Mailer.Listener, ProfileDude.MultipleListener {
 	private static final String TAG = "SOGIMAILER_SERVICE";
 
 	static final String ACTION = "com.sogilis.sogimailer.ACTION_SEND";
@@ -28,19 +29,25 @@ public class MailerService extends IntentService implements Mailer.Listener {
 	private static final String RETCODE_KEY = "MAILER_RETCODE";
 
 	@Inject Mailer mailer;
-	@Inject ProfileDude profileDude;
+	@Inject
+	ProfileDude profileDude;
 
-    public MailerService() {
-        super("test-service");
-    }
+	private String subject;
+	private String body;
+	private String recipients;
+	private String password;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-	    Log.d(TAG, "onCreate");
+	public MailerService() {
+		super("test-service");
+	}
 
-	    ((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
-    }
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		Log.d(TAG, "onCreate");
+
+		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
+	}
 
 	/**
 	 * When binding to the service, we return an interface to our messenger
@@ -50,24 +57,30 @@ public class MailerService extends IntentService implements Mailer.Listener {
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "Handle new intent");
 
-		String subject = intent.getStringExtra(OPT_SUBJECT);
-		String body = intent.getStringExtra(OPT_BODY);
-		String recipients = intent.getStringExtra(OPT_RECIPIENTS);
-		String password = intent.getStringExtra(OPT_PASSWORD);
 		Log.d(TAG, "sub, body, reci, pawd : " + subject + " " + body + " " + recipients + " " + password);
+		subject = intent.getStringExtra(OPT_SUBJECT);
+		body = intent.getStringExtra(OPT_BODY);
+		recipients = intent.getStringExtra(OPT_RECIPIENTS);
+		password = intent.getStringExtra(OPT_PASSWORD);
 
 		if (!checkKeys(subject, body, recipients)) {
 			onMailFailure("Bad argument");
 			return;
 		}
 
-		try {
-			mailer.updateProfile(profileDude.getBasic());
-			Log.d(TAG, "Sending mail to mailer !");
-			mailer.sendSimpleMail(this, recipients, subject, body);
-		} catch(NoSuchProfileException e) {
-			onMailFailure(e.getMessage());
+		profileDude.getAll(this);
+
+	}
+
+	@Override
+	public void onProfilesUpdate(List<Profile> profiles) {
+		if (profiles.size() != 1) {
+			onMailFailure("Unable to retrieve mailer profile");
 		}
+
+		mailer.updateProfile(profiles.get(0));
+		Log.d(TAG, "Sending mail to mailer !");
+		mailer.sendSimpleMail(this, recipients, subject, body);
 	}
 
 	@Override

@@ -31,6 +31,14 @@ public class Basic implements Profile {
 		this.mSender = mSender;
 	}
 
+	public Basic(String mName, String mHost, String mPassword, String mSender) {
+		this.mId = -1;
+		this.mName = mName;
+		this.mHost = mHost;
+		this.mPassword = mPassword;
+		this.mSender = mSender;
+	}
+
 	public Basic(Parcel in) {
 		this.mId = in.readLong();
 		this.mName = in.readString();

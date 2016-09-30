@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.sogilis.sogimailer.dude.ProfileDude;
+import com.sogilis.sogimailer.dude.ProfileDudeImpl;
 import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.svc.MailerService;
@@ -46,8 +47,9 @@ public class SogiMailerModule {
 		};
 	}
 
-	@Provides @Singleton ProfileDude providesProfileDude() {
-		return new ProfileDude();
+	@Provides @Singleton
+	ProfileDude providesProfileDude() {
+		return new ProfileDudeImpl();
 	}
 
 	@Provides @Singleton Mailer providesMailer() {

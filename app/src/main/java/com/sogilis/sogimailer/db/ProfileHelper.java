@@ -20,7 +20,7 @@ public class ProfileHelper {
 		return helper.getWritableDatabase();
 	}
 
-	private static void save(Profile profile) {
+	public static void save(Profile profile) {
 		ContentValues values = new ContentValues();
 		values.put(Contract.Profile.COLUMN_NAME_SENDER, profile.sender());
 		values.put(Contract.Profile.COLUMN_NAME_SENDER_PASSWORD, profile.senderPassword());
@@ -36,7 +36,7 @@ public class ProfileHelper {
 		db().insert(Contract.Profile.TABLE_NAME, null, values);
 	}
 
-	private static List<Profile> all() {
+	public static List<Profile> all() {
 		String[] projection = {
 				Contract.Profile._ID,
 				Contract.Profile.COLUMN_NAME_NAME,

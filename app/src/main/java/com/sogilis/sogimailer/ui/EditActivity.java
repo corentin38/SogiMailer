@@ -3,11 +3,12 @@ package com.sogilis.sogimailer.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 
 import com.sogilis.sogimailer.R;
+import com.sogilis.sogimailer.dude.Constants;
 import com.sogilis.sogimailer.dude.ProfileDude;
+import com.sogilis.sogimailer.mail.Basic;
 import com.sogilis.sogimailer.mail.Profile;
 
 import javax.inject.Inject;
@@ -18,7 +19,8 @@ public class EditActivity extends BaseActivity {
 
 	public static final String PROFILE_KEY = "EDIT_PROFILE_KEY";
 
-	@Inject ProfileDude profileDude;
+	@Inject
+	ProfileDude profileDude;
 
 	private EditFragment mEdit;
 
@@ -40,10 +42,14 @@ public class EditActivity extends BaseActivity {
 	}
 
 	public void saveEdit(View view) {
-		profileDude.saveBasic(
-				mEdit.getSenderEntry(),
+		Profile profile = new Basic(
+				Constants.GMAIL_PROFILE_NAME,
 				mEdit.getHostEntry(),
-				mEdit.getPasswordEntry());
+				mEdit.getPasswordEntry(),
+				mEdit.getSenderEntry());
+
+		profileDude.save(profile);
+
 		finish();
 	}
 

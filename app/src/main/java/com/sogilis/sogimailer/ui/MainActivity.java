@@ -25,14 +25,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class MainActivity extends BaseActivity implements HomeFragment.Listener {
+public class MainActivity extends BaseActivity
+		implements HomeFragment.Listener, ProfileDude.MultipleListener {
 
 	private static final String TAG = "SOGIMAILER_ACTIVITY";
 
 	private static final String SOGIMAILER_ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
 	@Inject BroadcastReceiver testReceiver;
-	@Inject ProfileDude profileDude;
+	@Inject
+	ProfileDude profileDude;
 
 	private DrawerLayout mDrawer;
 	private NavigationView mNavigationView;
@@ -44,24 +46,31 @@ public class MainActivity extends BaseActivity implements HomeFragment.Listener 
 		setUpToolbar(R.string.app_name, true, true);
 		Log.d(TAG, "onCreate");
 
-		List<Profile> profileList = profileDude.all();
-		Profile[] profiles = profileList.toArray(new Profile[profileList.size()]);
-
 		mDrawer = (DrawerLayout) findViewById(R.id.drawer);
 		mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 		initDrawer();
-
-        // Setting ViewPager for each Tabs
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager, profiles);
-
-        // Set Tabs inside Toolbar
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
-
 	}
 
-    // Add Fragments to Tabs
+	@Override
+	protected void onPostResume() {
+		super.onPostResume();
+		profileDude.getAll(this);
+	}
+
+	@Override
+	public void onProfilesUpdate(List<Profile> profiles) {
+		Profile[] profilesArray = profiles.toArray(new Profile[profiles.size()]);
+
+		// Setting ViewPager for each Tabs
+		ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+		setupViewPager(viewPager, profilesArray);
+
+		// Set Tabs inside Toolbar
+		TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+		tabs.setupWithViewPager(viewPager);
+	}
+
+	// Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager, Profile[] profiles) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(HomeFragment.newInstance(profiles), "Profiles");
