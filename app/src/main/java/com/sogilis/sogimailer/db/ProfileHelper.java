@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
-import com.sogilis.sogimailer.mail.Basic;
+import com.sogilis.sogimailer.mail.ExtendedProfile;
 import com.sogilis.sogimailer.mail.Profile;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ProfileHelper {
 
 	private static final String TAG = "PROFILE_DB";
-	
+
 	private static SQLiteDatabase db() {
 		DbHelper helper = new DbHelper(SogiMailerApplication.ctx);
 		return helper.getWritableDatabase();
@@ -38,25 +38,25 @@ public class ProfileHelper {
 
 	private static List<Profile> all() {
 		String[] projection = {
-			Contract.Profile._ID,
-			Contract.Profile.COLUMN_NAME_SENDER,
-			Contract.Profile.COLUMN_NAME_SENDER_PASSWORD,
-			Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL,
-			Contract.Profile.COLUMN_NAME_HOST,
-			Contract.Profile.COLUMN_NAME_SMTP_QUIT_WAIT,
-			Contract.Profile.COLUMN_NAME_SMTP_AUTH,
-			Contract.Profile.COLUMN_NAME_SMTP_PORT,
-			Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT,
-			Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS,
-			Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK,
+				Contract.Profile._ID,
+				Contract.Profile.COLUMN_NAME_SENDER,
+				Contract.Profile.COLUMN_NAME_SENDER_PASSWORD,
+				Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL,
+				Contract.Profile.COLUMN_NAME_HOST,
+				Contract.Profile.COLUMN_NAME_SMTP_QUIT_WAIT,
+				Contract.Profile.COLUMN_NAME_SMTP_AUTH,
+				Contract.Profile.COLUMN_NAME_SMTP_PORT,
+				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT,
+				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS,
+				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK,
 		};
 
 		Cursor c = db().query(
-			Contract.Profile.TABLE_NAME,
-			projection,
-			null, null,
-			null, null,
-			null);
+				Contract.Profile.TABLE_NAME,
+				projection,
+				null, null,
+				null, null,
+				null);
 
 		List<Profile> profiles = new ArrayList<>();
 
@@ -65,6 +65,7 @@ public class ProfileHelper {
 		}
 
 		do {
+			
 			long sqlId                       = c.getLong(c.getColumnIndex(Contract.Profile._ID));
 			String sender                    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER));
 			String senderPassword            = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER_PASSWORD));
@@ -77,7 +78,10 @@ public class ProfileHelper {
 			String smtpSocketFactoryClass    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS));
 			String smtpSocketFactoryFallback = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK));
 
-			profiles.add(new Basic(sqlId, "to", "to", "to"));
+			profiles.add(new ExtendedProfile(host, sqlId, sender, senderPassword, smtpAuth,
+					smtpPort, smtpQuitWait, smtpSocketFactoryClass, smtpSocketFactoryFallback,
+					smtpSocketFactoryPort, transportProtocol));
+
 		} while (c.moveToNext());
 
 		return profiles;
