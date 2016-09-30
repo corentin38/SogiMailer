@@ -1,60 +1,126 @@
 package com.sogilis.sogimailer.ui;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
+import com.sogilis.sogimailer.SogiMailerApplication;
+import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Profile;
 
-public class HomeFragment extends Fragment {
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class HomeFragment extends Fragment implements ProfileDude.MultipleListener {
 
 	private static final String TAG = "SOGIMAILER_HOMEFRAG";
-	public static final String FRAGMENT_KEY = "com.sogilis.sogimailer.ui.HomeFragment";
+	private static final String PROFILE_ARRAY_BUNDLE_KEY = "profile_array_bundle_key";
 
-	private static final String SENDER_BUNDLE_KEY = "sender_bundle_key";
-	private static final String HOST_BUNDLE_KEY = "host_bundle_key";
-	private static final String PASSWORD_BUNDLE_KEY = "password_bundle_key";
+	@Inject ProfileDude profileDude;
 
-	public static HomeFragment newInstance(Profile profile) {
-		HomeFragment frag = new HomeFragment();
+	public interface Listener {
+		void onEditButtonClicked(Profile profile);
+	}
 
-		Bundle bun = new Bundle();
-		bun.putString(SENDER_BUNDLE_KEY, profile.sender());
-		bun.putString(HOST_BUNDLE_KEY, profile.host());
-		bun.putString(PASSWORD_BUNDLE_KEY, profile.senderPassword());
-
-		frag.setArguments(bun);
-		return frag;
+	public static HomeFragment newInstance() {
+		return new HomeFragment();
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
-		View view = inflater.inflate(R.layout.fragment_home, container, false);
-		initProfileBox(view);
-		return view;
+		Listener listener = (Listener) getContext();
+		((SogiMailerApplication) getActivity().getApplication()).getObjectGraph().inject(this);
+
+		RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+		ContentAdapter adapter = new ContentAdapter(new Profile[0], listener);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+		return recyclerView;
 	}
 
-	private void initProfileBox(View view) {
-		Bundle bun = getArguments();
-		String sender = bun.getString(SENDER_BUNDLE_KEY, "");
-		String host = bun.getString(HOST_BUNDLE_KEY, "");
-		String password = bun.getString(PASSWORD_BUNDLE_KEY, "");
+	@Override
+	public void onResume() {
+		super.onResume();
+		profileDude.getAll(this);
+	}
 
-		TextView senderTV = (TextView) view.findViewById(R.id.home_default_user);
-		TextView hostTV = (TextView) view.findViewById(R.id.home_default_host);
-		TextView passwordTV = (TextView) view.findViewById(R.id.home_default_mdp);
+	@Override
+	public void onProfilesUpdate(List<Profile> profiles) {
+		Profile[] profilesArray = profiles.toArray(new Profile[profiles.size()]);
 
-		senderTV.setText(sender);
-		hostTV.setText(host);
-		passwordTV.setText(password);
+		RecyclerView view = (RecyclerView) getView();
+		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
+
+		adapter.updateProfiles(profilesArray);
+
+	}
+
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		public TextView senderTV;
+		public TextView hostTV;
+		public TextView passwordTV;
+		public Button editButton;
+
+		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
+			super(inflater.inflate(R.layout.fragment_home, parent, false));
+			senderTV = (TextView) itemView.findViewById(R.id.home_default_user);
+			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
+			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
+			editButton = (Button) itemView.findViewById(R.id.edit_button);
+		}
+	}
+
+	public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
+		private Profile[] mProfiles;
+		private Listener mListener;
+
+		public ContentAdapter(Profile[] profiles, Listener listener) {
+			this.mProfiles = profiles;
+			this.mListener = listener;
+		}
+
+		@Override
+		public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			return new ViewHolder(LayoutInflater.from(parent.getContext()), parent);
+		}
+
+		@Override
+		public void onBindViewHolder(ViewHolder holder, int position) {
+			final Profile profile = mProfiles[position];
+			holder.senderTV.setText(profile.sender());
+			holder.hostTV.setText(profile.host());
+			holder.passwordTV.setText(profile.senderPassword());
+			holder.editButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mListener.onEditButtonClicked(profile);
+				}
+			});
+		}
+
+		@Override
+		public int getItemCount() {
+			return mProfiles.length;
+		}
+
+		public void updateProfiles(Profile[] profiles) {
+			this.mProfiles = profiles;
+			notifyDataSetChanged();
+		}
 	}
 
 }

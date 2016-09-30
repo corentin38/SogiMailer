@@ -1,81 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:orientation="vertical"
-			  android:layout_width="match_parent"
-			  android:padding="15dp"
-			  android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/card_view"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:layout_marginBottom="8dp"
+	android:layout_marginEnd="8dp"
+	android:layout_marginStart="8dp"
+	>
 
-	<android.support.v7.widget.CardView
-		xmlns:card_view="http://schemas.android.com/apk/res-auto"
-		android:id="@+id/card_view"
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		card_view:cardCornerRadius="4dp"
-		android:layout_gravity="center"
 		>
 
-		<LinearLayout
+		<TextView
+			android:id="@+id/card_title"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			>
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingTop="16dp"
+			android:paddingBottom="16dp"
+			android:theme="@style/CardTitle"
+			android:text="Gmail profile"
+			/>
 
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				>
+		<TextView
+			android:id="@+id/home_default_host"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/card_title"
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingBottom="8dp"
+			android:theme="@style/CardLine"
+			android:text="@string/undefined"
+			/>
 
-				<TextView
-					android:layout_width="0dp"
-					android:layout_weight="1"
-					android:layout_height="wrap_content"
-					android:theme="@style/CardTitle"
-					android:text="Basic profile"
-					/>
+		<TextView
+			android:id="@+id/home_default_user"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/home_default_host"
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingBottom="8dp"
+			android:theme="@style/CardLine"
+			android:text="@string/undefined"
+			/>
 
-				<ImageView
-					android:layout_width="35dp"
-					android:layout_height="35dp"
-					android:padding="5dp"
-					android:src="@android:drawable/ic_menu_edit"
-					android:layout_gravity="center_vertical"
-					android:onClick="edit"
-					/>
+		<TextView
+			android:id="@+id/home_default_mdp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/home_default_user"
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingBottom="8dp"
+			android:theme="@style/CardLine"
+			android:text="@string/undefined"
+			android:inputType="textPassword"
+			/>
 
-			</LinearLayout>
+		<Button
+			android:id="@+id/edit_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/home_default_mdp"
+			style="?android:attr/borderlessButtonStyle"
+			android:textColor="?attr/colorPrimary"
+			android:text="Edit"
+			/>
 
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:theme="@style/CardLine"
-				android:id="@+id/home_default_host"
-				android:text="@string/undefined"
-				/>
+		<Button
+			android:id="@+id/suppr_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@+id/edit_button"
+			android:layout_below="@+id/home_default_mdp"
+			style="?android:attr/borderlessButtonStyle"
+			android:textColor="@android:color/darker_gray"
+			android:text="Delete"
+			android:enabled="false"
+			/>
 
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:theme="@style/CardLine"
-				android:id="@+id/home_default_user"
-				android:text="@string/undefined"
-				/>
+	</RelativeLayout>
 
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:theme="@style/CardLine"
-				android:id="@+id/home_default_mdp"
-				android:text="@string/undefined"
-				android:inputType="textPassword"
-				/>
-
-		</LinearLayout>
-
-	</android.support.v7.widget.CardView>
-
-	<View
-		android:layout_width="match_parent"
-		android:layout_height="400dp"/>
-
-</LinearLayout>
+</android.support.v7.widget.CardView>

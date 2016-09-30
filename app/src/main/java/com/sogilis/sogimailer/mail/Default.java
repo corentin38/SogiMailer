@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 public class Default implements Profile {
 
+	public static final String DEFAULT_PROFILE_NAME = "default";
+
 	private String password;
 
 	public Default(String password) {
@@ -29,6 +31,16 @@ public class Default implements Profile {
 
 	public Default() {
 		this.password = "THIS WON'T WORK !!!";
+	}
+
+	@Override
+	public long id() {
+		return 0;
+	}
+
+	@Override
+	public String name() {
+		return DEFAULT_PROFILE_NAME;
 	}
 
 	@Override

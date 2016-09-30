@@ -11,4 +11,6 @@ public class Constants {
 	public static final String TESTMAIL_SUBJECT_PREVIOUS = "previous_subject_testmail";
 	public static final String TESTMAIL_BODY_PREVIOUS = "previous_body_testmail";
 
+	public static final String GMAIL_PROFILE_NAME = "gmail";
+
 }
