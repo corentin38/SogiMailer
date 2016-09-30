@@ -25,8 +25,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class MainActivity extends BaseActivity
-		implements HomeFragment.Listener, ProfileDude.MultipleListener {
+public class MainActivity extends BaseActivity implements HomeFragment.Listener {
 
 	private static final String TAG = "SOGIMAILER_ACTIVITY";
 
@@ -49,21 +48,10 @@ public class MainActivity extends BaseActivity
 		mDrawer = (DrawerLayout) findViewById(R.id.drawer);
 		mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 		initDrawer();
-	}
-
-	@Override
-	protected void onPostResume() {
-		super.onPostResume();
-		profileDude.getAll(this);
-	}
-
-	@Override
-	public void onProfilesUpdate(List<Profile> profiles) {
-		Profile[] profilesArray = profiles.toArray(new Profile[profiles.size()]);
 
 		// Setting ViewPager for each Tabs
 		ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-		setupViewPager(viewPager, profilesArray);
+		setupViewPager(viewPager);
 
 		// Set Tabs inside Toolbar
 		TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
@@ -71,9 +59,9 @@ public class MainActivity extends BaseActivity
 	}
 
 	// Add Fragments to Tabs
-    private void setupViewPager(ViewPager viewPager, Profile[] profiles) {
+    private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(HomeFragment.newInstance(profiles), "Profiles");
+        adapter.addFragment(HomeFragment.newInstance(), "Profiles");
         adapter.addFragment(new DocumentationFragment(), "Documentation");
         viewPager.setAdapter(adapter);
     }

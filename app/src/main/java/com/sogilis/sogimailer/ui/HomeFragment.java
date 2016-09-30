@@ -13,44 +13,58 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
+import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Profile;
 
-public class HomeFragment extends Fragment {
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class HomeFragment extends Fragment implements ProfileDude.MultipleListener {
 
 	private static final String TAG = "SOGIMAILER_HOMEFRAG";
 	private static final String PROFILE_ARRAY_BUNDLE_KEY = "profile_array_bundle_key";
+
+	@Inject ProfileDude profileDude;
 
 	public interface Listener {
 		void onEditButtonClicked(Profile profile);
 	}
 
-	public static HomeFragment newInstance(Profile[] profiles) {
-		HomeFragment frag = new HomeFragment();
-
-		Bundle bun = new Bundle();
-		bun.putParcelableArray(PROFILE_ARRAY_BUNDLE_KEY, profiles);
-
-		frag.setArguments(bun);
-		return frag;
+	public static HomeFragment newInstance() {
+		return new HomeFragment();
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
-
 		Listener listener = (Listener) getContext();
 
-		Bundle bun = getArguments();
-		Profile[] profiles = (Profile[]) bun.getParcelableArray(PROFILE_ARRAY_BUNDLE_KEY);
-
 		RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
-		ContentAdapter adapter = new ContentAdapter(profiles, listener);
+		ContentAdapter adapter = new ContentAdapter(new Profile[0], listener);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 		return recyclerView;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		profileDude.getAll(this);
+	}
+
+	@Override
+	public void onProfilesUpdate(List<Profile> profiles) {
+		Profile[] profilesArray = profiles.toArray(new Profile[profiles.size()]);
+
+		RecyclerView view = (RecyclerView) getView();
+		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
+
+		adapter.updateProfiles(profilesArray);
+
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -99,6 +113,11 @@ public class HomeFragment extends Fragment {
 		@Override
 		public int getItemCount() {
 			return mProfiles.length;
+		}
+
+		public void updateProfiles(Profile[] profiles) {
+			this.mProfiles = profiles;
+			notifyDataSetChanged();
 		}
 	}
 
