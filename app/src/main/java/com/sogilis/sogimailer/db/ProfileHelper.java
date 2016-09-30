@@ -65,7 +65,7 @@ public class ProfileHelper {
 		}
 
 		do {
-			
+
 			long sqlId                       = c.getLong(c.getColumnIndex(Contract.Profile._ID));
 			String sender                    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER));
 			String senderPassword            = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER_PASSWORD));
@@ -77,10 +77,11 @@ public class ProfileHelper {
 			String smtpSocketFactoryPort     = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT));
 			String smtpSocketFactoryClass    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS));
 			String smtpSocketFactoryFallback = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK));
+			//String name                      = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_NAME));
 
 			profiles.add(new ExtendedProfile(host, sqlId, sender, senderPassword, smtpAuth,
 					smtpPort, smtpQuitWait, smtpSocketFactoryClass, smtpSocketFactoryFallback,
-					smtpSocketFactoryPort, transportProtocol));
+					smtpSocketFactoryPort, transportProtocol, "profileName"));
 
 		} while (c.moveToNext());
 

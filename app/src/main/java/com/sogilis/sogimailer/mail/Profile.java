@@ -5,6 +5,7 @@ import android.os.Parcelable;
 public interface Profile extends Parcelable {
 
 	long id();
+	String name();
 	String sender();
 	String senderPassword();
 	String transportProtocol();

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class ExtendedProfile implements Profile {
 
 	private long   mId;
+	private String mName;
 	private String mSender;
 	private String mSenderPassword;
 	private String mTransportProtocol;
@@ -20,7 +21,7 @@ public class ExtendedProfile implements Profile {
 	public ExtendedProfile(String mHost, long mId, String mSender, String mSenderPassword,
 	                       String mSmtpAuth, String mSmtpPort, String mSmtpQuitwait,
 	                       String mSmtpSocketFactoryClass, String mSmtpSocketFactoryFallback,
-	                       String mSmtpSocketFactoryPort, String mTransportProtocol) {
+	                       String mSmtpSocketFactoryPort, String mTransportProtocol, String mName) {
 		this.mHost = mHost;
 		this.mId = mId;
 		this.mSender = mSender;
@@ -32,6 +33,7 @@ public class ExtendedProfile implements Profile {
 		this.mSmtpSocketFactoryFallback = mSmtpSocketFactoryFallback;
 		this.mSmtpSocketFactoryPort = mSmtpSocketFactoryPort;
 		this.mTransportProtocol = mTransportProtocol;
+		this.mName = mName;
 	}
 
 	public ExtendedProfile(Parcel in) {
@@ -46,6 +48,12 @@ public class ExtendedProfile implements Profile {
 		this.mSmtpSocketFactoryFallback = in.readString();
 		this.mSmtpSocketFactoryPort = in.readString();
 		this.mTransportProtocol = in.readString();
+		this.mName = in.readString();
+	}
+
+	@Override
+	public String name() {
+		return mName;
 	}
 
 	@Override
@@ -121,6 +129,7 @@ public class ExtendedProfile implements Profile {
 		dest.writeString(mSmtpSocketFactoryFallback);
 		dest.writeString(mSmtpSocketFactoryPort);
 		dest.writeString(mTransportProtocol);
+		dest.writeString(mName);
 	}
 
 	public static final Parcelable.Creator<ExtendedProfile> CREATOR = new Parcelable.Creator<ExtendedProfile>() {
