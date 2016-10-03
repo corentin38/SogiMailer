@@ -42,8 +42,20 @@ public class ProfileDudeImpl implements ProfileDude {
 	}
 
 	@Override
-	public void findById(ProfileDude.SingleListener listener, long id) {
-		throw new RuntimeException("Not yet implemented");
+	public void findById(final ProfileDude.SingleListener listener, final long id) {
+		new AsyncTask<Void, Void, Profile>() {
+
+			@Override
+			protected Profile doInBackground(Void... v) {
+				return ProfileHelper.findById(id);
+			}
+
+			@Override
+			protected void onPostExecute(Profile profile) {
+				listener.onProfileUpdate(profile);
+			}
+
+		}.execute();
 	}
 
 	@Override

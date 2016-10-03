@@ -119,4 +119,54 @@ public class ProfileHelper {
 		db().delete(Contract.Profile.TABLE_NAME, selection, selectionArgs);
 	}
 
+	public static Profile findById(long id) {
+		String[] projection = {
+				Contract.Profile._ID,
+				Contract.Profile.COLUMN_NAME_NAME,
+				Contract.Profile.COLUMN_NAME_SENDER,
+				Contract.Profile.COLUMN_NAME_SENDER_PASSWORD,
+				Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL,
+				Contract.Profile.COLUMN_NAME_HOST,
+				Contract.Profile.COLUMN_NAME_SMTP_QUIT_WAIT,
+				Contract.Profile.COLUMN_NAME_SMTP_AUTH,
+				Contract.Profile.COLUMN_NAME_SMTP_PORT,
+				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT,
+				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS,
+				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK,
+		};
+
+		String selection = Contract.Profile._ID + " = ?";
+		String[] selectionArgs = { String.valueOf(id) };
+
+		Cursor c = db().query(
+				Contract.Profile.TABLE_NAME,
+				projection,
+				selection, selectionArgs,
+				null, null,
+				null);
+
+		if (!c.moveToFirst()) {
+			return null;
+		}
+
+		long sqlId                       = c.getLong(c.getColumnIndex(Contract.Profile._ID));
+		String name                      = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_NAME));
+		String sender                    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER));
+		String senderPassword            = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SENDER_PASSWORD));
+		String transportProtocol         = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_TRANSPORT_PROTOCOL));
+		String host                      = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_HOST));
+		String smtpQuitWait              = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_QUIT_WAIT));
+		String smtpAuth                  = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_AUTH));
+		String smtpPort                  = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_PORT));
+		String smtpSocketFactoryPort     = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT));
+		String smtpSocketFactoryClass    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS));
+		String smtpSocketFactoryFallback = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK));
+
+		Profile profile = new ExtendedProfile(host, sqlId, sender, senderPassword, smtpAuth,
+				smtpPort, smtpQuitWait, smtpSocketFactoryClass, smtpSocketFactoryFallback,
+				smtpSocketFactoryPort, transportProtocol, name);
+
+		return profile;
+	}
+
 }
