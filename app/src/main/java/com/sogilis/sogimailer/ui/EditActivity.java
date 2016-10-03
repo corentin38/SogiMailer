@@ -43,6 +43,7 @@ public class EditActivity extends BaseActivity {
 
 	public void saveEdit(View view) {
 		Profile profile = new Basic(
+				mEdit.getProfileId(),
 				Constants.GMAIL_PROFILE_NAME,
 				mEdit.getHostEntry(),
 				mEdit.getPasswordEntry(),

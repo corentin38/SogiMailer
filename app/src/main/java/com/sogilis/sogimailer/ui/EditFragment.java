@@ -23,6 +23,8 @@ public class EditFragment extends Fragment {
 	private EditText senderET;
 	private EditText passwordET;
 
+	private Profile mProfile;
+
 	public static EditFragment newInstance(Profile profile) {
 		EditFragment frag = new EditFragment();
 
@@ -43,19 +45,34 @@ public class EditFragment extends Fragment {
 		senderET = (EditText) view.findViewById(R.id.edit_user);
 		passwordET = (EditText) view.findViewById(R.id.edit_password);
 
-		if (savedInstanceState == null) initEditFields();
+		if (savedInstanceState == null) {
+			mProfile = getArguments().getParcelable(PROFILE_BUNDLE_KEY);
+		} else {
+			mProfile = savedInstanceState.getParcelable(PROFILE_BUNDLE_KEY);
+		}
+
+		initEditFields(mProfile);
+
 		return view;
 	}
 
-	private void initEditFields() {
-		Bundle bun = getArguments();
-		Profile profile = bun.getParcelable(PROFILE_BUNDLE_KEY);
+	private void initEditFields(Profile profile) {
+		if (profile == null) return;
 
-		if (profile != null) {
-			hostET.setText(profile.host());
-			senderET.setText(profile.sender());
-			passwordET.setText(profile.senderPassword());
-		}
+		hostET.setText(profile.host());
+		senderET.setText(profile.sender());
+		passwordET.setText(profile.senderPassword());
+
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable(PROFILE_BUNDLE_KEY, mProfile);
+	}
+
+	public long getProfileId() {
+		return mProfile.id();
 	}
 
 	public String getHostEntry() {
