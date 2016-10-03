@@ -15,7 +15,19 @@ public class ProfileDudeImpl implements ProfileDude {
 
 	@Override
 	public void delete(long id) {
-		throw new RuntimeException("Not yet implemented");
+		new AsyncTask<Long, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(Long... ids) {
+				ProfileHelper.delete(ids[0]);
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void v) {
+			}
+
+		}.execute(id);
 	}
 
 	@Override
