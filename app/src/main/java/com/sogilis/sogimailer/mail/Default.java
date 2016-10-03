@@ -35,7 +35,7 @@ public class Default implements Profile {
 
 	@Override
 	public long id() {
-		return 0;
+		return -1;
 	}
 
 	@Override
