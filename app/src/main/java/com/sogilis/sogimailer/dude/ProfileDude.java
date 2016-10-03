@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface ProfileDude {
 
-	// Crud
+	// Create
 	void save(Profile profile);
 
-	// cRud
+	// Read
 	interface SingleListener {
 		void onProfileUpdate(Profile profile);
 		void notFound();
@@ -23,10 +23,10 @@ public interface ProfileDude {
 	}
 	void getAll(MultipleListener listener);
 
-	// crUd
+	// Update
 	void update(Profile profile);
 
-	// cruD
+	// Delete
 	void delete(long id);
 
 }
