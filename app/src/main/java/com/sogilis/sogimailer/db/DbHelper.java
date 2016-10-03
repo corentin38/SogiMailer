@@ -22,7 +22,7 @@ public class DbHelper extends SQLiteOpenHelper {
 					Contract.Profile.COLUMN_NAME_SMTP_PORT                    + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT     + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS    + TEXT_TYPE + COMMA_SEP +
-					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE + COMMA_SEP + " )";
+					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE + ")";
 
 	private static final String SQL_DELETE_PROFILES =
 			"DROP TABLE IF EXISTS " + Contract.Profile.TABLE_NAME;
