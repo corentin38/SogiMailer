@@ -87,4 +87,7 @@ public class EditFragment extends Fragment {
 		return passwordET.getText().toString();
 	}
 
+	public boolean getIsDefault() {
+		return mProfile.isDefault();
+	}
 }
