@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
+import com.sogilis.sogimailer.dude.NotFoundException;
+import com.sogilis.sogimailer.dude.TooManyException;
 import com.sogilis.sogimailer.mail.ExtendedProfile;
 import com.sogilis.sogimailer.mail.Profile;
 
@@ -131,11 +133,11 @@ public class ProfileHelper {
 				null);
 
 		if (!c.moveToFirst()) {
-			return null;
+			throw new NotFoundException();
 		}
 
 		if (c.getCount() != 1) {
-			return null;
+			throw new TooManyException();
 		}
 
 		return fromCursor(c);
@@ -153,11 +155,11 @@ public class ProfileHelper {
 				null);
 
 		if (!c.moveToFirst()) {
-			return null;
+			throw new NotFoundException();
 		}
 
 		if (c.getCount() != 1) {
-			return null;
+			throw new TooManyException();
 		}
 
 		return fromCursor(c);

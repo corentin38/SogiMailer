@@ -12,6 +12,8 @@ public interface ProfileDude {
 	// cRud
 	interface SingleListener {
 		void onProfileUpdate(Profile profile);
+		void notFound();
+		void tooMany();
 	}
 	void findByName(SingleListener listener, String name);
 	void findById(SingleListener listener, long id);

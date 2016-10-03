@@ -41,12 +41,21 @@ public class ProfileDudeImpl implements ProfileDude {
 
 			@Override
 			protected Profile doInBackground(Void... v) {
-				return ProfileHelper.findByName(name);
+				try {
+					return ProfileHelper.findByName(name);
+				} catch (NotFoundException e) {
+					listener.notFound();
+				} catch (TooManyException e) {
+					listener.tooMany();
+				}
+				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Profile profile) {
+				if (profile == null) return;
 				listener.onProfileUpdate(profile);
+
 			}
 
 		}.execute();
@@ -58,11 +67,19 @@ public class ProfileDudeImpl implements ProfileDude {
 
 			@Override
 			protected Profile doInBackground(Void... v) {
-				return ProfileHelper.findById(id);
+				try {
+					return ProfileHelper.findById(id);
+				} catch (NotFoundException e) {
+					listener.notFound();
+				} catch (TooManyException e) {
+					listener.tooMany();
+				}
+				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Profile profile) {
+				if (profile == null) return;
 				listener.onProfileUpdate(profile);
 			}
 
