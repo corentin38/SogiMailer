@@ -14,37 +14,25 @@ public class ProfileDudeImpl implements ProfileDude {
 	private static final String TAG = "SOGIMAILER_PROFILEDUDE";
 
 	@Override
-	public void delete(long id) {
-		new AsyncTask<Long, Void, Void>() {
-
+	public void delete(final long id) {
+		new AsyncTask<Void, Void, Void>() {
 			@Override
-			protected Void doInBackground(Long... ids) {
-				ProfileHelper.delete(ids[0]);
+			protected Void doInBackground(Void... v) {
+				ProfileHelper.delete(id);
 				return null;
 			}
-
-			@Override
-			protected void onPostExecute(Void v) {
-			}
-
-		}.execute(id);
+		}.execute();
 	}
 
 	@Override
-	public void save(Profile profile) {
-		new AsyncTask<Profile, Void, Void>() {
-
+	public void save(final Profile profile) {
+		new AsyncTask<Void, Void, Void>() {
 			@Override
-			protected Void doInBackground(Profile... profiles) {
-				ProfileHelper.save(profiles[0]);
+			protected Void doInBackground(Void... v) {
+				ProfileHelper.save(profile);
 				return null;
 			}
-
-			@Override
-			protected void onPostExecute(Void v) {
-			}
-
-		}.execute(profile);
+		}.execute();
 	}
 
 
@@ -80,20 +68,14 @@ public class ProfileDudeImpl implements ProfileDude {
 	}
 
 	@Override
-	public void update(Profile profile) {
-		new AsyncTask<Profile, Void, Void>() {
-
+	public void update(final Profile profile) {
+		new AsyncTask<Void, Void, Void>() {
 			@Override
-			protected Void doInBackground(Profile... profiles) {
-				ProfileHelper.update(profiles[0]);
+			protected Void doInBackground(Void... v) {
+				ProfileHelper.update(profile);
 				return null;
 			}
-
-			@Override
-			protected void onPostExecute(Void v) {
-			}
-
-		}.execute(profile);
+		}.execute();
 	}
 
 	private void populate(final ProfileDude.MultipleListener listener) {
