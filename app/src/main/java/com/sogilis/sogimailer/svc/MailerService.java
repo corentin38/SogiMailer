@@ -77,6 +77,7 @@ public class MailerService extends IntentService
 	public void onProfilesUpdate(List<Profile> profiles) {
 		if (profiles.size() != 1) {
 			onMailFailure("Unable to retrieve mailer profile");
+			return;
 		}
 
 		mailer.updateProfile(profiles.get(0));
