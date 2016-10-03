@@ -141,4 +141,26 @@ public class ProfileHelper {
 		return fromCursor(c);
 	}
 
+	public static Profile findByName(String name) {
+		String selection = Contract.Profile.COLUMN_NAME_NAME + " = ?";
+		String[] selectionArgs = { name };
+
+		Cursor c = db().query(
+				Contract.Profile.TABLE_NAME,
+				FULL_PROFILE_PROJECTION,
+				selection, selectionArgs,
+				null, null,
+				null);
+
+		if (!c.moveToFirst()) {
+			return null;
+		}
+
+		if (c.getCount() != 1) {
+			return null;
+		}
+
+		return fromCursor(c);
+	}
+
 }
