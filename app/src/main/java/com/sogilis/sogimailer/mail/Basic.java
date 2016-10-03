@@ -10,6 +10,7 @@ public class Basic implements Profile {
 	private String mSender;
 	private String mHost;
 	private String mPassword;
+	private boolean mIsDefault;
 
 	public static final Parcelable.Creator<Basic> CREATOR = new Parcelable.Creator<Basic>() {
 		@Override
@@ -23,20 +24,22 @@ public class Basic implements Profile {
 		}
 	};
 
-	public Basic(long mId, String mName, String mHost, String mPassword, String mSender) {
+	public Basic(long mId, String mName, String mHost, String mPassword, String mSender, boolean mIsDefault) {
 		this.mId = mId;
 		this.mName = mName;
 		this.mHost = mHost;
 		this.mPassword = mPassword;
 		this.mSender = mSender;
+		this.mIsDefault = mIsDefault;
 	}
 
-	public Basic(String mName, String mHost, String mPassword, String mSender) {
+	public Basic(String mName, String mHost, String mPassword, String mSender, boolean mIsDefault) {
 		this.mId = -1;
 		this.mName = mName;
 		this.mHost = mHost;
 		this.mPassword = mPassword;
 		this.mSender = mSender;
+		this.mIsDefault = mIsDefault;
 	}
 
 	public Basic(Parcel in) {
@@ -45,6 +48,7 @@ public class Basic implements Profile {
 		this.mSender = in.readString();
 		this.mHost = in.readString();
 		this.mPassword = in.readString();
+		this.mIsDefault = in.readByte() != 0;
 	}
 
 	@Override
@@ -108,6 +112,11 @@ public class Basic implements Profile {
 	}
 
 	@Override
+	public boolean isDefault() {
+		return mIsDefault;
+	}
+
+	@Override
 	public int describeContents() {
 		return 0;
 	}
@@ -119,5 +128,6 @@ public class Basic implements Profile {
 		dest.writeString(this.mSender);
 		dest.writeString(this.mHost);
 		dest.writeString(this.mPassword);
+		dest.writeByte((byte) (mIsDefault ? 1 : 0));
 	}
 }

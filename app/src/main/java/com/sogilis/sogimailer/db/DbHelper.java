@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
 	private static final String TEXT_TYPE = " TEXT";
+	private static final String BOOLEAN_TYPE = "INTEGER";
 	private static final String COMMA_SEP = ",";
 
 	private static final String SQL_CREATE_PROFILES =
@@ -22,7 +23,8 @@ public class DbHelper extends SQLiteOpenHelper {
 					Contract.Profile.COLUMN_NAME_SMTP_PORT                    + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT     + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS    + TEXT_TYPE + COMMA_SEP +
-					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE + ")";
+					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE + COMMA_SEP +
+					Contract.Profile.COLUMN_NAME_IS_DEFAULT                   + BOOLEAN_TYPE + ")";
 
 	private static final String SQL_DELETE_PROFILES =
 			"DROP TABLE IF EXISTS " + Contract.Profile.TABLE_NAME;

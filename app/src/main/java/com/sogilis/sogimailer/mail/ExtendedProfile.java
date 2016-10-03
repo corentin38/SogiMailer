@@ -17,11 +17,13 @@ public class ExtendedProfile implements Profile {
 	private String mSmtpSocketFactoryPort;
 	private String mSmtpSocketFactoryClass;
 	private String mSmtpSocketFactoryFallback;
+	private boolean mIsDefault;
 
 	public ExtendedProfile(String mHost, long mId, String mSender, String mSenderPassword,
 	                       String mSmtpAuth, String mSmtpPort, String mSmtpQuitwait,
 	                       String mSmtpSocketFactoryClass, String mSmtpSocketFactoryFallback,
-	                       String mSmtpSocketFactoryPort, String mTransportProtocol, String mName) {
+	                       String mSmtpSocketFactoryPort, String mTransportProtocol, String mName,
+	                       boolean mIsDefault) {
 		this.mHost = mHost;
 		this.mId = mId;
 		this.mSender = mSender;
@@ -34,6 +36,7 @@ public class ExtendedProfile implements Profile {
 		this.mSmtpSocketFactoryPort = mSmtpSocketFactoryPort;
 		this.mTransportProtocol = mTransportProtocol;
 		this.mName = mName;
+		this.mIsDefault = mIsDefault;
 	}
 
 	public ExtendedProfile(Parcel in) {
@@ -49,6 +52,7 @@ public class ExtendedProfile implements Profile {
 		this.mSmtpSocketFactoryPort = in.readString();
 		this.mTransportProtocol = in.readString();
 		this.mName = in.readString();
+		this.mIsDefault = in.readByte() != 0;
 	}
 
 	@Override
@@ -112,6 +116,11 @@ public class ExtendedProfile implements Profile {
 	}
 
 	@Override
+	public boolean isDefault() {
+		return mIsDefault;
+	}
+
+	@Override
 	public int describeContents() {
 		return 0;
 	}
@@ -130,6 +139,7 @@ public class ExtendedProfile implements Profile {
 		dest.writeString(mSmtpSocketFactoryPort);
 		dest.writeString(mTransportProtocol);
 		dest.writeString(mName);
+		dest.writeByte((byte) (mIsDefault ? 1 : 0));
 	}
 
 	public static final Parcelable.Creator<ExtendedProfile> CREATOR = new Parcelable.Creator<ExtendedProfile>() {

@@ -19,6 +19,7 @@ public class Contract {
 		public static final String COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT     = "smtp_socket_factory_port";
 		public static final String COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS    = "smtp_socket_factory_class";
 		public static final String COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK = "smtp_socket_factory_fallback";
+		public static final String COLUMN_NAME_IS_DEFAULT                   = "is_default";
 	}
 
 }

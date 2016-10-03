@@ -32,6 +32,7 @@ public class ProfileHelper {
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT, profile.smtpSocketFactoryPort());
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS, profile.smtpSocketFactoryClass());
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK, profile.smtpSocketFactoryFallback());
+		values.put(Contract.Profile.COLUMN_NAME_IS_DEFAULT, profile.isDefault());
 
 		db().insert(Contract.Profile.TABLE_NAME, null, values);
 	}
@@ -50,6 +51,7 @@ public class ProfileHelper {
 				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT,
 				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS,
 				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK,
+				Contract.Profile.COLUMN_NAME_IS_DEFAULT
 		};
 
 		Cursor c = db().query(
@@ -79,10 +81,11 @@ public class ProfileHelper {
 			String smtpSocketFactoryPort     = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT));
 			String smtpSocketFactoryClass    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS));
 			String smtpSocketFactoryFallback = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK));
+			int isDefault                    = c.getInt(c.getColumnIndex(Contract.Profile.COLUMN_NAME_IS_DEFAULT));
 
 			profiles.add(new ExtendedProfile(host, sqlId, sender, senderPassword, smtpAuth,
 					smtpPort, smtpQuitWait, smtpSocketFactoryClass, smtpSocketFactoryFallback,
-					smtpSocketFactoryPort, transportProtocol, name));
+					smtpSocketFactoryPort, transportProtocol, name, isDefault != 0));
 
 		} while (c.moveToNext());
 
@@ -102,6 +105,7 @@ public class ProfileHelper {
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT, profile.smtpSocketFactoryPort());
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS, profile.smtpSocketFactoryClass());
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK, profile.smtpSocketFactoryFallback());
+		values.put(Contract.Profile.COLUMN_NAME_IS_DEFAULT, profile.isDefault());
 
 		String selection = Contract.Profile._ID + " LIKE ?";
 		String[] selectionArgs = { String.valueOf(profile.id()) };
@@ -133,6 +137,7 @@ public class ProfileHelper {
 				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT,
 				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS,
 				Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK,
+				Contract.Profile.COLUMN_NAME_IS_DEFAULT
 		};
 
 		String selection = Contract.Profile._ID + " = ?";
@@ -161,10 +166,11 @@ public class ProfileHelper {
 		String smtpSocketFactoryPort     = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT));
 		String smtpSocketFactoryClass    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS));
 		String smtpSocketFactoryFallback = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK));
+		int isDefault                    = c.getInt(c.getColumnIndex(Contract.Profile.COLUMN_NAME_IS_DEFAULT));
 
 		Profile profile = new ExtendedProfile(host, sqlId, sender, senderPassword, smtpAuth,
 				smtpPort, smtpQuitWait, smtpSocketFactoryClass, smtpSocketFactoryFallback,
-				smtpSocketFactoryPort, transportProtocol, name);
+				smtpSocketFactoryPort, transportProtocol, name, isDefault != 0);
 
 		return profile;
 	}
