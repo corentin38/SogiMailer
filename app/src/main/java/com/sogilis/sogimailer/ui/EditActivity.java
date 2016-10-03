@@ -48,7 +48,7 @@ public class EditActivity extends BaseActivity {
 				mEdit.getPasswordEntry(),
 				mEdit.getSenderEntry());
 
-		profileDude.save(profile);
+		profileDude.update(profile);
 
 		finish();
 	}
