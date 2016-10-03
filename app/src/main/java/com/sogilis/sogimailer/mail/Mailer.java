@@ -1,5 +1,6 @@
 package com.sogilis.sogimailer.mail;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.sogilis.sogimailer.ui.TestMailDialog;
@@ -65,7 +66,7 @@ public class Mailer extends Authenticator {
 		return new PasswordAuthentication(profile.sender(), profile.senderPassword());
 	}
 
-	public boolean sendSimpleMail(Listener listener, String recipients, String subject, String body) {
+	public boolean sendSimpleMail(final Listener listener, String recipients, String subject, String body) {
 		MimeMessage message;
 		Log.d(TAG, "Sending simple mail to " + recipients);
 
@@ -94,18 +95,24 @@ public class Mailer extends Authenticator {
 			return false;
 		}
 
-		try {
-			Transport.send(message);
-		} catch (Exception e) {
-			String err = "Unable to send email automatically. Cause: " + e.getMessage();
+		new AsyncTask<MimeMessage, Void, Void>() {
+			@Override
+			protected Void doInBackground(MimeMessage... params) {
+				try {
+					Transport.send(params[0]);
+				} catch (Exception e) {
+					String err = "Unable to send email automatically. Cause: " + e.getMessage();
 
-			Log.w(TAG, err);
-			e.printStackTrace();
-			notifyListeners(listener, false, err);
-			return false;
-		}
+					Log.w(TAG, err);
+					e.printStackTrace();
+					notifyListeners(listener, false, err);
+					return null;
+				}
+				notifyListeners(listener, true, null);
+				return null;
+			}
+		}.execute(message);
 
-		notifyListeners(listener, true, null);
 		return true;
 	}
 
