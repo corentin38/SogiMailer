@@ -1,8 +1,10 @@
 package com.sogilis.sogimailer.dude;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.sogilis.sogimailer.db.ProfileHelper;
+import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Profile;
 
 import java.util.List;
@@ -55,6 +57,10 @@ public class ProfileDudeImpl implements ProfileDude {
 
 			@Override
 			protected void onPostExecute(List<Profile> profiles) {
+				if (profiles.size() == 0) {
+					populate(listener);
+					return;
+				}
 				listener.onProfilesUpdate(profiles);
 			}
 
@@ -76,6 +82,16 @@ public class ProfileDudeImpl implements ProfileDude {
 			}
 
 		}.execute(profile);
+	}
+
+	private void populate(final ProfileDude.MultipleListener listener) {
+		save(new Default());
+		try {
+			Thread.sleep(100);
+		} catch(InterruptedException e) {
+			Log.d(TAG, "populate: Our dirty technique failed !!");
+		}
+		getAll(listener);
 	}
 
 }
