@@ -58,11 +58,11 @@ public class MailerService extends IntentService
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "Handle new intent");
 
-		Log.d(TAG, "sub, body, reci, pawd : " + subject + " " + body + " " + recipients + " " + password);
 		subject = intent.getStringExtra(OPT_SUBJECT);
 		body = intent.getStringExtra(OPT_BODY);
 		recipients = intent.getStringExtra(OPT_RECIPIENTS);
 		password = intent.getStringExtra(OPT_PASSWORD);
+		Log.d(TAG, "sub, body, reci, pawd : " + subject + " " + body + " " + recipients + " " + password);
 
 		if (!checkKeys(subject, body, recipients)) {
 			onMailFailure("Bad argument");
