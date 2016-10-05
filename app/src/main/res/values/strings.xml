@@ -10,4 +10,5 @@
 	<string name="default_body_suggestion">Ceci est un message de test. Inutile de répondre !</string>
 	<string name="welcome_title">Welcome !</string>
 	<string name="welcome_message">Please configure a basic profile in order for SogiMailer to be able to handle your future intents</string>
+	<string name="edit_profile_make_default_link"><u>Make this profile default</u></string>
 </resources>
