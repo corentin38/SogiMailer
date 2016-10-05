@@ -47,8 +47,7 @@ public class EditActivity extends BaseActivity {
 				Constants.GMAIL_PROFILE_NAME,
 				mEdit.getHostEntry(),
 				mEdit.getPasswordEntry(),
-				mEdit.getSenderEntry(),
-				mEdit.getIsDefault());
+				mEdit.getSenderEntry());
 
 		profileDude.update(profile);
 

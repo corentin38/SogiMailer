@@ -29,8 +29,7 @@ public class ProfileHelper {
 			Contract.Profile.COLUMN_NAME_SMTP_PORT,
 			Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT,
 			Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS,
-			Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK,
-			Contract.Profile.COLUMN_NAME_IS_DEFAULT
+			Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK
 	};
 
 	private static ContentValues fromProfile(Profile profile) {
@@ -46,7 +45,6 @@ public class ProfileHelper {
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT, profile.smtpSocketFactoryPort());
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS, profile.smtpSocketFactoryClass());
 		values.put(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK, profile.smtpSocketFactoryFallback());
-		values.put(Contract.Profile.COLUMN_NAME_IS_DEFAULT, profile.isDefault());
 		return values;
 	}
 
@@ -63,11 +61,10 @@ public class ProfileHelper {
 		String smtpSocketFactoryPort     = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT));
 		String smtpSocketFactoryClass    = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS));
 		String smtpSocketFactoryFallback = c.getString(c.getColumnIndex(Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK));
-		int isDefault                    = c.getInt(c.getColumnIndex(Contract.Profile.COLUMN_NAME_IS_DEFAULT));
 
 		return new ExtendedProfile(host, sqlId, sender, senderPassword, smtpAuth,
 				smtpPort, smtpQuitWait, smtpSocketFactoryClass, smtpSocketFactoryFallback,
-				smtpSocketFactoryPort, transportProtocol, name, isDefault != 0);
+				smtpSocketFactoryPort, transportProtocol, name);
 	}
 
 	private static SQLiteDatabase db() {

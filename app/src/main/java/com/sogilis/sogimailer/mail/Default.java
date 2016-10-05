@@ -8,11 +8,9 @@ public class Default implements Profile {
 	public static final String DEFAULT_PROFILE_NAME = "default";
 
 	private String password;
-	private boolean mIsDefault;
 
-	public Default(String password, boolean mIsDefault) {
+	public Default(String password) {
 		this.password = password;
-		this.mIsDefault = mIsDefault;
 	}
 
 	public static final Parcelable.Creator<Default> CREATOR = new Parcelable.Creator<Default>() {
@@ -29,7 +27,6 @@ public class Default implements Profile {
 
 	public Default(Parcel in) {
 		this.password = in.readString();
-		this.mIsDefault = in.readByte() != 0;
 	}
 
 	public Default() {
@@ -97,11 +94,6 @@ public class Default implements Profile {
 	}
 
 	@Override
-	public boolean isDefault() {
-		return mIsDefault;
-	}
-
-	@Override
 	public int describeContents() {
 		return 0;
 	}
@@ -109,6 +101,5 @@ public class Default implements Profile {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(this.password);
-		dest.writeByte((byte) (mIsDefault ? 1 : 0));
 	}
 }

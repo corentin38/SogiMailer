@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
 	private static final String TEXT_TYPE = " TEXT";
-	private static final String BOOLEAN_TYPE = " INTEGER";
+	private static final String INTEGER_TYPE = " INTEGER";
 	private static final String COMMA_SEP = ",";
 
 	private static final String SQL_CREATE_PROFILES =
@@ -23,11 +23,18 @@ public class DbHelper extends SQLiteOpenHelper {
 					Contract.Profile.COLUMN_NAME_SMTP_PORT                    + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_PORT     + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_CLASS    + TEXT_TYPE + COMMA_SEP +
-					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE + COMMA_SEP +
-					Contract.Profile.COLUMN_NAME_IS_DEFAULT                   + BOOLEAN_TYPE + ")";
+					Contract.Profile.COLUMN_NAME_SMTP_SOCKET_FACTORY_FALLBACK + TEXT_TYPE+ ")";
 
 	private static final String SQL_DELETE_PROFILES =
 			"DROP TABLE IF EXISTS " + Contract.Profile.TABLE_NAME;
+
+	private static final String SQL_CREATE_DEFAULT_PROFILE =
+			"CREATE TABLE " + Contract.DefaultProfile.TABLE_NAME + " (" +
+					Contract.DefaultProfile._ID                             + " INTEGER PRIMARY KEY," +
+					Contract.DefaultProfile.COLUMNE_NAME_DEFAULT_PROFILE_ID + INTEGER_TYPE + ")";
+
+	private static final String SQL_DELETE_DEFAULT_PROFILE =
+			"DROP TABLE IF EXISTS " + Contract.DefaultProfile.TABLE_NAME;
 
 	public static final int DATABASE_VERSION = 1;
 	public static final String DATABASE_NAME = "SogiMailer.db";
@@ -38,11 +45,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(SQL_CREATE_PROFILES);
+		db.execSQL(SQL_CREATE_DEFAULT_PROFILE);
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// We should probably keep the user data ...
 		db.execSQL(SQL_DELETE_PROFILES);
+		db.execSQL(SQL_DELETE_DEFAULT_PROFILE);
 		onCreate(db);
 	}
 

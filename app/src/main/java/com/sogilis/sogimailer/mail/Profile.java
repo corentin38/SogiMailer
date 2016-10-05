@@ -16,6 +16,5 @@ public interface Profile extends Parcelable {
 	String smtpSocketFactoryPort();
 	String smtpSocketFactoryClass();
 	String smtpSocketFactoryFallback();
-	boolean isDefault();
 
 }
