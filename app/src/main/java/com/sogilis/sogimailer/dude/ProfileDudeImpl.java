@@ -3,6 +3,7 @@ package com.sogilis.sogimailer.dude;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.sogilis.sogimailer.db.DefaultProfileHelper;
 import com.sogilis.sogimailer.db.ProfileHelper;
 import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Profile;
@@ -87,6 +88,43 @@ public class ProfileDudeImpl implements ProfileDude {
 	}
 
 	@Override
+	public void getDefaultProfile(final SingleListener listener) {
+		new AsyncTask<Void, Void, Profile>() {
+
+			@Override
+			protected Profile doInBackground(Void... v) {
+				long id = DefaultProfileHelper.defaultProfileId();
+
+				if (id == -1) {
+					listener.notFound();
+					return null;
+				}
+
+				if (id == -2) {
+					listener.tooMany();
+					return null;
+				}
+
+				try {
+					return ProfileHelper.findById(id);
+				} catch (NotFoundException e) {
+					listener.notFound();
+				} catch (TooManyException e) {
+					listener.tooMany();
+				}
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Profile profile) {
+				if (profile == null) return;
+				listener.onProfileUpdate(profile);
+			}
+
+		}.execute();
+	}
+
+	@Override
 	public void getAll(final ProfileDude.MultipleListener listener) {
 		new AsyncTask<Void, Void, List<Profile>>() {
 
@@ -113,6 +151,17 @@ public class ProfileDudeImpl implements ProfileDude {
 			@Override
 			protected Void doInBackground(Void... v) {
 				ProfileHelper.update(profile);
+				return null;
+			}
+		}.execute();
+	}
+
+	@Override
+	public void setDefaultProfile(final long id) {
+		new AsyncTask<Void, Void, Void>() {
+			@Override
+			protected Void doInBackground(Void... v) {
+				DefaultProfileHelper.setDefaultProfile(id);
 				return null;
 			}
 		}.execute();

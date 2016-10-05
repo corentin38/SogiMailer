@@ -17,6 +17,7 @@ public interface ProfileDude {
 	}
 	void findByName(SingleListener listener, String name);
 	void findById(SingleListener listener, long id);
+	void getDefaultProfile(SingleListener listener);
 
 	interface MultipleListener {
 		void onProfilesUpdate(List<Profile> profiles);
@@ -25,6 +26,7 @@ public interface ProfileDude {
 
 	// Update
 	void update(Profile profile);
+	void setDefaultProfile(long id);
 
 	// Delete
 	void delete(long id);
