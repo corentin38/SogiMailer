@@ -169,11 +169,20 @@ public class ProfileDudeImpl implements ProfileDude {
 
 	private void populate(final ProfileDude.MultipleListener listener) {
 		save(new Default());
+
+		getAll(new MultipleListener() {
+			@Override
+			public void onProfilesUpdate(List<Profile> profiles) {
+				setDefaultProfile(profiles.get(0).id());
+			}
+		});
+
 		try {
 			Thread.sleep(100);
 		} catch(InterruptedException e) {
 			Log.d(TAG, "populate: Our dirty technique failed !!");
 		}
+
 		getAll(listener);
 	}
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sogilis.sogimailer.R;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class HomeFragment extends Fragment implements ProfileDude.MultipleListener {
+public class HomeFragment extends Fragment implements ProfileDude.MultipleListener, ProfileDude.SingleListener {
 
 	private static final String TAG = "SOGIMAILER_HOMEFRAG";
 	private static final String PROFILE_ARRAY_BUNDLE_KEY = "profile_array_bundle_key";
@@ -58,6 +59,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		profileDude.getAll(this);
 	}
 
+	// getAll listener
 	@Override
 	public void onProfilesUpdate(List<Profile> profiles) {
 		Profile[] profilesArray = profiles.toArray(new Profile[profiles.size()]);
@@ -66,14 +68,26 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
 
 		adapter.updateProfiles(profilesArray);
-
+		profileDude.getDefaultProfile(this);
 	}
+
+	// getDefaultProfileListener
+	@Override
+	public void onProfileUpdate(Profile profile) {
+		RecyclerView view = (RecyclerView) getView();
+		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
+		adapter.updateDefaultProfile(profile.id());
+	}
+
+	@Override public void notFound() {}
+	@Override public void tooMany() {}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public TextView senderTV;
 		public TextView hostTV;
 		public TextView passwordTV;
 		public Button editButton;
+		public ImageView isDefault;
 
 		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
 			super(inflater.inflate(R.layout.fragment_home, parent, false));
@@ -81,16 +95,19 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
 			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
 			editButton = (Button) itemView.findViewById(R.id.edit_button);
+			isDefault = (ImageView) itemView.findViewById(R.id.is_default);
 		}
 	}
 
 	public static class ContentAdapter extends RecyclerView.Adapter<ViewHolder> {
 		private Profile[] mProfiles;
 		private Listener mListener;
+		private long mDefaultProfileId;
 
 		public ContentAdapter(Profile[] profiles, Listener listener) {
 			this.mProfiles = profiles;
 			this.mListener = listener;
+			this.mDefaultProfileId = -1;
 		}
 
 		@Override
@@ -110,6 +127,11 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 					mListener.onEditButtonClicked(profile);
 				}
 			});
+			if (profile.id() == mDefaultProfileId) {
+				holder.isDefault.setVisibility(View.VISIBLE);
+			} else {
+				holder.isDefault.setVisibility(View.GONE);
+			}
 		}
 
 		@Override
@@ -119,6 +141,11 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 
 		public void updateProfiles(Profile[] profiles) {
 			this.mProfiles = profiles;
+			notifyDataSetChanged();
+		}
+
+		public void updateDefaultProfile(long id) {
+			this.mDefaultProfileId = id;
 			notifyDataSetChanged();
 		}
 	}
