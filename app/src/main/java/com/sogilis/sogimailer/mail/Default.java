@@ -93,6 +93,14 @@ public class Default implements Profile {
 		return "false";
 	}
 
+	@Override public void setHost(String host) {}
+	@Override public void setSender(String sender) {}
+
+	@Override
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public int describeContents() {
 		return 0;

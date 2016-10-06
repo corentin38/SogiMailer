@@ -113,6 +113,21 @@ public class Basic implements Profile {
 	}
 
 	@Override
+	public void setHost(String host) {
+		mHost = host;
+	}
+
+	@Override
+	public void setSender(String sender) {
+		mSender = sender;
+	}
+
+	@Override
+	public void setPassword(String password) {
+		mPassword = password;
+	}
+
+	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(this.mId);
 		dest.writeString(this.mName);

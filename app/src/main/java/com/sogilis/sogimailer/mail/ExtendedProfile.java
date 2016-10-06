@@ -112,6 +112,21 @@ public class ExtendedProfile implements Profile {
 	}
 
 	@Override
+	public void setHost(String host) {
+		mHost = host;
+	}
+
+	@Override
+	public void setSender(String sender) {
+		mSender = sender;
+	}
+
+	@Override
+	public void setPassword(String password) {
+		mSenderPassword = password;
+	}
+
+	@Override
 	public int describeContents() {
 		return 0;
 	}
