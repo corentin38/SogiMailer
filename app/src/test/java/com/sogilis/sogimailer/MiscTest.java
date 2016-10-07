@@ -7,6 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class MiscTest {
+/*
 
 	@Test
 	public void checkKeysNull() {
@@ -27,6 +28,7 @@ public class MiscTest {
 		// Empy body is allowed
 		assertEquals(false, MailerService.checkKeys(okay, okay, empt));
 	}
+*/
 
 
 }
