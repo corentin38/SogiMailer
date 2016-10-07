@@ -33,4 +33,5 @@ dependencies {
 
     compile 'com.squareup.dagger:dagger-compiler:1.2.5'
     compile 'com.sun.mail:android-mail:1.5.5'
+    compile 'com.facebook.stetho:stetho:1.4.1'
 }
