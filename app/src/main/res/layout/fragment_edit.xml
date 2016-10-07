@@ -60,6 +60,7 @@
 			android:paddingTop="30dp"
 			android:theme="@style/EditLine"
 			android:text="@string/edit_profile_make_default_link"
+			android:onClick="onSetAsDefaultClicked"
 			/>
 
 	</LinearLayout>
