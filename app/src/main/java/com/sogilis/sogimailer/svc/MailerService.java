@@ -6,20 +6,16 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.sogilis.sogimailer.SogiMailerApplication;
-import com.sogilis.sogimailer.dude.ProfileDude;
-import com.sogilis.sogimailer.mail.Mailer;
-import com.sogilis.sogimailer.mail.Profile;
 
-import java.util.List;
-
-import javax.inject.Inject;
+import java.util.Date;
 
 public class MailerService extends IntentService
-		implements Mailer.Listener, ProfileDude.MultipleListener {
+		implements MailRequest.Listener {
 	private static final String TAG = "SOGIMAILER_SERVICE";
 
 	static final String ACTION = "com.sogilis.sogimailer.ACTION_SEND";
 
+	private static final String OPT_PROFILE = "MAILER_OPT_PROFILE";
 	private static final String OPT_SUBJECT = "MAILER_OPT_SUBJECT";
 	private static final String OPT_PASSWORD = "MAILER_OPT_PASSWORD";
 	private static final String OPT_BODY = "MAILER_OPT_BODY";
@@ -27,16 +23,6 @@ public class MailerService extends IntentService
 
 	private static final String RESULTMSG_KEY = "MAILER_RESULTMSG";
 	private static final String RETCODE_KEY = "MAILER_RETCODE";
-
-	@Inject Mailer mailer;
-	@Inject
-	ProfileDude profileDude;
-
-	// XXX: Params are stored as attribute : WE SHOULD USE LOCK TO PREVENT ANOTHER REQUEST TO ...
-	private String subject;
-	private String body;
-	private String recipients;
-	private String password;
 
 	public MailerService() {
 		super("test-service");
@@ -58,41 +44,32 @@ public class MailerService extends IntentService
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "Handle new intent");
 
-		subject = intent.getStringExtra(OPT_SUBJECT);
-		body = intent.getStringExtra(OPT_BODY);
-		recipients = intent.getStringExtra(OPT_RECIPIENTS);
-		password = intent.getStringExtra(OPT_PASSWORD);
-		Log.d(TAG, "sub, body, reci, pawd : " + subject + " " + body + " " + recipients + " " + password);
+		Log.d(TAG, "Creating mail request, " +
+				"profile=["   + intent.getStringExtra(OPT_PROFILE)    + "], " +
+				"recipient=[" + intent.getStringExtra(OPT_RECIPIENTS) + "], " +
+				"subject=["   + intent.getStringExtra(OPT_SUBJECT)    + "], " +
+				"body=["      + intent.getStringExtra(OPT_BODY)       + "], "
+		);
 
-		if (!checkKeys(subject, body, recipients)) {
-			onMailFailure("Bad argument");
-			return;
-		}
+		ProfileMailRequest request = new ProfileMailRequest(new Date(), this);
+		request.setProfileName(intent.getStringExtra(OPT_PROFILE));
 
-		profileDude.getAll(this);
+		request.setMessage(
+				intent.getStringExtra(OPT_RECIPIENTS),
+				intent.getStringExtra(OPT_SUBJECT),
+				intent.getStringExtra(OPT_BODY));
 
+		request.send();
 	}
 
 	@Override
-	public void onProfilesUpdate(List<Profile> profiles) {
-		if (profiles.size() != 1) {
-			onMailFailure("Unable to retrieve mailer profile");
-			return;
-		}
-
-		mailer.updateProfile(profiles.get(0));
-		Log.d(TAG, "Sending mail to mailer !");
-		mailer.sendSimpleMail(this, recipients, subject, body);
+	public void onRequestFailure(Date id, String error) {
+		broadcastResult(-100, "[Request " + id.toString() + "] " + error);
 	}
 
 	@Override
-	public void onMailFailure(String err) {
-		broadcastResult(-12, err);
-	}
-
-	@Override
-	public void onMailSuccess() {
-		broadcastResult(Activity.RESULT_OK, "Message sent successfully");
+	public void onRequestSuccess(Date id) {
+		broadcastResult(Activity.RESULT_OK, "Message sent successfully (Req " + id.toString() + ")");
 	}
 
 	private void broadcastResult(int returnCode, String message) {
@@ -103,13 +80,4 @@ public class MailerService extends IntentService
 		sendBroadcast(itt);
 	}
 
-	public static boolean checkKeys(String subject, String body, String recipients) {
-		if (subject == null) return false;
-		if (body == null) return false;
-		if (recipients == null) return false;
-
-		if (subject.isEmpty()) return false;
-		if (recipients.isEmpty()) return false;
-		return true;
-	}
 }

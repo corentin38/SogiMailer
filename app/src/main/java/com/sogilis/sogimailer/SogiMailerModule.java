@@ -11,6 +11,7 @@ import com.sogilis.sogimailer.dude.ProfileDudeImpl;
 import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.mail.ProfileFactory;
 import com.sogilis.sogimailer.svc.MailerService;
+import com.sogilis.sogimailer.svc.ProfileMailRequest;
 import com.sogilis.sogimailer.ui.EditActivity;
 import com.sogilis.sogimailer.ui.HomeFragment;
 import com.sogilis.sogimailer.ui.MainActivity;
@@ -23,7 +24,7 @@ import dagger.Provides;
 @Module (
 		injects = {
 				MainActivity.class,
-				MailerService.class,
+				ProfileMailRequest.class,
 				EditActivity.class,
 				HomeFragment.class
 		}
