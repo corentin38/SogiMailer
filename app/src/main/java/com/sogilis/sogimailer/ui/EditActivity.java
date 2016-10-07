@@ -6,9 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.sogilis.sogimailer.R;
-import com.sogilis.sogimailer.dude.Constants;
 import com.sogilis.sogimailer.dude.ProfileDude;
-import com.sogilis.sogimailer.mail.Basic;
 import com.sogilis.sogimailer.mail.Profile;
 
 import javax.inject.Inject;
@@ -42,17 +40,14 @@ public class EditActivity extends BaseActivity {
 	}
 
 	public void saveEdit(View view) {
-		Profile profile = new Basic(
-				mEdit.getProfileId(),
-				Constants.GMAIL_PROFILE_NAME,
-				mEdit.getHostEntry(),
-				mEdit.getPasswordEntry(),
-				mEdit.getSenderEntry(),
-				mEdit.getIsDefault());
-
+		Profile profile = mEdit.getProfile();
 		profileDude.update(profile);
-
 		finish();
+	}
+
+	public void onSetAsDefaultClicked(View view) {
+		Profile profile = mEdit.getProfile();
+		profileDude.setDefaultProfile(profile.id());
 	}
 
 }

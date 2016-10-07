@@ -71,23 +71,15 @@ public class EditFragment extends Fragment {
 		outState.putParcelable(PROFILE_BUNDLE_KEY, mProfile);
 	}
 
-	public long getProfileId() {
-		return mProfile.id();
+	public Profile getProfile() {
+		save();
+		return mProfile;
 	}
 
-	public String getHostEntry() {
-		return hostET.getText().toString();
+	private void save() {
+		mProfile.setHost(hostET.getText().toString());
+		mProfile.setSender(senderET.getText().toString());
+		mProfile.setPassword(passwordET.getText().toString());
 	}
 
-	public String getSenderEntry() {
-		return senderET.getText().toString();
-	}
-
-	public String getPasswordEntry() {
-		return passwordET.getText().toString();
-	}
-
-	public boolean getIsDefault() {
-		return mProfile.isDefault();
-	}
 }

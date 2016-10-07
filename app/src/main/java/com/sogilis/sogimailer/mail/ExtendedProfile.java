@@ -17,13 +17,11 @@ public class ExtendedProfile implements Profile {
 	private String mSmtpSocketFactoryPort;
 	private String mSmtpSocketFactoryClass;
 	private String mSmtpSocketFactoryFallback;
-	private boolean mIsDefault;
 
 	public ExtendedProfile(String mHost, long mId, String mSender, String mSenderPassword,
 	                       String mSmtpAuth, String mSmtpPort, String mSmtpQuitwait,
 	                       String mSmtpSocketFactoryClass, String mSmtpSocketFactoryFallback,
-	                       String mSmtpSocketFactoryPort, String mTransportProtocol, String mName,
-	                       boolean mIsDefault) {
+	                       String mSmtpSocketFactoryPort, String mTransportProtocol, String mName) {
 		this.mHost = mHost;
 		this.mId = mId;
 		this.mSender = mSender;
@@ -36,7 +34,6 @@ public class ExtendedProfile implements Profile {
 		this.mSmtpSocketFactoryPort = mSmtpSocketFactoryPort;
 		this.mTransportProtocol = mTransportProtocol;
 		this.mName = mName;
-		this.mIsDefault = mIsDefault;
 	}
 
 	public ExtendedProfile(Parcel in) {
@@ -52,7 +49,6 @@ public class ExtendedProfile implements Profile {
 		this.mSmtpSocketFactoryPort = in.readString();
 		this.mTransportProtocol = in.readString();
 		this.mName = in.readString();
-		this.mIsDefault = in.readByte() != 0;
 	}
 
 	@Override
@@ -116,8 +112,18 @@ public class ExtendedProfile implements Profile {
 	}
 
 	@Override
-	public boolean isDefault() {
-		return mIsDefault;
+	public void setHost(String host) {
+		mHost = host;
+	}
+
+	@Override
+	public void setSender(String sender) {
+		mSender = sender;
+	}
+
+	@Override
+	public void setPassword(String password) {
+		mSenderPassword = password;
 	}
 
 	@Override
@@ -139,7 +145,6 @@ public class ExtendedProfile implements Profile {
 		dest.writeString(mSmtpSocketFactoryPort);
 		dest.writeString(mTransportProtocol);
 		dest.writeString(mName);
-		dest.writeByte((byte) (mIsDefault ? 1 : 0));
 	}
 
 	public static final Parcelable.Creator<ExtendedProfile> CREATOR = new Parcelable.Creator<ExtendedProfile>() {
