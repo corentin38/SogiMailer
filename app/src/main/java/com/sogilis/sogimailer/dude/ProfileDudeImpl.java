@@ -5,8 +5,8 @@ import android.util.Log;
 
 import com.sogilis.sogimailer.db.DefaultProfileHelper;
 import com.sogilis.sogimailer.db.ProfileHelper;
-import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Profile;
+import com.sogilis.sogimailer.mail.ProfileFactory;
 
 import java.util.List;
 
@@ -168,7 +168,7 @@ public class ProfileDudeImpl implements ProfileDude {
 	}
 
 	private void populate(final ProfileDude.MultipleListener listener) {
-		save(new Default());
+		save(ProfileFactory.simplest());
 
 		getAll(new MultipleListener() {
 			@Override

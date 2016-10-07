@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.dude.ProfileDudeImpl;
-import com.sogilis.sogimailer.mail.Default;
 import com.sogilis.sogimailer.mail.Mailer;
+import com.sogilis.sogimailer.mail.ProfileFactory;
 import com.sogilis.sogimailer.svc.MailerService;
 import com.sogilis.sogimailer.ui.EditActivity;
 import com.sogilis.sogimailer.ui.HomeFragment;
@@ -55,6 +55,6 @@ public class SogiMailerModule {
 	}
 
 	@Provides @Singleton Mailer providesMailer() {
-		return new Mailer(new Default());
+		return new Mailer(ProfileFactory.simplest());
 	}
 }
