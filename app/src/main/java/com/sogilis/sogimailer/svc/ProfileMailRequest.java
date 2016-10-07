@@ -1,5 +1,6 @@
 package com.sogilis.sogimailer.svc;
 
+import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.ProfileDude;
 import com.sogilis.sogimailer.mail.Mailer;
 import com.sogilis.sogimailer.mail.Profile;
@@ -22,6 +23,7 @@ public class ProfileMailRequest implements MailRequest, Mailer.Listener {
 	private String mBody;
 
 	public ProfileMailRequest(Date id, Listener listener) {
+		((SogiMailerApplication) listener.getApplication()).getObjectGraph().inject(this);
 		this.id = id;
 		this.mListener = listener;
 	}

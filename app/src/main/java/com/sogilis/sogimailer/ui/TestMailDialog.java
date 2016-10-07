@@ -29,6 +29,7 @@ public class TestMailDialog extends DialogFragment {
 	private static final String OPT_RECIPIENTS = "MAILER_OPT_RECIPIENTS";
 	private static final String OPT_SUBJECT = "MAILER_OPT_SUBJECT";
 	private static final String OPT_BODY = "MAILER_OPT_BODY";
+	private static final String OPT_PROFILE = "MAILER_OPT_PROFILE";
 
 	private EditText recipientET;
 	private EditText subjectET;
@@ -79,6 +80,7 @@ public class TestMailDialog extends DialogFragment {
 		Intent itt = new Intent(SOGIMAILER_ACTION);
 		itt.setPackage("com.sogilis.sogimailer");
 
+		itt.putExtra(OPT_PROFILE, "default");
 		itt.putExtra(OPT_RECIPIENTS, recipientET.getText().toString());
 		itt.putExtra(OPT_SUBJECT, subjectET.getText().toString());
 		itt.putExtra(OPT_BODY, bodyET.getText().toString());

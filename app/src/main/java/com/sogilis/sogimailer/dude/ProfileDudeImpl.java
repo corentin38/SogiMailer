@@ -38,6 +38,10 @@ public class ProfileDudeImpl implements ProfileDude {
 
 	@Override
 	public void findByName(final ProfileDude.SingleListener listener, final String name) {
+		if (name == null) {
+			throw new RuntimeException("Null profile name parameter");
+		}
+
 		new AsyncTask<Void, Void, Profile>() {
 
 			@Override

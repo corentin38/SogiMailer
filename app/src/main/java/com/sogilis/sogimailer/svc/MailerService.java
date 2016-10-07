@@ -28,14 +28,6 @@ public class MailerService extends IntentService
 		super("test-service");
 	}
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		Log.d(TAG, "onCreate");
-
-		((SogiMailerApplication) getApplication()).getObjectGraph().inject(this);
-	}
-
 	/**
 	 * When binding to the service, we return an interface to our messenger
 	 * for sending messages to the service.
