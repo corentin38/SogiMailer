@@ -5,8 +5,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.sogilis.sogimailer.SogiMailerApplication;
-
 import java.util.Date;
 
 public class MailerService extends IntentService
@@ -43,8 +41,16 @@ public class MailerService extends IntentService
 				"body=["      + intent.getStringExtra(OPT_BODY)       + "], "
 		);
 
-		ProfileMailRequest request = new ProfileMailRequest(new Date(), this);
-		request.setProfileName(intent.getStringExtra(OPT_PROFILE));
+		MailRequest request;
+
+		String profileName = intent.getStringExtra(OPT_PROFILE);
+		if (profileName == null || profileName.isEmpty()) {
+			request = new DefaultMailRequest(new Date(), this);
+		} else {
+			ProfileMailRequest profileRequest = new ProfileMailRequest(new Date(), this);
+			profileRequest.setProfileName(profileName);
+			request = profileRequest;
+		}
 
 		request.setMessage(
 				intent.getStringExtra(OPT_RECIPIENTS),

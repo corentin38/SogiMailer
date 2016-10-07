@@ -13,5 +13,6 @@ public interface MailRequest {
 	}
 
 	void send();
+	void setMessage(String recipients, String subject, String body);
 
 }

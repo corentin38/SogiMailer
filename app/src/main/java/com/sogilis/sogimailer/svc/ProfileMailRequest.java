@@ -32,6 +32,7 @@ public class ProfileMailRequest implements MailRequest, Mailer.Listener {
 		this.mProfile = profile;
 	}
 
+	@Override
 	public void setMessage(String recipients, String subject, String body) {
 		this.mRecipients = recipients;
 		this.mSubject = subject;
