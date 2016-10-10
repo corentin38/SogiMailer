@@ -6,6 +6,12 @@
 			  android:padding="20dp"
 	>
 
+	<Spinner
+		android:id="@+id/testmail_profile_spinner"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		/>
+
 	<EditText
 		android:id="@+id/testmail_recipient"
 		android:layout_width="match_parent"

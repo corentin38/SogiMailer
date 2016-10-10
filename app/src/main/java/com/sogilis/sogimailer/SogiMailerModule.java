@@ -16,6 +16,7 @@ import com.sogilis.sogimailer.ui.AddActivity;
 import com.sogilis.sogimailer.ui.EditActivity;
 import com.sogilis.sogimailer.ui.HomeFragment;
 import com.sogilis.sogimailer.ui.MainActivity;
+import com.sogilis.sogimailer.ui.TestMailDialog;
 
 import javax.inject.Singleton;
 
@@ -28,7 +29,8 @@ import dagger.Provides;
 				ProfileMailRequest.class,
 				EditActivity.class,
 				HomeFragment.class,
-				AddActivity.class
+				AddActivity.class,
+				TestMailDialog.class
 		}
 )
 public class SogiMailerModule {
