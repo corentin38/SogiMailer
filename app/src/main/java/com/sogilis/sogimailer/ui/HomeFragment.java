@@ -44,13 +44,15 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		Listener listener = (Listener) getContext();
 		((SogiMailerApplication) getActivity().getApplication()).getObjectGraph().inject(this);
 
-		RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+		View homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
+
+		RecyclerView recyclerView = (RecyclerView) homeFragmentView.findViewById(R.id.home_recycler_view);
 		ContentAdapter adapter = new ContentAdapter(new Profile[0], listener);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-		return recyclerView;
+		return homeFragmentView;
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 	public void onProfilesUpdate(List<Profile> profiles) {
 		Profile[] profilesArray = profiles.toArray(new Profile[profiles.size()]);
 
-		RecyclerView view = (RecyclerView) getView();
+		RecyclerView view = (RecyclerView) getView().findViewById(R.id.home_recycler_view);
 		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
 
 		adapter.updateProfiles(profilesArray);
@@ -74,7 +76,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 	// getDefaultProfileListener
 	@Override
 	public void onProfileUpdate(Profile profile) {
-		RecyclerView view = (RecyclerView) getView();
+		RecyclerView view = (RecyclerView) getView().findViewById(R.id.home_recycler_view);
 		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
 		adapter.updateDefaultProfile(profile.id());
 	}
@@ -90,7 +92,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		public ImageView isDefault;
 
 		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-			super(inflater.inflate(R.layout.fragment_home, parent, false));
+			super(inflater.inflate(R.layout.item_profile_card, parent, false));
 			senderTV = (TextView) itemView.findViewById(R.id.home_default_user);
 			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
 			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
