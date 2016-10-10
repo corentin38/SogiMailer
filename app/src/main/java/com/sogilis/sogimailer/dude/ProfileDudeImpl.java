@@ -37,6 +37,26 @@ public class ProfileDudeImpl implements ProfileDude {
 	}
 
 	@Override
+	public void save(final ProfileDude.SaveListener listener, final Profile profile) {
+		new AsyncTask<Void, Void, Long>() {
+			@Override
+			protected Long doInBackground(Void... v) {
+				return ProfileHelper.save(profile);
+			}
+
+			@Override
+			protected void onPostExecute(Long id) {
+				super.onPostExecute(id);
+				if (id != -1) {
+					listener.onProfileSaved(id);
+				} else {
+					listener.onProfileSaveFailure();
+				}
+			}
+		}.execute();
+	}
+
+	@Override
 	public void findByName(final ProfileDude.SingleListener listener, final String name) {
 		if (name == null) {
 			throw new RuntimeException("Null profile name parameter");

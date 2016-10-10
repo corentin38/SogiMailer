@@ -7,7 +7,12 @@ import java.util.List;
 public interface ProfileDude {
 
 	// Create
+	interface SaveListener {
+		void onProfileSaved(long id);
+		void onProfileSaveFailure();
+	}
 	void save(Profile profile);
+	void save(SaveListener listener, Profile profile);
 
 	// Read
 	interface SingleListener {

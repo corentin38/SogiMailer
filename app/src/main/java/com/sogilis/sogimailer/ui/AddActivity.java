@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sogilis.sogimailer.R;
 import com.sogilis.sogimailer.dude.ProfileDude;
@@ -13,7 +14,7 @@ import com.sogilis.sogimailer.mail.ProfileFactory;
 
 import javax.inject.Inject;
 
-public class AddActivity extends BaseActivity {
+public class AddActivity extends BaseActivity implements ProfileDude.SaveListener {
 
 	private static final String TAG = "SOGIMAILER_ADD";
 
@@ -47,16 +48,26 @@ public class AddActivity extends BaseActivity {
 		String host = mHostET.getText().toString();
 		String sender = mSenderET.getText().toString();
 		String senderPassword = mSenderPasswordET.getText().toString();
-		boolean setAsDefault = mDefaultCheckbox.isChecked();
 
 		Profile newProfile = ProfileFactory.gmail(name, host, senderPassword, sender);
 
 		Log.d(TAG, "addProfile: name=[" + name + "], host=[" + host + "], sender=[" + sender + "], password=[" + senderPassword + "]");
-		profileDude.save(newProfile);
+		profileDude.save(this, newProfile);
 		finish();
 	}
 
 	public void cancelAdd(View view) {
 		finish();
+	}
+
+	@Override
+	public void onProfileSaved(long id) {
+		boolean setAsDefault = mDefaultCheckbox.isChecked();
+		if (setAsDefault) profileDude.setDefaultProfile(id);
+	}
+
+	@Override
+	public void onProfileSaveFailure() {
+		Toast.makeText(this, "Unable to save new profile", Toast.LENGTH_LONG).show();
 	}
 }
