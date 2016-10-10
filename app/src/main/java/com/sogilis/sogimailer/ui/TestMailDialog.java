@@ -90,11 +90,12 @@ public class TestMailDialog extends DialogFragment implements ProfileDude.Multip
 	@Override
 	public void onProfilesUpdate(List<Profile> profiles) {
 		List<String> profileList = new ArrayList<>();
+		profileList.add("(none)");
 		for (Profile profile : profiles) {
 			profileList.add(profile.name());
 		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(
 				getContext(),
 				android.R.layout.simple_spinner_dropdown_item,
 				profileList);
@@ -109,7 +110,7 @@ public class TestMailDialog extends DialogFragment implements ProfileDude.Multip
 		itt.setPackage("com.sogilis.sogimailer");
 
 		String profile = (String) profileSpinner.getSelectedItem();
-		if (profile != null && !profile.isEmpty()) {
+		if (profile != null && !profile.isEmpty() && !"(none)".equals(profile)) {
 			itt.putExtra(OPT_PROFILE, profile);
 		}
 
