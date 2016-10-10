@@ -72,10 +72,9 @@ public class ProfileHelper {
 		return helper.getWritableDatabase();
 	}
 
-	public static void save(Profile profile) {
+	public static long save(Profile profile) {
 		ContentValues values = fromProfile(profile);
-
-		db().insert(Contract.Profile.TABLE_NAME, null, values);
+		return db().insert(Contract.Profile.TABLE_NAME, null, values);
 	}
 
 	public static List<Profile> all() {

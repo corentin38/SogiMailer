@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/card_view"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:layout_marginBottom="8dp"
+	android:layout_marginEnd="8dp"
+	android:layout_marginStart="8dp"
+	>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<TextView
+			android:id="@+id/card_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingTop="16dp"
+			android:paddingBottom="16dp"
+			android:theme="@style/CardTitle"
+			android:text="@string/undefined"
+			/>
+
+		<ImageView
+			android:id="@+id/is_default"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:visibility="gone"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="28dp"
+			android:layout_marginTop="16dp"
+			android:src="@drawable/ic_check_circle_black_24dp"
+			android:tint="@color/colorPrimaryDark"
+			/>
+
+		<TextView
+			android:id="@+id/home_default_host"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/card_title"
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingBottom="8dp"
+			android:theme="@style/CardLine"
+			android:text="@string/undefined"
+			/>
+
+		<TextView
+			android:id="@+id/home_default_user"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/home_default_host"
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingBottom="8dp"
+			android:theme="@style/CardLine"
+			android:text="@string/undefined"
+			/>
+
+		<TextView
+			android:id="@+id/home_default_mdp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/home_default_user"
+			android:paddingLeft="28dp"
+			android:paddingRight="28dp"
+			android:paddingBottom="8dp"
+			android:theme="@style/CardLine"
+			android:text="@string/undefined"
+			android:inputType="textPassword"
+			/>
+
+		<Button
+			android:id="@+id/edit_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/home_default_mdp"
+			style="?android:attr/borderlessButtonStyle"
+			android:textColor="?attr/colorPrimary"
+			android:text="@string/home_profile_tile_edit_action"
+			/>
+
+		<Button
+			android:id="@+id/suppr_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@+id/edit_button"
+			android:layout_below="@+id/home_default_mdp"
+			style="?android:attr/borderlessButtonStyle"
+			android:textColor="@android:color/darker_gray"
+			android:text="@string/home_profile_tile_delete_action"
+			android:enabled="false"
+			/>
+
+	</RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,7 +1,9 @@
 package com.sogilis.sogimailer.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,13 +46,23 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		Listener listener = (Listener) getContext();
 		((SogiMailerApplication) getActivity().getApplication()).getObjectGraph().inject(this);
 
-		RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+		View homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
+
+		FloatingActionButton button = (FloatingActionButton) homeFragmentView.findViewById(R.id.home_add_button);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addProfile();
+			}
+		});
+
+		RecyclerView recyclerView = (RecyclerView) homeFragmentView.findViewById(R.id.home_recycler_view);
 		ContentAdapter adapter = new ContentAdapter(new Profile[0], listener);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-		return recyclerView;
+		return homeFragmentView;
 	}
 
 	@Override
@@ -64,7 +76,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 	public void onProfilesUpdate(List<Profile> profiles) {
 		Profile[] profilesArray = profiles.toArray(new Profile[profiles.size()]);
 
-		RecyclerView view = (RecyclerView) getView();
+		RecyclerView view = (RecyclerView) getView().findViewById(R.id.home_recycler_view);
 		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
 
 		adapter.updateProfiles(profilesArray);
@@ -74,7 +86,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 	// getDefaultProfileListener
 	@Override
 	public void onProfileUpdate(Profile profile) {
-		RecyclerView view = (RecyclerView) getView();
+		RecyclerView view = (RecyclerView) getView().findViewById(R.id.home_recycler_view);
 		ContentAdapter adapter = (ContentAdapter) view.getAdapter();
 		adapter.updateDefaultProfile(profile.id());
 	}
@@ -82,7 +94,13 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 	@Override public void notFound() {}
 	@Override public void tooMany() {}
 
+	public void addProfile() {
+		Intent itt = new Intent(getActivity(), AddActivity.class);
+		startActivity(itt);
+	}
+
 	public static class ViewHolder extends RecyclerView.ViewHolder {
+		public TextView profileNameTV;
 		public TextView senderTV;
 		public TextView hostTV;
 		public TextView passwordTV;
@@ -90,7 +108,8 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		public ImageView isDefault;
 
 		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-			super(inflater.inflate(R.layout.fragment_home, parent, false));
+			super(inflater.inflate(R.layout.item_profile_card, parent, false));
+			profileNameTV = (TextView) itemView.findViewById(R.id.card_title);
 			senderTV = (TextView) itemView.findViewById(R.id.home_default_user);
 			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
 			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
@@ -118,6 +137,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		@Override
 		public void onBindViewHolder(ViewHolder holder, int position) {
 			final Profile profile = mProfiles[position];
+			holder.profileNameTV.setText(profile.name());
 			holder.senderTV.setText(profile.sender());
 			holder.hostTV.setText(profile.host());
 			holder.passwordTV.setText(profile.senderPassword());

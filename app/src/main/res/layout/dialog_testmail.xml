@@ -10,21 +10,21 @@
 		android:id="@+id/testmail_recipient"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="recipient"
+		android:hint="@string/test_dialog_recipients"
 		/>
 
 	<EditText
 		android:id="@+id/testmail_subject"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="subject"
+		android:hint="@string/test_dialog_subject"
 		/>
 
 	<EditText
 		android:id="@+id/testmail_body"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="body"
+		android:hint="@string/test_dialog_body"
 		/>
 
 </LinearLayout>
