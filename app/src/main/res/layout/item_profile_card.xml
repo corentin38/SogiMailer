@@ -24,7 +24,7 @@
 			android:paddingTop="16dp"
 			android:paddingBottom="16dp"
 			android:theme="@style/CardTitle"
-			android:text="Gmail profile"
+			android:text="@string/undefined"
 			/>
 
 		<ImageView
@@ -83,7 +83,7 @@
 			android:layout_below="@id/home_default_mdp"
 			style="?android:attr/borderlessButtonStyle"
 			android:textColor="?attr/colorPrimary"
-			android:text="Edit"
+			android:text="@string/home_profile_tile_edit_action"
 			/>
 
 		<Button
@@ -94,7 +94,7 @@
 			android:layout_below="@+id/home_default_mdp"
 			style="?android:attr/borderlessButtonStyle"
 			android:textColor="@android:color/darker_gray"
-			android:text="Delete"
+			android:text="@string/home_profile_tile_delete_action"
 			android:enabled="false"
 			/>
 

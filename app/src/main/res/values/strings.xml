@@ -10,5 +10,22 @@
 	<string name="default_body_suggestion">Ceci est un message de test. Inutile de répondre !</string>
 	<string name="welcome_title">Welcome !</string>
 	<string name="welcome_message">Please configure a basic profile in order for SogiMailer to be able to handle your future intents</string>
+	<string name="profile_tile_gmail">Gmail profile</string>
+	<string name="edit_host_placeholder">SMTP server address</string>
+	<string name="edit_sender_placeholder">Sender id on SMTP server</string>
+	<string name="edit_sender_password_placeholder">Sender password</string>
 	<string name="edit_profile_make_default_link"><u>Make this profile default</u></string>
+	<string name="edit_button_save">Save</string>
+	<string name="edit_button_cancel">Cancel</string>
+	<string name="add_host_placeholder">SMTP server address</string>
+	<string name="add_sender_placeholder">Sender id on SMTP server</string>
+	<string name="add_sender_password_placeholder">Sender password</string>
+	<string name="add_name_placeholder">Profile name</string>
+	<string name="add_button_save">Save</string>
+	<string name="add_button_cancel">Cancel</string>
+	<string name="test_dialog_recipients">Recipient(s)</string>
+	<string name="test_dialog_subject">Subject</string>
+	<string name="test_dialog_body">Message</string>
+	<string name="home_profile_tile_edit_action">Edit</string>
+	<string name="home_profile_tile_delete_action">Delete</string>
 </resources>
