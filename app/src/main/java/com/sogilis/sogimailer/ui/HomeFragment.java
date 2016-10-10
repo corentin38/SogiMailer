@@ -1,7 +1,9 @@
 package com.sogilis.sogimailer.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +48,14 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 
 		View homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
+		FloatingActionButton button = (FloatingActionButton) homeFragmentView.findViewById(R.id.home_add_button);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addProfile();
+			}
+		});
+
 		RecyclerView recyclerView = (RecyclerView) homeFragmentView.findViewById(R.id.home_recycler_view);
 		ContentAdapter adapter = new ContentAdapter(new Profile[0], listener);
 		recyclerView.setAdapter(adapter);
@@ -83,6 +93,11 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 
 	@Override public void notFound() {}
 	@Override public void tooMany() {}
+
+	public void addProfile() {
+		Intent itt = new Intent(getActivity(), AddActivity.class);
+		startActivity(itt);
+	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public TextView senderTV;

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<include layout="@layout/toolbar" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:padding="15dp"
+		>
+
+		<android.support.design.widget.TextInputLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<EditText
+				android:id="@+id/add_name"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="Profile name"
+				/>
+
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.design.widget.TextInputLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<EditText
+				android:id="@+id/add_host"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="SMTP host"
+				/>
+
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.design.widget.TextInputLayout
+			android:paddingTop="10dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<EditText
+				android:id="@+id/add_sender"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="Sender id"
+				/>
+
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.design.widget.TextInputLayout
+			android:paddingTop="10dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<EditText
+				android:id="@+id/add_sender_password"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="Sender password"
+				android:inputType="textPassword"
+				/>
+
+		</android.support.design.widget.TextInputLayout>
+
+		<CheckBox
+			android:id="@+id/add_default_checkbox"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dp"
+			android:text="Set as default"
+			/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			>
+
+			<Button
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:layout_height="wrap_content"
+				android:text="Cancel"
+				android:onClick="cancelAdd"
+				android:background="@color/colorPrimary"
+				android:layout_marginRight="5dp"
+				android:layout_marginTop="40dp"
+				android:textColor="@android:color/white"
+				/>
+
+			<Button
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:layout_height="wrap_content"
+				android:text="Add"
+				android:onClick="addProfile"
+				android:background="@color/colorPrimary"
+				android:layout_marginLeft="5dp"
+				android:layout_marginTop="40dp"
+				android:textColor="@android:color/white"
+				/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
