@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 
 	public interface Listener {
 		void onEditButtonClicked(Profile profile);
+		void onRemoveButtonClicked(Profile profile);
 	}
 
 	public static HomeFragment newInstance() {
@@ -99,12 +100,17 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		startActivity(itt);
 	}
 
+	public void refresh() {
+		profileDude.getAll(this);
+	}
+
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public TextView profileNameTV;
 		public TextView senderTV;
 		public TextView hostTV;
 		public TextView passwordTV;
 		public Button editButton;
+		public Button removeButton;
 		public ImageView isDefault;
 
 		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -114,6 +120,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
 			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
 			editButton = (Button) itemView.findViewById(R.id.edit_button);
+			removeButton = (Button) itemView.findViewById(R.id.suppr_button);
 			isDefault = (ImageView) itemView.findViewById(R.id.is_default);
 		}
 	}
@@ -145,6 +152,12 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 				@Override
 				public void onClick(View v) {
 					mListener.onEditButtonClicked(profile);
+				}
+			});
+			holder.removeButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mListener.onRemoveButtonClicked(profile);
 				}
 			});
 			if (profile.id() == mDefaultProfileId) {
