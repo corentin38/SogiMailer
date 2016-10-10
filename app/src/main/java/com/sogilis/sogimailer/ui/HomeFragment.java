@@ -100,6 +100,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
+		public TextView profileNameTV;
 		public TextView senderTV;
 		public TextView hostTV;
 		public TextView passwordTV;
@@ -108,6 +109,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 
 		public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
 			super(inflater.inflate(R.layout.item_profile_card, parent, false));
+			profileNameTV = (TextView) itemView.findViewById(R.id.card_title);
 			senderTV = (TextView) itemView.findViewById(R.id.home_default_user);
 			hostTV = (TextView) itemView.findViewById(R.id.home_default_host);
 			passwordTV = (TextView) itemView.findViewById(R.id.home_default_mdp);
@@ -135,6 +137,7 @@ public class HomeFragment extends Fragment implements ProfileDude.MultipleListen
 		@Override
 		public void onBindViewHolder(ViewHolder holder, int position) {
 			final Profile profile = mProfiles[position];
+			holder.profileNameTV.setText(profile.name());
 			holder.senderTV.setText(profile.sender());
 			holder.hostTV.setText(profile.host());
 			holder.passwordTV.setText(profile.senderPassword());
