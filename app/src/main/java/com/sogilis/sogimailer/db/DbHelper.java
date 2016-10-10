@@ -12,7 +12,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	private static final String SQL_CREATE_PROFILES =
 			"CREATE TABLE " + Contract.Profile.TABLE_NAME + " (" +
-					Contract.Profile._ID                                      + " INTEGER PRIMARY KEY," +
 					Contract.Profile.COLUMN_NAME_NAME                         + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SENDER                       + TEXT_TYPE + COMMA_SEP +
 					Contract.Profile.COLUMN_NAME_SENDER_PASSWORD              + TEXT_TYPE + COMMA_SEP +
@@ -30,7 +29,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	private static final String SQL_CREATE_DEFAULT_PROFILE =
 			"CREATE TABLE " + Contract.DefaultProfile.TABLE_NAME + " (" +
-					Contract.DefaultProfile._ID                             + " INTEGER PRIMARY KEY," +
 					Contract.DefaultProfile.COLUMNE_NAME_DEFAULT_PROFILE_ID + INTEGER_TYPE + ")";
 
 	private static final String SQL_DELETE_DEFAULT_PROFILE =
