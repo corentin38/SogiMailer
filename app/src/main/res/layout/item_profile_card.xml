@@ -93,9 +93,8 @@
 			android:layout_toRightOf="@+id/edit_button"
 			android:layout_below="@+id/home_default_mdp"
 			style="?android:attr/borderlessButtonStyle"
-			android:textColor="@android:color/darker_gray"
+			android:textColor="?attr/colorPrimary"
 			android:text="@string/home_profile_tile_delete_action"
-			android:enabled="false"
 			/>
 
 	</RelativeLayout>

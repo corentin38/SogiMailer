@@ -1,6 +1,7 @@
 package com.sogilis.sogimailer.ui;
 
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -37,6 +39,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.Listener 
 
 	private DrawerLayout mDrawer;
 	private NavigationView mNavigationView;
+	private ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +53,21 @@ public class MainActivity extends BaseActivity implements HomeFragment.Listener 
 		initDrawer();
 
 		// Setting ViewPager for each Tabs
-		ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-		setupViewPager(viewPager);
+		mViewPager = (ViewPager) findViewById(R.id.viewpager);
+		setupViewPager(mViewPager);
 
 		// Set Tabs inside Toolbar
 		TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-		tabs.setupWithViewPager(viewPager);
+		tabs.setupWithViewPager(mViewPager);
 	}
 
 	// Add Fragments to Tabs
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(HomeFragment.newInstance(), "Profiles");
-        adapter.addFragment(new DocumentationFragment(), "Documentation");
-        viewPager.setAdapter(adapter);
-    }
+	private void setupViewPager(ViewPager viewPager) {
+		Adapter adapter = new Adapter(getSupportFragmentManager());
+		adapter.addFragment(HomeFragment.newInstance(), "Profiles");
+		adapter.addFragment(new DocumentationFragment(), "Documentation");
+		viewPager.setAdapter(adapter);
+	}
 
 	@Override
 	protected void onResume() {
@@ -79,26 +82,26 @@ public class MainActivity extends BaseActivity implements HomeFragment.Listener 
 		super.onPause();
 	}
 
-    private void initDrawer() {
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                mDrawer.closeDrawers();
+	private void initDrawer() {
+		mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+			@Override
+			public boolean onNavigationItemSelected(MenuItem menuItem) {
+				mDrawer.closeDrawers();
 
-                switch (menuItem.getItemId()) {
-                    case R.id.main_testmail:
-	                    Log.d(TAG, "starting test");
-	                    TestMailDialog dlg = TestMailDialog.newInstance();
-	                    dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
-	                    return true;
-                    default:
-                        Log.v(TAG, "Unknown menu item");
-                }
+				switch (menuItem.getItemId()) {
+					case R.id.main_testmail:
+						Log.d(TAG, "starting test");
+						TestMailDialog dlg = TestMailDialog.newInstance();
+						dlg.show(getSupportFragmentManager(), TestMailDialog.TESTMAIL_DIALOG_KEY);
+						return true;
+					default:
+						Log.v(TAG, "Unknown menu item");
+				}
 
-                return true;
-            }
-        });
-    }
+				return true;
+			}
+		});
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -111,48 +114,74 @@ public class MainActivity extends BaseActivity implements HomeFragment.Listener 
 		return super.onOptionsItemSelected(item);
 	}
 
-    @Override
-    public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-	        mDrawer.closeDrawers();
-            return;
-        }
+	@Override
+	public void onBackPressed() {
+		if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+			mDrawer.closeDrawers();
+			return;
+		}
 
-        super.onBackPressed();
-    }
+		super.onBackPressed();
+	}
 
-    static class Adapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+	static class Adapter extends FragmentPagerAdapter {
+		private final List<Fragment> mFragmentList = new ArrayList<>();
+		private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public Adapter(FragmentManager manager) {
-            super(manager);
-        }
+		public Adapter(FragmentManager manager) {
+			super(manager);
+		}
 
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
+		@Override
+		public Fragment getItem(int position) {
+			return mFragmentList.get(position);
+		}
 
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
+		@Override
+		public int getCount() {
+			return mFragmentList.size();
+		}
 
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
+		public void addFragment(Fragment fragment, String title) {
+			mFragmentList.add(fragment);
+			mFragmentTitleList.add(title);
+		}
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return mFragmentTitleList.get(position);
+		}
+	}
 
 	public void onEditButtonClicked(Profile profile) {
 		Intent itt = new Intent(this, EditActivity.class);
 		itt.putExtra(EditActivity.PROFILE_KEY, profile);
 		startActivity(itt);
+	}
+
+	@Override
+	public void onRemoveButtonClicked(final Profile profile) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Do you want to delete this profile?");
+		builder.setPositiveButton("Delete",  new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				profileDude.delete(profile.id());
+				refreshProfiles();
+			}
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,int id) {
+				dialog.cancel();
+			}
+		});
+		builder.show();
+	}
+
+	private void refreshProfiles() {
+		Adapter adapter = (Adapter) mViewPager.getAdapter();
+		HomeFragment homeFragment = (HomeFragment) adapter.getItem(0);
+		homeFragment.refresh();
 	}
 }
