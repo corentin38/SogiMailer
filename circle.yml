@@ -10,3 +10,10 @@ test:
         background: true
         parallel: true
     - circle-android wait-for-boot
+
+  override:
+    - ./gradlew connectedAndroidTest
+    # copy the build outputs to artifacts
+    - cp -r SogiMailer/build/outputs $CIRCLE_ARTIFACTS
+    # copy the test results to the test results directory.
+    - cp -r SogiMailer/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
