@@ -6,19 +6,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.sogilis.sogimailer.R;
 import com.sogilis.sogimailer.SogiMailerApplication;
 import com.sogilis.sogimailer.dude.Constants;
+import com.sogilis.sogimailer.dude.ProfileDude;
+import com.sogilis.sogimailer.mail.Profile;
 
-public class TestMailDialog extends DialogFragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class TestMailDialog extends DialogFragment implements ProfileDude.MultipleListener {
 
 	private static final String TAG = "SOGIMAILER_TESTEMAILDLG";
 
@@ -31,6 +39,9 @@ public class TestMailDialog extends DialogFragment {
 	private static final String OPT_BODY = "MAILER_OPT_BODY";
 	private static final String OPT_PROFILE = "MAILER_OPT_PROFILE";
 
+	@Inject ProfileDude profileDude;
+
+	private Spinner profileSpinner;
 	private EditText recipientET;
 	private EditText subjectET;
 	private EditText bodyET;
@@ -41,12 +52,13 @@ public class TestMailDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		Log.d(TAG, "onCreateDialog");
+		((SogiMailerApplication) getActivity().getApplication()).getObjectGraph().inject(this);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 
 		View view = inflater.inflate(R.layout.dialog_testmail, null);
+		profileSpinner = (Spinner) view.findViewById(R.id.testmail_profile_spinner);
 		recipientET = (EditText) view.findViewById(R.id.testmail_recipient);
 		subjectET = (EditText) view.findViewById(R.id.testmail_subject);
 		bodyET = (EditText) view.findViewById(R.id.testmail_body);
@@ -61,7 +73,6 @@ public class TestMailDialog extends DialogFragment {
 			.setPositiveButton("Send", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Log.d(TAG, "We should send test mail !");
 					sendTestMail();
 				}
 			});
@@ -71,7 +82,25 @@ public class TestMailDialog extends DialogFragment {
 
 		if (savedInstanceState == null) suggestPreviousEntries();
 
+		profileDude.getAll(this);
+
 		return dlg;
+	}
+
+	@Override
+	public void onProfilesUpdate(List<Profile> profiles) {
+		List<String> profileList = new ArrayList<>();
+		profileList.add("(none)");
+		for (Profile profile : profiles) {
+			profileList.add(profile.name());
+		}
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(
+				getContext(),
+				android.R.layout.simple_spinner_dropdown_item,
+				profileList);
+
+		profileSpinner.setAdapter(adapter);
 	}
 
 	private void sendTestMail() {
@@ -80,7 +109,11 @@ public class TestMailDialog extends DialogFragment {
 		Intent itt = new Intent(SOGIMAILER_ACTION);
 		itt.setPackage("com.sogilis.sogimailer");
 
-		itt.putExtra(OPT_PROFILE, "default");
+		String profile = (String) profileSpinner.getSelectedItem();
+		if (profile != null && !profile.isEmpty() && !"(none)".equals(profile)) {
+			itt.putExtra(OPT_PROFILE, profile);
+		}
+
 		itt.putExtra(OPT_RECIPIENTS, recipientET.getText().toString());
 		itt.putExtra(OPT_SUBJECT, subjectET.getText().toString());
 		itt.putExtra(OPT_BODY, bodyET.getText().toString());
