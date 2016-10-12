@@ -10,6 +10,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -30,8 +32,27 @@ dependencies {
     compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:cardview-v7:23.+'
 
-
     compile 'com.squareup.dagger:dagger-compiler:1.2.5'
     compile 'com.sun.mail:android-mail:1.5.5'
+
+    // Espresso (see also testExpressionRunner in
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2') {
+        exclude module: 'support-annotations'
+    }
+
+    androidTestCompile('com.android.support.test:runner:0.5') {
+        exclude module: 'support-annotations'
+    }
+
+    androidTestCompile( 'com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude module: 'support-annotations'
+        exclude module: 'design'
+        exclude module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+
+    // Espresso conflicts ...
+
+    // XXX: Remove in the end !
     compile 'com.facebook.stetho:stetho:1.4.1'
 }
